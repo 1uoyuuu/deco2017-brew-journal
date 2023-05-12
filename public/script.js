@@ -1,3 +1,19 @@
+function togglemenu() {
+    var x = document.getElementById("nav");
+    if (x.className === "nav") {
+        x.className += " nav--open";
+    } else {
+        x.className = "nav";
+    }
+    var element = document.getElementById("menu-toggle");
+    element.classList.toggle("menu-toggle--open");
+}
+
+
+
+
+
+
 // Setting up variables for our HTML elements using DOM selection
 const form = document.getElementById("taskform");
 const tasklist = document.getElementById("tasklist");

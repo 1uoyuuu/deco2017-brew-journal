@@ -1,3 +1,8 @@
+// import all the scss files here
+@import "base/reset.scss";
+@import "components/navigation.scss";
+
+
 h1 {
     color: blue;
 }
