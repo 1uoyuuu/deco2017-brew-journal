@@ -1,16 +1,14 @@
 // import all the scss files here
-@import "base/reset.scss";
-@import "components/navigation.scss";
+@import "base/reset.scss", "base/typography.scss", "base/color.scss";
+@import "components/navigation.scss", "components/chips.scss";
+@import "layout/grid.scss";
+@import "pages/overview.scss", "pages/coffee.scss";
 
 
-h1 {
-    color: blue;
-}
 
 html {
     height: 100%;
     width: 100%;
-    font-family: Arial, Helvetica, sans-serif;
 }
 
 header > h1 {

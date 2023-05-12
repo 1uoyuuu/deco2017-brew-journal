@@ -1,0 +1,49 @@
+#coffee .grid-container .content {
+    margin: 0;
+    section {
+        border: none;
+    }
+    section:first-child {
+        border-right: 1px solid white;
+    }
+}
+#coffee-list {
+    display: flex;
+    overflow: scroll;
+    h2 {
+        border-bottom: 1px solid white;
+        padding: 1% 2%;
+    }
+
+    ul {
+        // reset the list style
+        list-style: none;
+        padding: 0;
+        .coffee-item {
+            padding: 2%;
+            height: 150px;
+            border: 1px solid white;
+
+            display: flex;
+            flex-direction: row;
+            justify-content: space-between;
+
+            .coffee-item-wrap {
+                flex: 1;
+                display: flex;
+                flex-direction: column;
+                h3 {
+                    margin-bottom: 4px;
+                }
+                span:not(:first-child) {
+                    margin-left: 0.5rem;
+                }
+
+            }
+
+            .coffee-item-wrap:last-child {
+                text-align: right;
+            }
+        }
+    }
+}

@@ -1,0 +1,86 @@
+#overview .grid-container .content {
+    section {
+
+        h2 {
+            border-bottom: 1px solid white;
+            padding: 1% 2%;
+        }
+
+        figure {
+            flex: 1;
+            margin: 2%;
+            overflow: hidden; // prevent the image flow out of the parent
+
+            img {
+                max-width: 100%;
+                max-height: 100%;
+                margin: auto;
+            }
+        }
+
+        .stat-flex-container {
+            flex: 1;
+            display: flex;
+            margin: -1px; 
+            // offset margin by -1px to avoid overlapping borders(since it's overlapping from all four directions, 
+            // just set it with all sides, credit to Scott Selby from 
+            // https://stackoverflow.com/questions/12134982/overlapping-1-px-borders-making-a-thicker-border)
+            flex-direction: column;
+
+            .stat-row-1,
+            .stat-row-2,
+            .stat-row-3 {
+
+                display: flex;
+                flex-direction: row;
+                flex: 1;
+            }
+
+            .stat-row-1 {
+                .stat-item {
+                    flex: 1 1 auto;
+
+                }
+
+                .stat-item:first-child {
+                    border-right: none;
+                }
+            }
+
+            .stat-row-2 {
+                .stat-item {
+                    flex: 1;
+                    border-top: none;
+                    border-bottom: none;
+                }
+            }
+
+            .stat-row-3 {
+
+                // use flex-grow to determine how much space each item occupies, one-third and two-thirds
+                .stat-item:first-child {
+                    flex-grow: 1;
+                    border-right: none;
+                }
+
+                .stat-item:last-child {
+                    flex-grow: 2;
+
+                }
+            }
+
+            .stat-item {
+                padding: 2%;
+                border: 1px solid white;
+                position: relative;
+
+                .stat-number {
+                    position: absolute;
+                    bottom: 0;
+                    right: 16px;
+                }
+            }
+        }
+    }
+
+}

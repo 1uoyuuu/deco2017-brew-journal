@@ -1,0 +1,19 @@
+/* Import customed font Suisse Int'l */
+
+@font-face {
+    font-family: 'suisse_intlregular';
+    src: url('/public/src/fonts/suisse_intl-webfont.woff2') format('woff2'),
+        url('/public/src/fonts/suisse_intl-webfont.woff') format('woff');
+    font-weight: normal;
+    font-style: normal;
+
+}
+
+@font-face {
+    font-family: 'suisse_intllight';
+    src: url('/public/src/fonts/suisseintl-light-webfont.woff2') format('woff2'),
+        url('/public/src/fonts/suisseintl-light-webfont.woff') format('woff');
+    font-weight: normal;
+    font-style: normal;
+
+}

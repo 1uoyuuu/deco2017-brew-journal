@@ -1,0 +1,52 @@
+// ---------------------------basic layout section grid---------------------------
+.grid-container {
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr;
+    grid-template-rows: 75px 100px 1fr 100px;
+    gap: 0px 16px;
+    grid-auto-flow: row;
+    grid-template-areas:
+        "top-white-space top-white-space top-white-space top-white-space top-white-space top-white-space top-white-space top-white-space top-white-space top-white-space top-white-space top-white-space"
+        "heading heading heading heading heading heading heading heading heading heading heading heading"
+        "content content content content content content content content content content content content"
+        "bottom-white-space bottom-white-space bottom-white-space bottom-white-space bottom-white-space bottom-white-space bottom-white-space bottom-white-space bottom-white-space bottom-white-space bottom-white-space bottom-white-space";
+
+    .content {
+        grid-area: content;
+        display: flex;
+        margin: 0 2%;
+        section {
+            flex: 1;
+            height: 700px;
+            border: 1px solid white;
+            border-top: none;
+            border-bottom: none;
+            // the section itself also needs to be flexbox in order to limit the children within the box
+            display: flex;
+            flex-flow: column;
+        }
+        // to avoid overlapping border, I removed the right border of the first section 
+        section:first-child {
+            border-right: none;
+        }
+    }
+
+    .heading {
+        grid-area: heading;
+        padding: 0 2%;
+        border-bottom: 1px solid white;
+    }
+
+    .top-white-space {
+        grid-area: top-white-space;
+    }
+
+    .bottom-white-space {
+        grid-area: bottom-white-space;
+        border-top: 1px solid white;
+    }
+}
+
+
+
+// ---------------------------overview section statistic grid---------------------------

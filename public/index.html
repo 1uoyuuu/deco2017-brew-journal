@@ -7,12 +7,13 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Coffee Brew Journal</title>
     <link rel="stylesheet" href="scss/main.scss">
+    <link rel="stylesheet" href="style.css">
 </head>
 
 <body>
     <header>
-        <nav class="nav" id="nav">
-            <a href="#home-section">Logo</a>
+        <nav class="nav" id="top-nav">
+            <a href="#home-section"><img src="/public/src/images/logo.png" alt="logo of brew journal" height="35px"></a>
             <a href="#overview-section">Overview</a>
             <a href="#coffee-section">Coffee</a>
             <a href="#gadget-section">Gadget</a>
@@ -23,8 +24,116 @@
                 <div class="menu-toggle__bar3"></div>
             </a>
         </nav>
-        <h1>Coffee Journal</h1>
     </header>
+    <section id="landing-page">
+        <h1>It's time to elevate your brewing experience.</h1>
+        <figure><img src="/public/src/images/hero-image.png" height="450px"" alt=" An image of a cup of black coffee
+                with its shadow cast by the sun"></figure>
+    </section>
+    <section id="overview">
+        <div class="grid-container">
+            <div class="top-white-space"></div>
+            <div class="heading">
+                <h1>Overview.</h1>
+            </div>
+            <div class="content">
+                <section>
+                    <h2>Coffee Flavour Wheel.</h2>
+                    <figure><img src="src/images/coffee-wheel.png" alt=""></figure>
+                </section>
+                <section>
+                    <h2>Statistics.</h2>
+                    <div class="stat-flex-container">
+                        <div class="stat-row-1">
+                            <div class="stat-item">
+                                <p>The number of beans<br>you tried</p>
+                                <p class="stat-number">7</p>
+                            </div>
+                            <div class="stat-item">
+                                <p>The number of roasters<br>you visited</p>
+                                <p class="stat-number">5</p>
+                            </div>
+                        </div>
+                        <div class="stat-row-2">
+                            <div class="stat-item">
+                                <p>The number of coffee origins you explored</p>
+                                <p class="stat-number">3</p>
+                            </div>
+                        </div>
+                        <div class="stat-row-3">
+                            <div class="stat-item">
+                                <p>Total brews<br>completed</p>
+                                <p class="stat-number">21</p>
+                            </div>
+                            <div class="stat-item">
+                                <p>Total money spent on coffee</p>
+                                <p class="stat-number">$1500</p>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+            </div>
+            <div class="bottom-white-space"></div>
+        </div>
+    </section>
+    <section id="coffee">
+        <div class="grid-container">
+            <div class="top-white-space"></div>
+            <div class="heading">
+                <h1>Coffee.</h1>
+                <button>Add New</button>
+            </div>
+            <div class="content">
+                <section id="coffee-info">
+                    <p>Here's a list of all the coffee you have added so far. Click on any of them to reminisce about
+                        your favourite cup.</p>
+                </section>
+                <section id="coffee-list">
+                    <h2>Coffee List.</h2>
+                    <ul>
+                        <li class="coffee-item">
+                            <div class="coffee-item-wrap">
+                                <h3 class="coffee-item-name">Moon Geisha</h3>
+                                <p><span class="coffee-item-date">19/04/2023</span>
+                                    <span class="coffee-item-roaster">Jibbithelittles</span></p>
+                            </div>
+                            <div class="coffee-item-wrap">
+                                <h3 class="coffee-item-origin">Colombia</h3>
+                                <p><span class="chips">Light</span>
+                                    <span class="chips">Anaerobic Natural</span></p>
+                            </div>
+                        </li>
+                        <li class="coffee-item">
+                            <div class="coffee-item-wrap">
+                                <h3 class="coffee-item-name">Moon Geisha</h3>
+                                <p><span class="coffee-item-date">19/04/2023</span>
+                                    <span class="coffee-item-roaster">Jibbithelittles</span></p>
+                            </div>
+                            <div class="coffee-item-wrap">
+                                <h3 class="coffee-item-origin">Colombia</h3>
+                                <p><span class="chips">Light</span>
+                                    <span class="chips">Natural</span></p>
+                            </div>
+                        </li>
+                        <li class="coffee-item">
+                            <div class="coffee-item-wrap">
+                                <h3 class="coffee-item-name">Moon Geisha</h3>
+                                <p><span class="coffee-item-date">19/04/2023</span>
+                                    <span class="coffee-item-roaster">Jibbithelittles</span></p>
+                            </div>
+                            <div class="coffee-item-wrap">
+                                <h3 class="coffee-item-origin">Colombia</h3>
+                                <p><span class="chips">Light</span>
+                                    <span class="chips">Natural</span></p>
+                            </div>
+                        </li>
+                    </ul>
+                </section>
+            </div>
+            <div class="bottom-white-space"></div>
+        </div>
+    </section>
+
     <form id="taskform">
         <div class="form-row">
             <label for="taskName">Name</label>

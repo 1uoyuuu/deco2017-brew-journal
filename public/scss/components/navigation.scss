@@ -1,40 +1,50 @@
-.nav {
+#top-nav {
     overflow: hidden;
+    display: flex;
+    align-items: center;
+    height: 75px;
+    border: 1px solid white;
+    
 }
-
-.nav a {
-    float: left;
-    margin: 10px;
+#top-nav a:first-child {
+    flex-grow: 1;
+}
+#top-nav a {
+    margin: 0 2%;
+    padding: 2% 0;
     display: block;
+
+    text-decoration: none;
+    font-size: 2rem;
 }
 
-.nav #menu-toggle {
+#top-nav #menu-toggle {
     display: none;
 }
 
 @media screen and (max-width: 600px) {
-    .nav a:not(:first-child) {
+    #top-nav a:not(:first-child) {
         display: none;
     }
 
-    .nav a#menu-toggle {
+    #top-nav a#menu-toggle {
         float: right;
         display: block;
     }
 }
 
 @media screen and (max-width: 600px) {
-    .nav.nav--open {
+    #top-nav.nav--open {
         position: relative;
     }
 
-    .nav.nav--open #menu-toggle {
+    #top-nav.nav--open #menu-toggle {
         position: absolute;
         right: 0;
         top: 0;
     }
 
-    .nav.nav--open a {
+    #top-nav.nav--open a {
         float: none;
         display: block;
         text-align: left;

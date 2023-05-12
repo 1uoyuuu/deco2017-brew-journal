@@ -1,0 +1,44 @@
+// ------------------------------general element styling------------------------------
+* {
+    font-family: suisse_intllight, Helvetica, sans-serif;
+    font-size: 1rem;
+}
+
+h1 {
+    font-size: 5rem;
+    letter-spacing: 4px;
+}
+
+h2 {
+    font-size: 1.5rem;
+    letter-spacing: 1px;
+}
+
+h3 {
+    font-size: 2.5rem;
+}
+
+p {
+    font-size: 1rem;
+}
+// ------------------------------specific element styling------------------------------
+
+// ------------------landing page------------------
+#landing-page {
+    h1 {
+        font-size: 6rem;
+    }
+
+}
+
+// ------------------overview page------------------
+
+.stat-item{
+    p {
+        font-size: 1.2rem;
+    }
+    p.stat-number {
+        font-size: 4rem;
+        font-family: suisse_intlregular;
+    }
+}
