@@ -2,7 +2,7 @@
 .grid-container {
     display: grid;
     grid-template-columns: 1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr;
-    grid-template-rows: 75px 100px 1fr 100px;
+    grid-template-rows: 1fr 1fr 6fr 1fr;
     gap: 0px 16px;
     grid-auto-flow: row;
     grid-template-areas:
@@ -15,26 +15,16 @@
         grid-area: content;
         display: flex;
         margin: 0 2%;
-        section {
-            flex: 1;
-            height: 700px;
-            border: 1px solid white;
-            border-top: none;
-            border-bottom: none;
-            // the section itself also needs to be flexbox in order to limit the children within the box
-            display: flex;
-            flex-flow: column;
-        }
-        // to avoid overlapping border, I removed the right border of the first section 
-        section:first-child {
-            border-right: none;
-        }
+
     }
 
     .heading {
         grid-area: heading;
         padding: 0 2%;
         border-bottom: 1px solid white;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
     }
 
     .top-white-space {

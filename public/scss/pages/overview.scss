@@ -1,5 +1,13 @@
 #overview .grid-container .content {
     section {
+        flex: 1;
+        // height: 700px;
+        border: 1px solid white;
+        border-top: none;
+        border-bottom: none;
+        // the section itself also needs to be flexbox in order to limit the children within the box
+        display: flex;
+        flex-flow: column;
 
         h2 {
             border-bottom: 1px solid white;
@@ -9,6 +17,9 @@
         figure {
             flex: 1;
             margin: 2%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
             overflow: hidden; // prevent the image flow out of the parent
 
             img {
@@ -21,7 +32,7 @@
         .stat-flex-container {
             flex: 1;
             display: flex;
-            margin: -1px; 
+            margin: -1px;
             // offset margin by -1px to avoid overlapping borders(since it's overlapping from all four directions, 
             // just set it with all sides, credit to Scott Selby from 
             // https://stackoverflow.com/questions/12134982/overlapping-1-px-borders-making-a-thicker-border)
@@ -30,7 +41,6 @@
             .stat-row-1,
             .stat-row-2,
             .stat-row-3 {
-
                 display: flex;
                 flex-direction: row;
                 flex: 1;
@@ -83,4 +93,10 @@
         }
     }
 
+    // to avoid overlapping border, I removed the right border of the first section 
+    section:first-child {
+        border-right: none;
+
+
+    }
 }

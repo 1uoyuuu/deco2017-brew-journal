@@ -1,14 +1,17 @@
 #coffee .grid-container .content {
     margin: 0;
     section {
-        border: none;
+        flex: 1;
+        // the section itself also needs to be flexbox in order to limit the children within the box
+        display: flex;
+        flex-flow: column;
     }
+    //make sure the center has one border without overlapping
     section:first-child {
         border-right: 1px solid white;
     }
 }
 #coffee-list {
-    display: flex;
     overflow: scroll;
     h2 {
         border-bottom: 1px solid white;

@@ -39,7 +39,7 @@
             <div class="content">
                 <section>
                     <h2>Coffee Flavour Wheel.</h2>
-                    <figure><img src="src/images/coffee-wheel.png" alt=""></figure>
+                    <figure><img src="src/images/coffee-wheel.png" width="400px"alt=""></figure>
                 </section>
                 <section>
                     <h2>Statistics.</h2>
@@ -74,6 +74,7 @@
                 </section>
             </div>
             <div class="bottom-white-space"></div>
+
         </div>
     </section>
     <section id="coffee">
@@ -95,36 +96,42 @@
                             <div class="coffee-item-wrap">
                                 <h3 class="coffee-item-name">Moon Geisha</h3>
                                 <p><span class="coffee-item-date">19/04/2023</span>
-                                    <span class="coffee-item-roaster">Jibbithelittles</span></p>
+                                    <span class="coffee-item-roaster">Jibbithelittles</span>
+                                </p>
                             </div>
                             <div class="coffee-item-wrap">
                                 <h3 class="coffee-item-origin">Colombia</h3>
                                 <p><span class="chips">Light</span>
-                                    <span class="chips">Anaerobic Natural</span></p>
+                                    <span class="chips">Anaerobic Natural</span>
+                                </p>
                             </div>
                         </li>
                         <li class="coffee-item">
                             <div class="coffee-item-wrap">
                                 <h3 class="coffee-item-name">Moon Geisha</h3>
                                 <p><span class="coffee-item-date">19/04/2023</span>
-                                    <span class="coffee-item-roaster">Jibbithelittles</span></p>
+                                    <span class="coffee-item-roaster">Jibbithelittles</span>
+                                </p>
                             </div>
                             <div class="coffee-item-wrap">
                                 <h3 class="coffee-item-origin">Colombia</h3>
                                 <p><span class="chips">Light</span>
-                                    <span class="chips">Natural</span></p>
+                                    <span class="chips">Natural</span>
+                                </p>
                             </div>
                         </li>
                         <li class="coffee-item">
                             <div class="coffee-item-wrap">
                                 <h3 class="coffee-item-name">Moon Geisha</h3>
                                 <p><span class="coffee-item-date">19/04/2023</span>
-                                    <span class="coffee-item-roaster">Jibbithelittles</span></p>
+                                    <span class="coffee-item-roaster">Jibbithelittles</span>
+                                </p>
                             </div>
                             <div class="coffee-item-wrap">
                                 <h3 class="coffee-item-origin">Colombia</h3>
                                 <p><span class="chips">Light</span>
-                                    <span class="chips">Natural</span></p>
+                                    <span class="chips">Natural</span>
+                                </p>
                             </div>
                         </li>
                     </ul>
@@ -133,7 +140,60 @@
             <div class="bottom-white-space"></div>
         </div>
     </section>
-
+    <section id="gadget">
+        <div class="grid-container">
+            <div class="top-white-space"></div>
+            <div class="heading">
+                <h1>Gadget.</h1>
+                <button>Add New</button>
+            </div>
+            <div class="content">
+                <!-- a glide carousel structure -->
+                <section class="glide">
+                    <div class="glide__track" data-glide-el="track">
+                        <ul class="glide__slides">
+                            <li class="glide__slide">
+                                <div class="carousel-item">
+                                    <div class="flex-row">
+                                        <p>Ceramic</p>
+                                        <p>Dripper</p>
+                                    </div>
+                                    <img src="src/images/dripper-origami.png" alt="">
+                                    <div class="flex-row">
+                                        <p>Ceramic</p>
+                                        <p>Dripper</p>
+                                    </div>
+                                </div>
+                            </li>
+                            <li class="glide__slide"><div class="carousel-item">
+                                <div class="flex-row">
+                                    <p>Ceramic</p>
+                                    <p>Dripper</p>
+                                </div>
+                                <img src="src/images/grinder-c40.png" alt="">
+                                <div class="flex-row">
+                                    <p>Origami</p>
+                                    <p>Fellow</p>
+                                </div>
+                            </div></li>
+                            <li class="glide__slide"><div class="carousel-item">
+                                <div class="flex-row">
+                                <p>Ceramic</p>
+                                <p>Dripper</p>
+                            </div>
+                                <img src="src/images/dripper-v60.png" alt="">
+                                <div class="flex-row">
+                                    <p>Ceramic</p>
+                                    <p>Dripper</p>
+                                </div>
+                            </div></li>
+                        </ul>
+                    </div>
+                </section>
+            </div>
+            <div class="bottom-white-space"></div>
+        </div>
+    </section>
     <form id="taskform">
         <div class="form-row">
             <label for="taskName">Name</label>
@@ -167,6 +227,7 @@
     <h2>Tasks</h2>
     <ul id="tasklist"></ul>
     <script src="script.js"></script>
+    <script type="module" src="glide-carousel.js"></script>
 </body>
 
 </html>
