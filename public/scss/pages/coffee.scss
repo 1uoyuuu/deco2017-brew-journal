@@ -12,20 +12,24 @@
     }
 }
 #coffee-list {
-    overflow: scroll;
+    height: 100%;
     h2 {
         border-bottom: 1px solid white;
         padding: 1% 2%;
     }
 
     ul {
+        overflow: scroll;
+        height: calc(2/3 * 100vh); //the content takes up 2/3 of the grid height
         // reset the list style
         list-style: none;
         padding: 0;
+        margin: 0;
         .coffee-item {
             padding: 2%;
-            height: 150px;
-            border: 1px solid white;
+            height: fit-content;
+            border-bottom: 1px solid white;
+            
 
             display: flex;
             flex-direction: row;
@@ -35,8 +39,9 @@
                 flex: 1;
                 display: flex;
                 flex-direction: column;
+                justify-content: center;
                 h3 {
-                    margin-bottom: 4px;
+                    padding: 2px 0;
                 }
                 span:not(:first-child) {
                     margin-left: 0.5rem;
