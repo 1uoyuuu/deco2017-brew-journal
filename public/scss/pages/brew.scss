@@ -1,0 +1,53 @@
+// basic layout setup for brew section
+
+#brew {
+    min-height: 100vh;
+    margin-top: 10vh;
+    
+    .heading {
+        padding: 0 2%;
+        border-bottom: 1px solid white;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+    }
+    .col-grid {
+        display: grid;
+        grid-template-columns: repeat(12,1fr);
+        gap: 16px;
+        padding: 0 2%;
+    }
+}
+
+//styling the brew list heading items
+.list-th{
+    border-bottom: 1px solid white;
+    
+    //styling individual item link
+    //add a uparrow at the start of each item
+    a {
+        //each link will span 2 grid column
+        grid-column: span 2;
+        text-decoration: none;
+        font-size: 1.5rem;
+    }
+}
+
+
+//styling individual brew item
+.brew-basic-info-wrapper {
+    p {
+        grid-column: span 2;
+        font-size: 1.5rem;
+    }
+}
+
+.brew-detail-info-wrapper{
+    padding: 0 2%;
+    display: flex;
+    justify-content: space-between;
+    
+    .flex-item{
+        width: 200px;
+    }
+}

@@ -1,0 +1,24 @@
+//remove the unwanted styling came with the accordion library
+.accordion-container {
+
+    article.ac {
+        margin: 0;
+        background: none;
+        border: none;
+        border-bottom: 1px solid white;
+
+
+        .ac-header {
+            button {
+                padding: 16px 0;
+                font-size: 1.5rem;
+                font-family: suisse_intllight, Helvetica, sans-serif;
+                color: white;
+            }
+            button::after {}
+        }
+        .ac-panel {
+            margin: 0;
+        }
+    }
+}

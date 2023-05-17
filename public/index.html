@@ -13,11 +13,11 @@
 <body>
     <header>
         <nav class="nav" id="top-nav">
-            <a href="#home-section"><img src="/public/src/images/logo.png" alt="logo of brew journal" height="35px"></a>
-            <a href="#overview-section">Overview</a>
-            <a href="#coffee-section">Coffee</a>
-            <a href="#gadget-section">Gadget</a>
-            <a href="#brew-section">Brew</a>
+            <a href="#landing-page"><img src="/public/src/images/logo.png" alt="logo of brew journal" height="35px"></a>
+            <a href="#overview">Overview</a>
+            <a href="#coffee">Coffee</a>
+            <a href="#gadget">Gadget</a>
+            <a href="#brew">Brew</a>
             <a href="javascript:void(0);" id="menu-toggle" onclick="togglemenu()">
                 <div class="menu-toggle__bar1"></div>
                 <div class="menu-toggle__bar2"></div>
@@ -39,7 +39,7 @@
             <div class="content">
                 <section>
                     <h2>Coffee Flavour Wheel.</h2>
-                    <figure><img src="src/images/coffee-wheel.png" width="400px"alt=""></figure>
+                    <figure><img src="src/images/coffee-wheel.png" width="400px" alt=""></figure>
                 </section>
                 <section>
                     <h2>Statistics.</h2>
@@ -165,28 +165,32 @@
                                     </div>
                                 </div>
                             </li>
-                            <li class="glide__slide"><div class="carousel-item">
-                                <div class="flex-row">
-                                    <p>Ceramic</p>
-                                    <p>Dripper</p>
+                            <li class="glide__slide">
+                                <div class="carousel-item">
+                                    <div class="flex-row">
+                                        <p>Ceramic</p>
+                                        <p>Dripper</p>
+                                    </div>
+                                    <img src="src/images/grinder-c40.png" alt="">
+                                    <div class="flex-row">
+                                        <p>Origami</p>
+                                        <p>Fellow</p>
+                                    </div>
                                 </div>
-                                <img src="src/images/grinder-c40.png" alt="">
-                                <div class="flex-row">
-                                    <p>Origami</p>
-                                    <p>Fellow</p>
+                            </li>
+                            <li class="glide__slide">
+                                <div class="carousel-item">
+                                    <div class="flex-row">
+                                        <p>Ceramic</p>
+                                        <p>Dripper</p>
+                                    </div>
+                                    <img src="src/images/dripper-v60.png" alt="">
+                                    <div class="flex-row">
+                                        <p>Ceramic</p>
+                                        <p>Dripper</p>
+                                    </div>
                                 </div>
-                            </div></li>
-                            <li class="glide__slide"><div class="carousel-item">
-                                <div class="flex-row">
-                                <p>Ceramic</p>
-                                <p>Dripper</p>
-                            </div>
-                                <img src="src/images/dripper-v60.png" alt="">
-                                <div class="flex-row">
-                                    <p>Ceramic</p>
-                                    <p>Dripper</p>
-                                </div>
-                            </div></li>
+                            </li>
                         </ul>
                     </div>
                 </section>
@@ -194,7 +198,83 @@
             <div class="bottom-white-space"></div>
         </div>
     </section>
-    <form id="taskform">
+    <section id="brew">
+        <div class="heading">
+            <h1>Brew.</h1>
+            <button>Add New</button>
+        </div>
+        <div class="content">
+            <div class="list-th  col-grid">
+                <a href="#brew-list">Date |</a>
+                <a href="#brew-list">Coffee</a>
+                <a href="#brew-list">Roaster</a>
+                <a href="#brew-list">Process</a>
+                <a href="#brew-list">Origin</a>
+                <a href="#brew-list">Rating</a>
+            </div>
+            <div class="accordion-container">
+                <article class="ac brew-item">
+                    <h2 class="ac-header">
+                        <button type="button" class="ac-trigger">
+                            <div class="brew-basic-info-wrapper col-grid">
+                                <p>25/04/2023</p>
+                                <p>Moon Geisha</p>
+                                <p>Jibbithelittles</p>
+                                <p>Natural</p>
+                                <p>Colombia</p>
+                                <p>5.0</p>
+                            </div>
+                        </button>
+                    </h2>
+                    <div class="ac-panel">
+                        <div class="brew-detail-info-wrapper">
+                            <figure class="flex-item">
+                                <img src="src/images/hero-image.png" alt="">
+                            </figure>
+                            <div class="flex-item">
+                                <h3>Preparation.</h3>
+                            </div>
+                            <div class="flex-item">
+                                <h3>Brewing.</h3>
+                            </div>
+                            <div class="flex-item">
+                                <h3>Tasting.</h3>
+                            </div>
+                            <button class="flex-item">Delete</button>
+                        </div>
+                    </div>
+                </article>
+
+                <article class="ac">
+                    <h2 class="ac-header">
+                        <button type="button" class="ac-trigger">
+                            <div class="brew-basic-info-wrapper col-grid">
+                                <p>25/04/2023</p>
+                                <p>Moon Geisha</p>
+                                <p>Jibbithelittles</p>
+                                <p>Natural</p>
+                                <p>Colombia</p>
+                                <p>5.0</p>
+                            </div>
+                        </button>
+                    </h2>
+                    <div class="ac-panel">
+                        <p class="ac-text">Lorem ipsum dolor sit amet, consectetur adipiscing elit.</p>
+                    </div>
+                </article>
+
+                <article class="ac">
+                    <h2 class="ac-header">
+                        <button type="button" class="ac-trigger">Lorem ipsum dolor sit amet.</button>
+                    </h2>
+                    <div class="ac-panel">
+                        <p class="ac-text">Lorem ipsum dolor sit amet, consectetur adipiscing elit.</p>
+                    </div>
+                </article>
+            </div>
+        </div>
+    </section>
+    <!-- <form id="taskform">
         <div class="form-row">
             <label for="taskName">Name</label>
             <input type="text" name="taskName" id="taskName" required="true">
@@ -225,9 +305,10 @@
         </div>
     </form>
     <h2>Tasks</h2>
-    <ul id="tasklist"></ul>
+    <ul id="tasklist"></ul> -->
     <script src="script.js"></script>
     <script type="module" src="glide-carousel.js"></script>
+    <script type="module" src="accordion.js"></script>
 </body>
 
 </html>

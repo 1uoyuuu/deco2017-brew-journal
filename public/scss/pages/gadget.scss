@@ -3,15 +3,7 @@
 
 // Optional Theme Stylesheet
 @import "node_modules/@glidejs/glide/src/assets/sass/glide.theme";
-// .glide {
-//     display: flex;
-//     .glide__track {
-//         flex: 1;
-//         .glide__slides{
-//             height: 100%;
-//         }
-//     }
-// }
+
 #gadget .content {
     // this is to make sure that the glider takes up the whole content space
     flex-direction: column;
