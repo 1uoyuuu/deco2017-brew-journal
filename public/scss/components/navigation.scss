@@ -1,14 +1,33 @@
-#top-nav {
+nav#top-nav {
     overflow: hidden;
     display: flex;
     align-items: center;
     height: 75px;
     border: 1px solid white;
-    
+    border-left: none;
+    border-right: none;
+    background-color: #1D1D1B;
+    z-index: 999;
+    position: sticky;
+    top: 0;
+    /* default styling */
+    transition: top 500ms ease-in-out;
+
+    &.scroll-up,
+    &:focus-within {
+        top: 0;
+    }
+
+    &.scroll-down {
+        top: -100%;
+    }
 }
+
+
 #top-nav a:first-child {
     flex-grow: 1;
 }
+
 #top-nav a {
     margin: 0 2%;
     padding: 2% 0;
