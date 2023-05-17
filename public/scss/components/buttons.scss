@@ -1,0 +1,26 @@
+button {
+    background: none;
+    border: 1px solid white;
+    padding: 0.2rem 1rem;
+    font-size: 1.5rem;
+    position: relative;
+    cursor: pointer;
+}
+
+.fill::before {
+    content: "";
+    position: absolute;
+    background: white;
+    bottom: 0;
+    left: 100%;
+    right: 0;
+    top: 0;
+    z-index: -1;
+    -webkit-transition: left 0.1s ease-in;
+}
+.fill:hover {
+    color: #1D1D1B;
+}
+.fill:hover::before {
+    left: 0;
+}

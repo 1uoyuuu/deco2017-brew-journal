@@ -15,7 +15,10 @@
                 font-family: suisse_intllight, Helvetica, sans-serif;
                 color: white;
             }
-            button::after {}
+            button::after {
+                content: "\f178";
+                font-family: FontAwesome;
+            }
         }
         .ac-panel {
             margin: 0;
