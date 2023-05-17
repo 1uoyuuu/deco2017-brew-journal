@@ -1,0 +1,22 @@
+#landing-page{
+    height:  calc(100vh - 75px);
+    width: 100vw;
+    display: flex;
+    h1 {
+        margin: auto 0;
+        line-height: 1;
+        padding: 2%;
+        z-index: 2;
+    }
+    figure {
+        position: absolute;
+        bottom: 45%;
+        right: 25%;
+        transform: translate(50%,50%);
+
+        img {
+            width: 400px;
+            height: 400px;
+        }
+    }
+}

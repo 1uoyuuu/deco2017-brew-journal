@@ -2,38 +2,9 @@
 @import "base/reset.scss", "base/typography.scss", "base/color.scss";
 @import "components/navigation.scss", "components/buttons.scss", "components/chips.scss", "components/accordion.scss";
 @import "layout/grid.scss";
-@import "pages/overview.scss", "pages/coffee.scss","pages/gadget.scss", "pages/brew.scss";
+@import "pages/overview.scss", "pages/coffee.scss","pages/gadget.scss", "pages/brew.scss", "pages/hero-section.scss";
 
 
-
-html {
-    height: 100%;
-    width: 100%;
-}
-
-header > h1 {
-    text-align: center;
-}
-
-form {
-    max-width: 500px;
-    margin: 0 auto;
-    border: 2px solid grey;
-    padding: 2em 1em;
-}
-
-.form-row {
-    display: flex;
-    justify-content: flex-end;
-    padding: 0.5em;
-}
-
-.form-row > label {
-    width: 100px;
-}
-
-.form-row > input,
-.form-row > select {
-    padding: 0.5em;
-    flex-grow: 1;
+body {
+    overflow-x: hidden; //forbid horizontal scrolling
 }
