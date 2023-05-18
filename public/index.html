@@ -82,7 +82,7 @@
             <div class="top-white-space"></div>
             <div class="heading">
                 <h1>Coffee.</h1>
-                <button class="fill">Add New</button>
+                <button id="add-new-coffee" data-a11y-dialog-show="add-coffee-dialog" class="fill">Add New</button>
             </div>
             <div class="content">
                 <section id="coffee-info">
@@ -194,6 +194,26 @@
                 </section>
             </div>
             <div class="bottom-white-space"></div>
+        </div>
+        <div id="add-coffee-dialog" class="dialog-container" aria-hidden="true" role="alertdialog">
+            <!-- The dialog overlay -->
+            <div class="dialog-overlay"></div>
+            <!-- The actual dialog -->
+            <div class="dialog-content" role="dialog">
+                <div class="form-container">
+                    <div class="form-heading">
+                        <h1>Add New Coffee.</h1>
+                        <button type="button" data-a11y-dialog-hide="add-coffee-dialog" aria-label="Close dialog">Close</button>
+                    </div>
+                    <form action="">
+                        <div class="form-row">
+                            <h4>Today, I am adding a new</h4>
+                            <div></div>
+                        </div>
+                    </form>
+                    <div class="progress-container"></div>
+                </div>
+            </div>
         </div>
     </section>
     <section id="gadget">
@@ -330,41 +350,10 @@
             </div>
         </div>
     </section>
-    <!-- <form id="taskform">
-        <div class="form-row">
-            <label for="taskName">Name</label>
-            <input type="text" name="taskName" id="taskName" required="true">
-        </div>
-        <div class="form-row">
-            <label for="taskType">Type</label>
-            <select id="taskType" name="taskType" required="true">
-                <option value="">Select one</option>
-                <option value="Concept Ideation">Concept Ideation</option>
-                <option value="Wireframing">Wireframing</option>
-                <option value="Application Coding">Application Coding</option>
-            </select>
-        </div>
-        <div class="form-row">
-            <label for="taskRate">Rate</label>
-            <input type="number" name="taskRate" id="taskRate" required="true">
-        </div>
-        <div class="form-row">
-            <label for="taskTime">Time</label>
-            <input type="number" name="taskTime" id="taskTime" required="true">
-        </div>
-        <div class="form-row">
-            <label for="taskClient">Client</label>
-            <input type="text" name="taskClient" id="taskClient" required="true">
-        </div>
-        <div class="form-row">
-            <input type="submit">
-        </div>
-    </form>
-    <h2>Tasks</h2>
-    <ul id="tasklist"></ul> -->
     <!-- <script src="script.js"></script> -->
     <script type="module" src="glide-carousel.js"></script>
     <script type="module" src="accordion.js"></script>
+    <script type="module" src="overlay-modal.js"></script>
     <script src="navigation.js"></script>
 </body>
 
