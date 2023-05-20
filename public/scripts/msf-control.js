@@ -1,6 +1,8 @@
-//selefct dom element of all .form-page
+//select dom element of all .form-page
 const msfPages = document.getElementsByClassName("form-page");
 
+//select progress buttons to change their flex behaviour
+const progressBtns = document.getElementsByClassName("progress-button");
 //arrow function to display or hide the page
 const showPage = (element) => {
     element.classList.add("msf-show");

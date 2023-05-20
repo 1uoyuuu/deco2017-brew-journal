@@ -1,13 +1,37 @@
 button {
-    background: none;
-    border: 1px solid white;
     padding: 0.2rem 1rem;
     font-size: 1.5rem;
     position: relative;
     cursor: pointer;
     height: 3rem;
+    max-width: 10rem;
 }
 
+input[type="submit"], input[type="button"]{
+    padding: 0.2rem 1rem;
+    font-size: 1.5rem;
+    position: relative;
+    cursor: pointer;
+    height: 3rem;
+    max-width: 10rem;
+}
+
+//set up the color for different type of buttons 
+.black-fill {
+    color: white !important;
+    background: $black;
+}
+
+.white-fill {
+    color: $black !important;
+    background: white;
+}
+.black-border {
+    border: 1px solid $black;
+}
+.white-border {
+    border: 1px solid white;
+}
 .fill::before {
     content: "";
     position: absolute;
@@ -24,11 +48,4 @@ button {
 }
 .fill:hover::before {
     left: 0;
-}
-
-
-.black-btn {
-    border: 1px solid $black;
-    background-color: $black;
-    color: white !important;
 }

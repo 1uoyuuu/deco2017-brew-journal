@@ -1,54 +1,87 @@
 .form-container {
-
-    //basic style setup for the form container
     * {
         color: $black;
     }
+    //basic style setup for the form container
+    height: 100%;
 
-    margin: 2%;
-    border: 1px solid orange;
-
+    display: flex;
+    flex-direction: column;
+    justify-content: space-around;
     .form-heading {
         display: flex;
         justify-content: space-between;
+        color: $black;
+
+        h1 {
+            font-size: 2rem;
+        }
+    }
+    form {
+        flex: 1;
+        justify-self: flex-end;
     }
 }
 
 //basic style for each form page
 .form-page {
-    .form-row {
-        border: 1px solid yellowgreen;
+    height: 100%; //make sure each form-page take up the whole height of the parent container
+    // by default when a form-page is shown, it is set to be flexbox
+    flex-direction: column;
+    justify-content: space-between;
 
-        .form-item {
-            display: inline-block;
-            padding: 20px;
-            border: 1px solid pink
+    .form-input-container {
+        .form-row {
+            display: flex;
+            align-items: center;
+            .form-item {
+                color: $black;
+                display: inline-block;
+                padding: 5px;
+                border: 1px solid pink;
+                background-color: aquamarine;
+                height: 5rem;
+
+                label {
+                    font-size: 1.5rem;
+                }
+            }
         }
     }
 
     .progress-container {
+        padding: 2%;
         display: flex;
         justify-content: space-between;
 
         .progress-text {
-            * {
-                border: 1px solid pink;
-            }
-
             h2 {
                 color: $accent;
             }
 
             p {
-                font-size: 6rem;
+                margin-top: -1.5rem;
+                font-size: 7rem;
+                font-weight: 300;
             }
         }
+
         .progress-button {
+            padding: 3rem;
+            //take up all the remaining area of the progress-container
             flex: 1;
-            background-color: lightblue;
+            //move the button at the center of the progress-container
+            align-self: flex-end;
+
             display: flex;
             justify-content: flex-end;
-            align-items: flex-end;
+            //evenly distribute space for each child
+            * {
+                flex: 1;
+            }
+            input:not(:first-child) {
+                margin-left: 50vw;
+            }
         }
 
     }
@@ -60,6 +93,13 @@
 .msf-hide {
     display: none;
 }
+
 .msf-show {
-    display: block;
+    display: flex;
+    //flexbox helps to better manage the layout flow
+}
+
+//styling different input field
+.text-field {
+    background-color: aqua;
 }
