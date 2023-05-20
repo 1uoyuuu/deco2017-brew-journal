@@ -1,5 +1,11 @@
+
+//setting up color palette for the project
+$black: #1D1D1B;
+$accent: #FF3F61;
+
+
 body {
-    background-color: #1D1D1B;
+    background-color: $black;
 }
 
 * {

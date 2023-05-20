@@ -1,13 +1,65 @@
 .form-container {
+
+    //basic style setup for the form container
     * {
-        color: #1D1D1B;
+        color: $black;
     }
+
     margin: 2%;
-    border: 1px solid pink;
+    border: 1px solid orange;
+
+    .form-heading {
+        display: flex;
+        justify-content: space-between;
+    }
 }
 
-.form-item {
-    display: inline-block;
-    padding: 20px;
-    border: 1px solid pink
+//basic style for each form page
+.form-page {
+    .form-row {
+        border: 1px solid yellowgreen;
+
+        .form-item {
+            display: inline-block;
+            padding: 20px;
+            border: 1px solid pink
+        }
+    }
+
+    .progress-container {
+        display: flex;
+        justify-content: space-between;
+
+        .progress-text {
+            * {
+                border: 1px solid pink;
+            }
+
+            h2 {
+                color: $accent;
+            }
+
+            p {
+                font-size: 6rem;
+            }
+        }
+        .progress-button {
+            flex: 1;
+            background-color: lightblue;
+            display: flex;
+            justify-content: flex-end;
+            align-items: flex-end;
+        }
+
+    }
+
+
+}
+
+//control the classname to show and hide different pages
+.msf-hide {
+    display: none;
+}
+.msf-show {
+    display: block;
 }
