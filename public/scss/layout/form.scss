@@ -12,6 +12,7 @@
         display: flex;
         justify-content: space-between;
         color: $black;
+        padding: 2%;
 
         h1 {
             font-size: 2rem;
@@ -29,20 +30,24 @@
     // by default when a form-page is shown, it is set to be flexbox
     flex-direction: column;
     justify-content: space-between;
-
+    border: 1px solid olive;
     .form-input-container {
         .form-row {
             display: flex;
             align-items: center;
+            &:not(:last-child) {
+                margin-bottom: 2rem;
+            }
+            // border: 1px solid aquamarine;
             .form-item {
                 color: $black;
-                display: inline-block;
-                padding: 5px;
-                border: 1px solid pink;
-                background-color: aquamarine;
-                height: 5rem;
+                display: inline-flex;
+                padding: 4px;
+                gap: 1rem;
+                // border: 1px solid pink;
+                height: 3rem;
 
-                label {
+                label, span {
                     font-size: 1.5rem;
                 }
             }
@@ -50,7 +55,6 @@
     }
 
     .progress-container {
-        padding: 2%;
         display: flex;
         justify-content: space-between;
 
@@ -101,5 +105,14 @@
 
 //styling different input field
 .text-field {
-    background-color: aqua;
+    background-color: transparent;
+    border: none;
+    border-bottom: 1px solid $black;
+    padding: 4px 0;
+
+    //make the placeholder text all uppercase without affecting user input
+    text-transform: none;
+    &::placeholder {
+        text-transform: uppercase;
+    }
 }
