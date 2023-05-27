@@ -211,27 +211,30 @@
                             <div class="form-input-container">
                                 <div class="form-row">
                                 <div class="form-item">
-                                    <label for="coffeeType">Today, I am adding a new</label>
-                                    <label>
+                                    <span>Today, I am adding a new</span>
+                                    <div class="radio-wrapper">
+                                        <label class="radio-container">
                                         <input type="radio" name="coffeeType" value="singleOrigin">
-                                        Single Origin
+                                        <span class="radio-text">Single Origin</span>
                                     </label>
-                                    <label>
+                                    <label class="radio-container">
                                         <input type="radio" name="coffeeType" value="blend">
-                                        Blend
+                                        <span class="radio-text">Blend</span>
                                     </label>
+                                    </div>
+                                    
                                 </div>
                                 <div class="form-item">
                                     <label for="coffeeName">coffee called</label>
                                     <input type="text" id="coffeeName" name="coffeeName"
-                                        placeholder="type the coffee name" size="30" class="text-field">
+                                        placeholder="coffee name" size="24" class="text-field">
                                 </div>
                             </div>
                             <div class="form-row">
                                 <div class="form-item">
                                     <label for="roasterName">It was roasted by</label>
                                     <input type="text" id="roasterName" name="roasterName"
-                                        placeholder="type the roaster name" size="30" class="text-field">
+                                        placeholder="roaster name" size="24" class="text-field">
                                 </div>
                                 <div class="form-item">
                                     <label for="roasterCountry">from</label>
@@ -869,12 +872,12 @@
                                     <div class="form-item">
                                         <label for="originRegion">Region</label>
                                         <input type="text" id="originRegion" name="originRegion"
-                                            placeholder="Type the region name">
+                                            placeholder="region name" size="24" class="text-field">
                                     </div>
                                     <div class="form-item">
                                         <label for="originFarm">Farm</label>
                                         <input type="text" id="originFarm" name="originFarm"
-                                            placeholder="Type the farm name">
+                                            placeholder="farm name" size="24" class="text-field">
                                     </div>
                                 </div>
                                 <div class="form-row">
@@ -938,7 +941,7 @@
                                         <p>Ceramic</p>
                                         <p>Dripper</p>
                                     </div>
-                                    <img src="src/images/dripper-origami.png" alt="">
+                                    <img class="color-thief-images" src="src/images/dripper-origami.png" alt="a pink ceramic origami dripper">
                                     <div class="flex-row">
                                         <p>Ceramic</p>
                                         <p>Dripper</p>
@@ -951,7 +954,7 @@
                                         <p>Ceramic</p>
                                         <p>Dripper</p>
                                     </div>
-                                    <img src="src/images/grinder-c40.png" alt="">
+                                    <img class="color-thief-images" src="src/images/grinder-c40.png" alt="a hand-hold coffee grinder">
                                     <div class="flex-row">
                                         <p>Origami</p>
                                         <p>Fellow</p>
@@ -964,7 +967,7 @@
                                         <p>Ceramic</p>
                                         <p>Dripper</p>
                                     </div>
-                                    <img src="src/images/dripper-v60.png" alt="">
+                                    <img class="color-thief-images" src="src/images/dripper-v60.png" alt="a silver metal v60 dripper">
                                     <div class="flex-row">
                                         <p>Ceramic</p>
                                         <p>Dripper</p>
@@ -1058,6 +1061,7 @@
     <script type="module" src="glide-carousel.js"></script>
     <script type="module" src="accordion.js"></script>
     <script type="module" src="overlay-modal.js"></script>
+    <script type="module" src="scripts/colorthief.js"></script>
     <script src="navigation.js"></script>
     <script src="scripts/msf-control.js"></script>
 </body>
