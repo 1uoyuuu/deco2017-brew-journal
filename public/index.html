@@ -134,62 +134,6 @@
                                 </p>
                             </div>
                         </li>
-                        <li class="coffee-item">
-                            <div class="coffee-item-wrap">
-                                <h3 class="coffee-item-name">Moon Geisha</h3>
-                                <p><span class="coffee-item-date">19/04/2023</span>
-                                    <span class="coffee-item-roaster">Jibbithelittles</span>
-                                </p>
-                            </div>
-                            <div class="coffee-item-wrap">
-                                <h3 class="coffee-item-origin">Colombia</h3>
-                                <p><span class="chips">Light</span>
-                                    <span class="chips">Natural</span>
-                                </p>
-                            </div>
-                        </li>
-                        <li class="coffee-item">
-                            <div class="coffee-item-wrap">
-                                <h3 class="coffee-item-name">Moon Geisha</h3>
-                                <p><span class="coffee-item-date">19/04/2023</span>
-                                    <span class="coffee-item-roaster">Jibbithelittles</span>
-                                </p>
-                            </div>
-                            <div class="coffee-item-wrap">
-                                <h3 class="coffee-item-origin">Colombia</h3>
-                                <p><span class="chips">Light</span>
-                                    <span class="chips">Natural</span>
-                                </p>
-                            </div>
-                        </li>
-                        <li class="coffee-item">
-                            <div class="coffee-item-wrap">
-                                <h3 class="coffee-item-name">Moon Geisha</h3>
-                                <p><span class="coffee-item-date">19/04/2023</span>
-                                    <span class="coffee-item-roaster">Jibbithelittles</span>
-                                </p>
-                            </div>
-                            <div class="coffee-item-wrap">
-                                <h3 class="coffee-item-origin">Colombia</h3>
-                                <p><span class="chips">Light</span>
-                                    <span class="chips">Natural</span>
-                                </p>
-                            </div>
-                        </li>
-                        <li class="coffee-item">
-                            <div class="coffee-item-wrap">
-                                <h3 class="coffee-item-name">Moon Geisha</h3>
-                                <p><span class="coffee-item-date">19/04/2023</span>
-                                    <span class="coffee-item-roaster">Jibbithelittles</span>
-                                </p>
-                            </div>
-                            <div class="coffee-item-wrap">
-                                <h3 class="coffee-item-origin">Colombia</h3>
-                                <p><span class="chips">Light</span>
-                                    <span class="chips">Natural</span>
-                                </p>
-                            </div>
-                        </li>
                     </ul>
                 </section>
             </div>
@@ -203,10 +147,9 @@
                 <div class="form-container">
                     <div class="form-heading">
                         <h1>Hey, just bought a new bag of coffee? Let's add it to your list.</h1>
-                        <button class="white-fill black-border" type="button" data-a11y-dialog-hide="add-coffee-dialog"
-                            aria-label="Close dialog">Close</button>
+                        <input type="button" class="white-fill black-border" name="close" value="Close" data-a11y-dialog-hide="add-coffee-dialog" aria-label="Close dialog">
                     </div>
-                    <form action="#">
+                    <form action="#" id="coffee-form">
                         <div class="form-page msf-hide">
                             <div class="form-input-container">
                                 <div class="form-row">
@@ -914,7 +857,7 @@
                                 <div class="progress-button">
                                     <input type="button" class="white-fill black-border" name="back" value="Prev">
                                     <input type="button" class="black-fill black-border" name="next" value="Next">
-                                    <input type="submit" class="black-fill black-border" name="submit" value="Submit">
+                                    <input type="submit" class="black-fill black-border" name="submit" value="Submit" data-a11y-dialog-hide="add-coffee-dialog">
                                 </div>
                             </div>
                         </div>
@@ -928,7 +871,7 @@
             <div class="top-white-space"></div>
             <div class="heading">
                 <h1>Gadget.</h1>
-                <button class="white-border black-fill">Add New</button>
+                <button id="add-new-gadget" class="white-border black-fill" data-a11y-dialog-show="add-gadget-dialog">Add New</button>
             </div>
             <div class="content">
                 <!-- a glide carousel structure -->
@@ -980,11 +923,24 @@
             </div>
             <div class="bottom-white-space"></div>
         </div>
+        <div id="add-gadget-dialog" class="dialog-container" aria-hidden="true" role="alertdialog">
+            <!-- The dialog overlay -->
+            <div class="dialog-overlay"></div>
+            <!-- The actual dialog -->
+            <div class="dialog-content" role="dialog">
+                <div class="form-container">
+                    <div class="form-heading">
+                        <h1>Hey, just bought a new gadet.</h1>
+                        <input type="button" class="white-fill black-border" name="close" value="Close" data-a11y-dialog-hide="add-gadget-dialog" aria-label="Close dialog">
+                    </div>
+                </div>
+            </div>
+        </div>
     </section>
     <section id="brew">
         <div class="heading">
             <h1>Brew.</h1>
-            <button class="white-border black-fill">Add New</button>
+            <button id="add-new-brew" data-a11y-dialog-show="add-brew-dialog" class="white-border black-fill">Add New</button>
         </div>
         <div class="content">
             <div class="list-th  col-grid">
@@ -1056,8 +1012,21 @@
                 </article>
             </div>
         </div>
+        <div id="add-brew-dialog" class="dialog-container" aria-hidden="true" role="alertdialog">
+            <!-- The dialog overlay -->
+            <div class="dialog-overlay"></div>
+            <!-- The actual dialog -->
+            <div class="dialog-content" role="dialog">
+                <div class="form-container">
+                    <div class="form-heading">
+                        <h1>Wow, new brew!</h1>
+                        <input type="button" class="white-fill black-border" name="close" value="Close" data-a11y-dialog-hide="add-brew-dialog" aria-label="Close dialog">
+                    </div>
+                </div>
+            </div>
+        </div>
     </section>
-    <!-- <script src="script.js"></script> -->
+    <script src="script.js"></script>
     <script type="module" src="glide-carousel.js"></script>
     <script type="module" src="accordion.js"></script>
     <script type="module" src="overlay-modal.js"></script>

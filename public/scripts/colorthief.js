@@ -8,7 +8,7 @@ const rgbToHex = ([r,g,b]) => '#' + [r, g, b].map(x => {
 }).join('');
 
 const images = document.querySelectorAll(".color-thief-images");
-console.log(images);
+
 images.forEach(img => {
     if (img.complete) {
         let col = colorThief.getColor(img,50);
