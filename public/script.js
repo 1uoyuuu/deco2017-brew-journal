@@ -1,7 +1,6 @@
 // the first form is adding coffee
 // here I will set up variables for HTML elements with DOM selection
 const coffeeForm = document.getElementById("coffee-form");
-const coffeeList = document.querySelector("#coffee-list > ul");
 
 
 // define the class Coffee to better organise the data (I'm more used to work with OOP)
@@ -41,10 +40,13 @@ class Origin {
     }
 }
 
-// setup localstorage to store the coffee array
+// setup localstorage to store the all the informations
+// if there is no such element, create a new array
+// there will be three parts of information stored in the local storage
+// they are coffees, gadgets, brews
 let coffeeArray = localStorage.getItem('coffees') ? JSON.parse(localStorage.getItem('coffees')) : [];
-
-// add event listener to the submit button
+let gadgetArray = localStorage.getItem('gadgets') ? JSON.parse(localStorage.getItem('gadgets')) : [];
+// adding a new coffee to the local storage after submiting the form
 coffeeForm.addEventListener("submit", event => {
     //prevent the defualt action of submitting the form
     event.preventDefault();
@@ -75,13 +77,31 @@ coffeeForm.addEventListener("submit", event => {
         coffeeForm.elements.coffeeFlavour.value,
 
     );
-    addNewCoffee(coffee);
+
+    //push the new added coffee into localstorage
+    coffeeArray.push(coffee);
+    //update the value of key "coffees" in the localstorage
+    localStorage.setItem('coffees', JSON.stringify(coffeeArray));
 
     //reset the form
     coffeeForm.reset();
+
+    //update the coffeeList display on the webpage
+    updateCoffeeList();
 });
 
-function addNewCoffee(coffee){
+
+//----------------------------------------- UPDATE LOCAL STORAGE VALUES ----------------------------------------
+//update all the information stored in the local storage
+//it includes coffee list, gadget list, brew list
+updateCoffeeList();
+
+
+
+
+//----------------------------------------- HELPER FUNCTION ----------------------------------------
+//add html content to the coffee, this will create a li element
+function createCoffeeContent(coffee){
     const li = document.createElement("li");
     li.classList.add("coffee-item");
     li.innerHTML = `
@@ -97,128 +117,26 @@ function addNewCoffee(coffee){
             <span class="chips">${coffee.process}</span>
         </p>
     </div>`;
-    coffeeList.appendChild(li);
+    return li;
 }
 
+function updateCoffeeList(){
+    const coffeeList = document.querySelector("#coffee-list > ul");
+    //reset the content in the coffeeList
+    //this will prevent the repetition of writing content into html
+    //as we go through all the index of the localstorage obejct everytime we call it
+    // coffeeList.innerHTML = "";
 
+    // Retrieve the favourite countries from localStorage
+    let coffees = JSON.parse(localStorage.getItem('coffees'));
 
-// // Setting up variables for our HTML elements using DOM selection
-// const form = document.getElementById("taskform");
-// const tasklist = document.getElementById("tasklist");
-
-// form.addEventListener("submit", function (event) {
-//     event.preventDefault();
-
-//     console.log(form.elements.taskType.value)
-
-//     addTask(
-//         form.elements.taskName.value,
-//         form.elements.taskType.value,
-//         form.elements.taskRate.value,
-//         form.elements.taskTime.value,
-//         form.elements.taskClient.value,
-//     )
-//     console.log(taskList)
-// })
-
-// function displayTask(task) {
-//     let item = document.createElement("li");
-//     item.setAttribute("data-id", task.id);
-//     item.innerHTML = `<p><strong>${task.name}</strong><br>${task.type}</p>`;
-
-//     tasklist.appendChild(item);
-
-//     // Clear the value of the input once the task has been added to the page
-//     form.reset();
-
-//     // Setup delete button DOM elements
-//     let delButton = document.createElement("button");
-//     let delButtonText = document.createTextNode("Delete");
-//     delButton.appendChild(delButtonText);
-//     item.appendChild(delButton); // Adds a delete button to every task
-
-//     // Listen for when the delete button is clicked
-//     delButton.addEventListener("click", function (event) {
-
-//         taskList.forEach(function (taskArrayElement, taskArrayIndex) {
-//             if (taskArrayElement.id == item.getAttribute('data-id')) {
-//                 taskList.splice(taskArrayIndex, 1)
-//             }
-//         })
-
-//         // Make sure the deletion worked by logging out the whole array
-//         console.log(taskList)
-
-//         item.remove(); // Remove the task item from the page when button clicked
-//         // Because we used 'let' to define the item, this will always delete the right element
-
-//     })
-
-
-// }
-
-
-
-
-// Create an object called 'task'
-// Populate the properties based on the provided data model
-
-// Commented out now the object creation is included in the function
-
-// var task = {
-//   name: "Initial Sketches",
-//   type: "Concept Ideation",
-//   id: Date.now(),
-//   date: new Date().toISOString(),
-//   rate: 50,
-//   time: 5,
-//   client: "Google"
-// }
-
-// console.log(task);
-
-
-// // Create an array called 'taskList'
-// var taskList = [];
-
-// // Create a function called 'addTask'
-// // Give the function input parameters for: name, type, rate, time, client
-// // Paste your object definition from above in the function
-// // Replace the property values with the input paramaters
-// // Add the object to the taskList array
-
-// function addTask(name, type, rate, time, client) {
-
-//     // Creating the object with the usual property:value syntax
-//     // Create task object 
-//     // let task = {
-//     //   name: name,
-//     //   type: type,
-//     //   id: Date.now(),
-//     //   date: new Date().toISOString(),
-//     //   rate: rate,
-//     //   time: time,
-//     //   client: client
-//     // }
-
-//     // Creating the object, directly passing in the input parameters
-//     let task = {
-//         name,
-//         type,
-//         id: Date.now(),
-//         date: new Date().toISOString(),
-//         rate,
-//         time,
-//         client
-//     }
-
-//     taskList.push(task);
-//     displayTask(task);
-
-// }
-
-// // Call the function with test values for the input paramaters
-// addTask("Initial Sketches", "Concept Ideation", 50, 5, "Google");
-
-// // Log the array to the console.
-// console.log(taskList);
+    // iterate through all the coffee entries when it's not null
+    if(coffees !== null){
+        coffees.forEach(coffee => {
+            let item = createCoffeeContent(coffee);
+            //prepend the item as the first entry
+            coffeeList.prepend(item);
+        });
+    };
+    
+};
