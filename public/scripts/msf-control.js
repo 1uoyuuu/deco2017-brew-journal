@@ -27,7 +27,7 @@ const submitBtns = document.getElementsByName("submit");
 const closeBtns = document.getElementsByName("close");
 
 //remove the back button for the first page, and the next button for the last page
-backBtns[0].classList.add("msf-hide");
+backBtns[0].classList.add("msf-visually-hide");
 nextBtns[msfPages.length - 1].classList.add("msf-hide");
 
 

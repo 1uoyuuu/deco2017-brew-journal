@@ -3,9 +3,11 @@
 .dialog-container {
     z-index: 2;
     position: fixed;
+    top: 0;
     left: 0;
     bottom: 0;
     right: 0;
+    display: flex;
 }
 
 //make sure all the dialog with this attribute remain invisible
@@ -19,20 +21,35 @@
     left: 0;
     bottom: 0;
     right: 0;
-    background-color: rgba(0, 0, 0, 0.7);
-    animation: fade-in 200ms both;
+    background-color: $black;
+    animation: fade-in 0.2s both;
     /* 1 */
 }
 
 //basic layout setup for dialog-content
 .dialog-content {
+    border: 1px solid white;
     z-index: 2;
     position: relative;
-    background-color: white;
-    animation: fade-in 200ms 200ms both, slide-in 200ms 200ms ease-out;
-    height: calc(8/9 * 100vh);
-    width: 100vw;
-    padding: 2%;
+    background-color: $black;
+    animation: fade-in 200ms 200ms both, pop-up 200ms 200ms both;
+    flex: 1;
+    margin: 10%;
+    margin-bottom: 5%;
+
+    .modal-heading {
+        position: absolute;
+        top: -11vh;//to take up the remaining space
+        width: 100%;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        padding: 0 2%;
+        h1{
+            color: white;
+        }
+    
+    }
 }
 
 
@@ -54,9 +71,9 @@
     }
 }
 
-@keyframes slide-in {
+@keyframes pop-up {
     from {
-        transform: translateY(100%);
+        transform: scale(0);
     }
 }
 // accessibility concern for people who wish to turn off the animation

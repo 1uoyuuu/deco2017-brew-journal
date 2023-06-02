@@ -1,68 +1,52 @@
-.form-container {
-    * {
-        color: $black;
-    }
-
-    //basic style setup for the form container
+form {
     height: 100%;
 
-    display: flex;
-    flex-direction: column;
-    justify-content: space-around;
-
-    .form-heading {
-        display: flex;
-        justify-content: space-between;
-        color: $black;
-        padding: 2%;
-
-        h1 {
-            font-size: 2rem;
-        }
-    }
-
-    form {
-        flex: 1;
-        justify-self: flex-end;
+    * {
+        color: white;
     }
 }
 
-//basic style for each form page
+//----------------------------------  basic style for each form page ---------------------------------- 
 .form-page {
     height: 100%; //make sure each form-page take up the whole height of the parent container
     // by default when a form-page is shown, it is set to be flexbox
     flex-direction: column;
     justify-content: space-between;
-    border: 1px solid olive;
 
     .form-input-container {
+        display: flex;
+        flex-direction: column;
+        padding: 2% 0;
+
         .form-row {
+            margin-left: 10%;
             display: flex;
             align-items: center;
-
-            &:not(:last-child) {
-                margin-bottom: 2rem;
-            }
-
-            // border: 1px solid aquamarine;
+            justify-content: flex-start;
+            gap: 1rem;
             .form-item {
+                // border: 1px solid pink;
+                height: 5rem;
                 color: $black;
                 display: inline-flex;
-                padding: 4px;
-                gap: 1rem;
-                // border: 1px solid pink;
-                // height: 3rem;
+                position: relative;
+                align-items: center;
 
                 &>label {
                     font-size: 1.5rem;
+                    margin-right: 1rem;
                 }
+            }
 
-                &>span {
-                    //align the text to the vertical center
-                    margin: auto 0;
-                    font-size: 1.5rem;
-                    display: inline-block;
+            .form-text {
+                //align the text to the vertical center
+                margin: auto 0;
+                font-size: 1.5rem;
+                display: inline-block;
+                &:not(:first-child) {
+                    margin-left: 1rem;
                 }
+                
             }
         }
     }
@@ -70,15 +54,21 @@
     .progress-container {
         display: flex;
         justify-content: space-between;
+        padding: 0 4%;
 
         .progress-text {
+            display: flex;
+            flex-direction: column;
+            min-width: 300px;
             h2 {
                 color: $accent;
+                font-size: 1rem;
+                margin-bottom: -1rem;
             }
 
             p {
-                margin-top: -1.5rem;
-                font-size: 7rem;
+                
+                font-size: 6rem;
                 font-weight: 300;
             }
         }
@@ -91,15 +81,14 @@
             align-self: flex-end;
 
             display: flex;
-            justify-content: flex-end;
+            justify-content: space-between;
 
             //evenly distribute space for each child
             * {
                 flex: 1;
             }
-
-            input:not(:first-child) {
-                margin-left: 50vw;
+            & > *:last-child {
+                justify-content: flex-end;
             }
         }
 
@@ -118,8 +107,31 @@
     //flexbox helps to better manage the layout flow
 }
 
-//styling different input field
-.text-field {
+//hide the visibility only, it is still there to take up the space
+.msf-visually-hide {
+    visibility: hidden;
+}
+
+
+//----------------------------------  styling different input field ---------------------------------- 
+
+.is-required {
+
+    //add a asterisk at the end of all required input
+    //and put it at the top-right corner
+    &::after {
+        content: "*";
+        color: $accent;
+        font-size: 0.8rem;
+        position: absolute;
+        right: -2%;
+        top: 10%;
+
+    }
+}
+
+//styling the text input field
+input[type=text] {
     background-color: transparent;
     border: none;
     border-bottom: 1px solid $gray;
@@ -137,14 +149,45 @@
 
     //change the focus state
     &:focus {
-        border-bottom: 1px solid $black;
+        border-bottom: 1px solid $accent;
         transition: 200ms all ease-in-out;
     }
 }
 
+//styling the number input field
+input[type=number] {
+    width: 4rem;
+    margin: 4px 0;
+    border: 1px solid $gray;
+    padding: 4px 8px;
+    background-color: transparent;
+    &:focus {
+        border: 1px solid $accent;
+        transition: 200ms all ease-in-out;
+    }
+}
+
+input[type=date] {
+    margin: 4px 0;
+    background-color: transparent;
+    border: none;
+    border-bottom: 1px solid gray;
+    text-transform: uppercase;
+    color: white;
+    &:invalid::-webkit-datetime-edit {
+        color: $gray;
+    }
+    &:focus {
+        border-bottom: 1px solid $accent;
+        transition: 200ms all ease-in-out;
+    }
+    //credit to https://stackoverflow.com/questions/14946091/are-there-any-style-options-for-the-html5-date-picker
+    &::-webkit-calendar-picker-indicator {filter: invert(100%);} // turn the indicator button to white
+}
 //styling customised radio button, credit to https://moderncss.dev/pure-css-custom-styled-radio-buttons/
 .radio-wrapper {
     margin: 0 1rem;
+
     .radio-container {
         display: grid;
         grid-template-columns: 1em auto;
@@ -186,4 +229,122 @@
             }
         }
     }
+}
+
+//styling custom dropdown select
+/*the container must be positioned relative:*/
+.custom-select {
+    margin: 4px 0;
+    width: 20vw;
+    position: relative;
+    display: inline-block;
+
+    &>select {
+        display: none;
+        /*hide original SELECT element:*/
+    }
+
+    .select-selected {
+        background-color: $black;
+        border: 1px solid $gray;
+
+        &:hover {
+            border-color: $accent;
+        }
+    }
+
+    /*style the arrow inside the select element:*/
+    .select-selected:after {
+        position: absolute;
+        top: 35%;
+        right: 10px;
+        width: 0;
+        height: 0;
+
+        //draw an arrow using css: https://www.w3schools.com/howto/tryit.asp?filename=tryhow_css_arrows
+        content: "";
+        border: solid white;
+        border-width: 0 1px 1px 0;
+        padding: 3px;
+        transform: rotate(45deg);
+        -webkit-transform: rotate(45deg);
+        transition: all 100ms ease-in;
+    }
+
+    /*point the arrow upwards when the select box is open (active):*/
+    .select-selected.select-arrow-active:after {
+        transform: rotate(-135deg);
+        -webkit-transform: rotate(-135deg);
+        top: 45%;
+        transition: all 100ms ease-out;
+    }
+
+    /*set the styling and height for the list when the select box is open (active), the overflow-y property controls the scrolling:*/
+    .select-items {
+        border: 1px solid $gray;
+        border-top: none;
+        height: 20rem;
+        overflow-y: auto;
+        position: absolute;
+        background-color: $black;
+        top: 100%;
+        left: 0;
+        right: 0;
+        z-index: 99;
+
+        & div{
+            &:not(:last-child) {
+                border-bottom: 1px solid $gray;
+            }
+        }
+    }
+
+    /*style the items (options), including the selected item:*/
+    .select-items div,
+    .select-selected {
+        color: white;
+        padding: 4px 8px;
+        cursor: pointer;
+        user-select: none;
+    }
+
+    /*hide the items when the select box is closed:*/
+    .select-hide {
+        display: none;
+    }
+
+    .select-items div:hover,
+    .same-as-selected {
+        color: $accent;
+        background-color: rgba(0, 0, 0, 0.1);
+        -webkit-box-shadow: inset 0 0 6px rgba(0, 0, 0, 0.1);
+    }
+
+    /* scrollbar width */
+    .select-items::-webkit-scrollbar {
+        width: 10px;
+    }
+
+    /* scrollbar track */
+    .select-items::-webkit-scrollbar-track {
+        border-left: 1px solid white;
+        border-right: 1px solid white;
+    }
+
+    /* scrollbar handle */
+    .select-items::-webkit-scrollbar-thumb {
+        background: white;
+        border-radius: 1px;
+    }
+
+    /* scrollbar handle on hover */
+    .select-items::-webkit-scrollbar-thumb:hover {
+        background: $accent;
+    }
+}
+
+
+.tag-container {
+    flex-direction: column;
+    align-items: flex-start !important;
 }

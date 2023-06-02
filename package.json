@@ -15,6 +15,7 @@
   },
   "dependencies": {
     "@glidejs/glide": "^3.6.0",
+    "@yaireo/tagify": "^4.17.8",
     "a11y-dialog": "^7.5.2",
     "accordion-js": "^3.3.4",
     "colorthief": "^2.4.0",

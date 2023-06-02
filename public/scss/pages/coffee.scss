@@ -27,6 +27,7 @@
         margin: 0;
 
         .coffee-item {
+            cursor: pointer;
             padding: 2%;
             height: fit-content;
             border-bottom: 1px solid white;
@@ -64,9 +65,10 @@
 //styling the detailed page of coffee description
 #coffee-info {
     padding: 2%;
-    .info-container{
-        height: 100%; // make sure the information container take up the whole height
+    .coffee-item-info{
 
+        height: 100%; // make sure the information container take up the whole height
+        background-color: gray;
         display: flex;
         flex-direction: row;
         .info-col {
@@ -88,10 +90,49 @@
                 }
                 //the fourth child of the column will take up the remaining space
                 &:nth-child(4) {
-                    background-color: blue;
                     flex: 1;
+                }
+            }
+            //for the special row, it needs some adjustment as I made it too complicated in the design phase
+            .special-row {
+                display: flex;
+                flex-direction: column;
+                & > * {
+                    width: 100%;
+                    display: flex;
+                    flex-wrap: wrap;
+                    justify-content: space-between;
+                    align-items: center;
+                }
+                .special-row-2 {
+                    justify-content: flex-start;
+                    // gap: 0.25rem;
+                    & > *:first-child {
+                        flex: 100%;
+                    }
+                    //make the min-width of the chip tags here wider, as the text size gets bigger
+                    .chips {
+                        min-width: 5rem;
+                    }
+                }
+                .special-row-3 {
+                    .info-item-wrapper{
+                        display: flex;
+                        flex-direction: column;
+                    }
+                }
+                .special-row-4 {
+                    p {
+                        border: 1px solid white;
+                        padding: 2%;
+                    }
                 }
             }
         }
     }
+
+    .is-hidden {
+        display: none;
+    }
+
 }

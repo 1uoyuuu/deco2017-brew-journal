@@ -1,16 +1,13 @@
-// the first form is adding coffee
-// here I will set up variables for HTML elements with DOM selection
-const coffeeForm = document.getElementById("coffee-form");
 
 
 // define the class Coffee to better organise the data (I'm more used to work with OOP)
 class Coffee {
-    constructor(name,type,roastLevel,roastDate,roaster,process,origin,weight,price,image,flavour){
+    constructor(name, type, roastLevel, roastDate, roaster, process, origin, weight, price, image, flavour) {
         //attributes of basic information
         this.name = name; //String
-        this.type =type; //String
+        this.type = type; //String
         this.process = process; //String
-        this.price = price;  //Number
+        this.price = price; //Number
         this.weight = weight; //Number
         this.image = image; //String(url)
         this.flavour = flavour; //String
@@ -24,13 +21,13 @@ class Coffee {
 }
 // define class Origin and class Roaster to store relevant information
 class Roaster {
-    constructor(name,country){
+    constructor(name, country) {
         this.name = name; //String
         this.country = country; //String
     }
 }
 class Origin {
-    constructor(country,region,farm,producer,elevation,varietal){
+    constructor(country, region, farm, producer, elevation, varietal) {
         this.country = country; //String
         this.region = region; //String
         this.farm = farm; //String
@@ -39,6 +36,10 @@ class Origin {
         this.varietal = varietal; //String
     }
 }
+
+// the first form is adding coffee
+// here I will set up variables for HTML elements with DOM selection
+const coffeeForm = document.getElementById("coffee-form");
 
 // setup localstorage to store the all the informations
 // if there is no such element, create a new array
@@ -87,56 +88,99 @@ coffeeForm.addEventListener("submit", event => {
     coffeeForm.reset();
 
     //update the coffeeList display on the webpage
-    updateCoffeeList();
+    updateCoffeeSection();
 });
 
 
 //----------------------------------------- UPDATE LOCAL STORAGE VALUES ----------------------------------------
 //update all the information stored in the local storage
 //it includes coffee list, gadget list, brew list
-updateCoffeeList();
+updateCoffeeSection();
 
 
 
 
 //----------------------------------------- HELPER FUNCTION ----------------------------------------
 //add html content to the coffee, this will create a li element
-function createCoffeeContent(coffee){
+function createCoffeeListItem(coffee) {
     const li = document.createElement("li");
-    li.classList.add("coffee-item");
     li.innerHTML = `
-    <div class="coffee-item-wrap">
-        <h3 class="coffee-item-name">${coffee.name}</h3>
-        <p><span class="coffee-item-date">${coffee.roastDate}</span>
-            <span class="coffee-item-roaster">${coffee.roaster.name}</span>
-        </p>
-    </div>
-    <div class="coffee-item-wrap">
-        <h3 class="coffee-item-origin">${coffee.origin.country}</h3>
-        <p><span class="chips">${coffee.roastLevel}</span>
-            <span class="chips">${coffee.process}</span>
-        </p>
-    </div>`;
+    <a class="coffee-item">
+        <div class="coffee-item-wrap">
+            <h3 class="coffee-item-name">${coffee.name}</h3>
+            <p><span class="coffee-item-date">${coffee.roastDate}</span>
+                <span class="coffee-item-roaster">${coffee.roaster.name}</span>
+            </p>
+        </div>
+        <div class="coffee-item-wrap">
+            <h3 class="coffee-item-origin">${coffee.origin.country}</h3>
+            <p><span class="chips">${coffee.roastLevel}</span>
+                <span class="chips">${coffee.process}</span>
+            </p>
+        </div>
+    </a>`;
     return li;
 }
+//add description to the coffee, this will create a div container with all the information about the coffee
+function createCoffeeDescription(coffee) {
+    const div = document.createElement("div");
+    div.classList.add("coffee-item-info");
+    div.innerHTML = `<div class="info-col">
+                            <div class="info-row">
+                                <span class="info-item-label">Name:</span>
+                                <span class="info-item-value">${coffee.name}</span>
+                            </div>
+                            <div class="info-row">
+                                <span class="info-item-label">Roast Level:</span>
+                                <span class="info-item-value">${coffee.roastLevel}</span>
+                            </div>
+                            <div class="info-row">
+                                <span class="info-item-label">Roaster:</span>
+                                <span class="info-item-value">${coffee.roaster.name}</span>
+                            </div>
+                            <div class="info-row special-row">
+                                <img src="${coffee.image}" alt="">
+                            </div>
+                            <div class="info-row">
+                                <span class="info-item-label">Origin Country:</span>
+                                <span class="info-item-value">${coffee.origin.country}</span>
+                            </div>
+                            <div class="info-row">
+                                <span class="info-item-label">Farm:</span>
+                                <span class="info-item-value">${coffee.origin.farm}</span>
+                            </div>
+                            <div class="info-row">
+                                <span class="info-item-label">Varietal:</span>
+                                <span class="info-item-value">${coffee.origin.varietal}</span>
+                            </div>
+                        </div>`
+    return div;
+}
 
-function updateCoffeeList(){
+
+function updateCoffeeSection() {
     const coffeeList = document.querySelector("#coffee-list > ul");
+    const coffeeInfo = document.querySelector("#coffee-info");
     //reset the content in the coffeeList
     //this will prevent the repetition of writing content into html
     //as we go through all the index of the localstorage obejct everytime we call it
-    // coffeeList.innerHTML = "";
+    coffeeList.innerHTML = "";
+    coffeeInfo.innerHTML = `<p id="hint-text">Here's a list of all the coffee you have added so far. Click on any of them
+    to reminisce about
+    your favourite cup.</p>`;
 
     // Retrieve the favourite countries from localStorage
     let coffees = JSON.parse(localStorage.getItem('coffees'));
 
     // iterate through all the coffee entries when it's not null
-    if(coffees !== null){
+    if (coffees !== null) {
         coffees.forEach(coffee => {
-            let item = createCoffeeContent(coffee);
-            //prepend the item as the first entry
+            let item = createCoffeeListItem(coffee);
+            let description = createCoffeeDescription(coffee);
+            //prepend the item as the first entry for both coffeeList and coffeeInfo
             coffeeList.prepend(item);
+            coffeeInfo.prepend(description);
         });
     };
-    
+
 };
