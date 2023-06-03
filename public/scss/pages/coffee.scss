@@ -66,7 +66,7 @@
 #coffee-info {
     padding: 2%;
     .coffee-item-info{
-
+        transition: all 300ms ease-out;
         height: 100%; // make sure the information container take up the whole height
         background-color: gray;
         display: flex;
@@ -97,6 +97,9 @@
             .special-row {
                 display: flex;
                 flex-direction: column;
+                img {
+                    max-width: 23vw;
+                }
                 & > * {
                     width: 100%;
                     display: flex;
@@ -106,7 +109,7 @@
                 }
                 .special-row-2 {
                     justify-content: flex-start;
-                    // gap: 0.25rem;
+                    gap: 0.5rem;
                     & > *:first-child {
                         flex: 100%;
                     }
@@ -121,18 +124,15 @@
                         flex-direction: column;
                     }
                 }
-                .special-row-4 {
-                    p {
-                        border: 1px solid white;
-                        padding: 2%;
-                    }
-                }
             }
+
         }
     }
 
     .is-hidden {
         display: none;
+        opacity: 0;
+        transform: scale(0);
     }
-
+    
 }
