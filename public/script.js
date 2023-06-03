@@ -39,7 +39,7 @@ class Origin {
 
 // the first form is adding coffee
 // here I will set up variables for HTML elements with DOM selection
-const coffeeForm = document.getElementById("coffee-form");
+var coffeeForm = document.getElementById("coffee-form");
 
 // setup localstorage to store the all the informations
 // if there is no such element, create a new array
@@ -51,6 +51,11 @@ let gadgetArray = localStorage.getItem('gadgets') ? JSON.parse(localStorage.getI
 coffeeForm.addEventListener("submit", event => {
     //prevent the defualt action of submitting the form
     event.preventDefault();
+
+    //validate all the inputs to be valid before submission
+
+
+
     //retrieve all the input from the coffee form and create a new new coffee object
     let roaster = new Roaster(
         coffeeForm.elements.roasterName.value,

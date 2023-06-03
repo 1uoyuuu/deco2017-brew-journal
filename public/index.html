@@ -316,11 +316,11 @@
                                         <span class="form-text">Today, I am adding a new</span>
                                         <div class="radio-wrapper">
                                             <label class="radio-container">
-                                                <input type="radio" name="coffeeType" value="singleOrigin">
+                                                <input type="radio" id="coffeeType" name="coffeeType" value="single origin" data-group="0"required>
                                                 <span class="radio-text">Single Origin</span>
                                             </label>
                                             <label class="radio-container">
-                                                <input type="radio" name="coffeeType" value="blend">
+                                                <input type="radio" id="coffeeType" name="coffeeType" value="blend" data-group="0" required>
                                                 <span class="radio-text">Blend</span>
                                             </label>
                                         </div>
@@ -328,21 +328,21 @@
                                     <span class="form-text">coffee.</span>
                                     <div class="form-item is-required">
                                         <label for="coffeeName">It’s called</label>
-                                        <input type="text" id="coffeeName" name="coffeeName" placeholder="coffee name"
-                                        size="16">
+                                        <input type="text" id="coffeeName" name="coffeeName" data-group="0" placeholder="coffee name"
+                                        size="16" required>
                                     </div>
                                 </div>
                                 <div class="form-row">
                                     <div class="form-item is-required">
                                         <label for="roasterName">It was roasted by</label>
-                                        <input type="text" id="roasterName" name="roasterName"
-                                            placeholder="roaster name" size="16">
+                                        <input type="text" id="roasterName" name="roasterName" data-group="0"
+                                            placeholder="roaster name" size="16"  required>
                                     </div>
                                     <div class="form-item is-required">         
                                         <label for="roasterCountry">from</label>
                                         <div class="custom-select">
-                                            <select id="roasterCountry" name="roasterCountry">
-                                                <option value="0" label="Select a country" selected="selected">Select a
+                                            <select id="roasterCountry" name="roasterCountry" data-group="0" required>
+                                                <option value="" label="Select a country" selected="selected">Select a
                                                     country</option>
                                                     <option value="Afghanistan">Afghanistan</option>
                                                     <option value="Aland Islands">Aland Islands</option>
@@ -604,31 +604,31 @@
                                 <div class="form-row">
                                     <div class="form-item is-required">
                                         <label for="roastDate">It was roasted on</label>
-                                        <input type="date" id="roastDate" name="roastDate" required>
+                                        <input type="date" id="roastDate" name="roastDate" data-group="0" required>
                                     </div>
                                     <div class="form-item is-required">
                                         <label for="roastLevel">with a roast level of</label>
-                                        <input type="text" id="roastLevel" name="roastLevel"
-                                            placeholder="roast level" size="16">
+                                        <input type="text" id="roastLevel" name="roastLevel" data-group="0"
+                                            placeholder="roast level" size="16"  required>
                                     </div>
                                 </div>
                                 <div class="form-row">
                                     <div class="form-item">
                                         <label for="coffeeWeight">The net weight of this coffee is</label>
-                                        <input type="number" id="coffeeWeight" name="coffeeWeight">
+                                        <input type="number" id="coffeeWeight" name="coffeeWeight" data-group="0">
                                         <span class="form-text">grams.</span>
                                     </div>
                                     <div class="form-item">
                                         <label for="coffeePrice">
                                             It cost</label>
-                                        <input type="number" id="coffeePrice" name="coffeePrice">
+                                        <input type="number" id="coffeePrice" name="coffeePrice" data-group="0">
                                         <span class="form-text">dollars.</span>
                                     </div>
                                 </div>
                                 <div class="form-row">
                                     <div class="form-item tag-container is-required">
                                         <label for="coffeeFlavour"">This coffee will taste like</label>
-                                        <input type="text" id="coffeeFlavour" name="coffeeFlavour">
+                                        <input type="text" id="coffeeFlavour" name="coffeeFlavour" data-group="0" required>
                                     </div>
                                 </div>
                             </div>
@@ -647,10 +647,10 @@
                             <div class="form-input-container">
                                 <div class="form-row">
                                     <div class="form-item is-required">
-                                        <label for="originCountry">This coffee is from</label>
+                                        <label for="originCountry">This origin of this coffee is</label>
                                         <div class="custom-select">
-                                            <select id="originCountry" name="originCountry">
-                                            <option value="0" label="Select a country:" selected="selected">Select a
+                                            <select id="originCountry" name="originCountry" data-group="1" required>
+                                            <option value="" label="Select a country:" selected="selected">Select a
                                                 country:</option>
                                             <option value="angola">Angola</option>
                                             <option value="bolivia">Bolivia</option>
@@ -703,45 +703,47 @@
                                             </select>
                                         </div>
                                     </div>
+                                </div>
+                                <div class="form-row">
                                     <div class="form-item">
                                         <label for="originRegion">Region</label>
-                                        <input type="text" id="originRegion" name="originRegion"
-                                            placeholder="region name" size="16">
+                                        <input type="text" id="originRegion" name="originRegion" data-group="1" 
+                                            placeholder="region name" size="14">
                                     </div>
                                     <div class="form-item">
                                         <label for="originFarm">Farm</label>
-                                        <input type="text" id="originFarm" name="originFarm" placeholder="farm name"
-                                            size="16">
+                                        <input type="text" id="originFarm" name="originFarm" data-group="1"  placeholder="farm name"
+                                            size="14">
                                     </div>
-                                </div>
-                                <div class="form-row">
                                     <div class="form-item">
                                         <label for="producerName">It was produced by</label>
-                                        <input type="text" id="producerName" name="producerName"
-                                        placeholder="producer name" size="20">
+                                        <input type="text" id="producerName" name="producerName" data-group="1" 
+                                        placeholder="producer name" size="18">
                                     </div>
+                                </div>
+                                <div class="form-row">
                                     <div class="form-item is-required">
-                                        <label for="processingMethod">with processing method</label>
+                                        <label for="processingMethod">This coffee was processed with</label>
                                         <input type="text" id="processingMethod" name="processingMethod" placeholder="process name"
-                                        size="20">
+                                        size="24" data-group="1"  required>
+                                    </div>
+                                    <div class="form-item">
+                                        <label for="varietal">and the varietal is</label>
+                                        <input type="text" id="varietal" name="varietal"
+                                        placeholder="coffee varietal" size="18" data-group="1">
                                     </div>
                                 </div>
                                 <div class="form-row">
                                     <div class="form-item">
-                                        <label for="varietal">The varietal of this coffee is</label>
-                                        <input type="text" id="varietal" name="varietal"
-                                        placeholder="coffee varietal" size="16">
-                                    </div>
-                                    <div class="form-item">
-                                        <label for="elevation">and it is grown at an altitude</label>
-                                        <input type="number" id="elevation" name="elevation">
+                                        <label for="elevation">It was grown at an altitude of</label>
+                                        <input type="number" id="elevation" name="elevation" data-group="1" >
                                         <span class="form-text">meters above sea level.</span>
                                     </div>
                                 </div>
                                 <div class="form-row">
                                     <div class="form-item is-required">
-                                        <label for="coffeeImage">and here is the photo of it.</label>
-                                        <input type="file" accept="image/*" id="coffeeImage" name="coffeeImage" />
+                                        <label for="coffeeImage">Here is a photo of this lovely coffee.</label>
+                                        <input type="file" accept="image/*" id="coffeeImage" name="coffeeImage" data-group="1"  required/>
                                     </div>
                                 </div>
                             </div>
@@ -828,13 +830,125 @@
             <div class="dialog-overlay"></div>
             <!-- The actual dialog -->
             <div class="dialog-content" role="dialog">
-                <div class="form-container">
-                    <div class="form-heading">
-                        <h1>Hey, just bought a new gadet.</h1>
-                        <input type="button" class="white-fill black-border" name="close" value="Close"
-                            data-a11y-dialog-hide="add-gadget-dialog" aria-label="Close dialog">
-                    </div>
+                <div class="modal-heading">
+                    <h1>New Gadget.</h1>
+                    <input type="button" class="white-fill black-border" name="close" value="Close"
+                        data-a11y-dialog-hide="add-gadget-dialog" aria-label="Close dialog">
                 </div>
+                    <form action="#" id="gadget-form">
+                        <div class="form-page msf-hide">
+                            <div class="form-input-container">
+                                <div class="form-row">
+                                    <div class="form-item is-required">
+                                        <span class="form-text">Today, I am adding a new</span>
+                                        <div class="radio-wrapper">
+                                            <label class="radio-container">
+                                                <input type="radio" id="gadgetType" name="gadgetType" value="Grinder" data-group="0" required>
+                                                <span class="radio-text">Grinder</span>
+                                            </label>
+                                            <label class="radio-container">
+                                                <input type="radio" id="gadgetType" name="gadgetType" value="Dripper" data-group="0"  required>
+                                                <span class="radio-text">Dripper</span>
+                                            </label>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="progress-container">
+                                <div class="progress-text">
+                                    <h2>Type Information.</h2>
+                                    <p>1 / 2</p>
+                                </div>
+                                <div class="progress-button">
+                                    <input type="button" class="black-fill white-border" name="back" value="Prev">
+                                    <input type="button" class="black-fill white-border" name="next" value="Next">
+                                </div>
+                            </div>
+                        </div>
+                        <div class="form-page msf-hide">
+                            <div class="form-input-container">
+                                <div class="form-row">
+                                    <div class="form-item">
+                                        <label for="grinderName">This grinder is called</label>
+                                        <input type="text" id="grinderName" name="grinderName"
+                                            placeholder="grinder name" size="16">
+                                    </div>
+                                    <div class="form-item">
+                                        <label for="grinderBrand">and it is from</label>
+                                        <input type="text" id="grinderBrand" name="grinderBrand" placeholder="brand name"
+                                            size="16">
+                                    </div>
+                                </div>
+                                <div class="form-row">
+                                    <div class="form-item">
+                                        <label for="burrType">The burr of this grinder is</label>
+                                        <input type="text" id="burrType" name="burrType"
+                                            placeholder="burr type" size="16">
+                                    </div>
+                                    <span class="form-text">and here is the photo of it.</span>
+                                </div>
+                                <div class="form-row">
+                                    <div class="form-item">
+                                        <label for="grinderImage"></label>
+                                        <input type="file" accept="image/*" id="grinderImage" name="grinderImage" data-group="1" required/>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="progress-container">
+                                <div class="progress-text">
+                                    <h2>Grinder Information.</h2>
+                                    <p>2 / 2</p>
+                                </div>
+                                <div class="progress-button">
+                                    <input type="button" class="black-fill white-border" name="back" value="Prev">
+                                    <input type="button" class="black-fill black-border" name="next" value="Next">
+                                    <input type="submit" class="white-fill white-border" name="submit" value="Submit"
+                                        data-a11y-dialog-hide="add-coffee-dialog">
+                                </div>
+                            </div>
+                        </div>
+                        <div class="form-page msf-hide">
+                            <div class="form-input-container">
+                                <div class="form-row">
+                                    <div class="form-item">
+                                        <label for="dripperName">This dripper is called</label>
+                                        <input type="text" id="dripperName" name="dripperName"
+                                            placeholder="dripper name" size="16">
+                                    </div>
+                                    <div class="form-item">
+                                        <label for="dripperBrand">and it is from</label>
+                                        <input type="text" id="dripperBrand" name="dripperBrand" placeholder="brand name"
+                                            size="16">
+                                    </div>
+                                </div>
+                                <div class="form-row">
+                                    <div class="form-item">
+                                        <label for="dripperMaterial">It is made from</label>
+                                        <input type="text" id="dripperMaterial" name="dripperMaterial"
+                                            placeholder="material" size="16">
+                                    </div>
+                                </div>
+                                <div class="form-row">
+                                    <div class="form-item">
+                                        <label for="dripperImage">and here is the photo of it</label>
+                                        <input type="file" accept="image/*" id="dripperImage" name="dripperImage" data-group="2" required/>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="progress-container">
+                                <div class="progress-text">
+                                    <h2>Dripper Information.</h2>
+                                    <p>2 / 2</p>
+                                </div>
+                                <div class="progress-button">
+                                    <input type="button" class="black-fill white-border" name="back" value="Prev">
+                                    <input type="button" class="black-fill black-border" name="next" value="Next">
+                                    <input type="submit" class="white-fill white-border" name="submit" value="Submit"
+                                        data-a11y-dialog-hide="add-coffee-dialog">
+                                </div>
+                            </div>
+                        </div>
+                    </form>
             </div>
         </div>
     </section>

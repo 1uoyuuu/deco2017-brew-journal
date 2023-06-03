@@ -34,3 +34,35 @@
         margin: auto;
     }
 }
+
+
+//some independent styling for the gadget form
+#gadget-form {
+
+    & .form-page {
+        justify-content: flex-end;
+        gap: 3rem;
+
+        .form-row {
+            margin-left: 12rem;
+        }
+        //adjust the first page of the gadget form
+        &:first-child {
+            gap: 5rem;
+            .form-item {
+                height: 10rem;
+                .radio-wrapper {
+                    margin-left: 5rem;
+
+                    .radio-text {
+                        font-size: 2.5rem;
+                    }
+                }
+            }
+
+        }
+        .form-text{
+            margin: 0;
+        }
+    }
+}
