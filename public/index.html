@@ -83,7 +83,7 @@
             <div class="heading">
                 <h1>Coffee.</h1>
                 <button id="add-new-coffee" data-a11y-dialog-show="add-coffee-dialog"
-                    class="white-border black-fill">Add New</button>
+                    class="fill-in white-border black-fill">Add New</button>
             </div>
             <div class="content">
                 <section id="coffee-info">
@@ -305,7 +305,7 @@
             <div class="dialog-content" role="dialog">
                 <div class="modal-heading">
                     <h1>New Coffee.</h1>
-                    <input type="button" class="white-fill black-border" name="close" value="Close"
+                    <input type="button" class="fill-in white-border black-fill" name="close" value="Close"
                         data-a11y-dialog-hide="add-coffee-dialog" aria-label="Close dialog">
                 </div>
                     <form action="#" id="coffee-form">
@@ -604,7 +604,7 @@
                                 <div class="form-row">
                                     <div class="form-item is-required">
                                         <label for="roastDate">It was roasted on</label>
-                                        <input type="date" id="roastDate" name="roastDate" data-group="0" required>
+                                        <input type="date" id="roastDate" name="roastDate" min="2020-01-01" max="2100-01-01" data-group="0" required>
                                     </div>
                                     <div class="form-item is-required">
                                         <label for="roastLevel">with a roast level of</label>
@@ -832,7 +832,7 @@
             <div class="dialog-content" role="dialog">
                 <div class="modal-heading">
                     <h1>New Gadget.</h1>
-                    <input type="button" class="white-fill black-border" name="close" value="Close"
+                    <input type="button" class="fill-in white-fill black-border" name="close" value="Close"
                         data-a11y-dialog-hide="add-gadget-dialog" aria-label="Close dialog">
                 </div>
                     <form action="#" id="gadget-form">
@@ -860,8 +860,8 @@
                                     <p>1 / 2</p>
                                 </div>
                                 <div class="progress-button">
-                                    <input type="button" class="black-fill white-border" name="back" value="Prev">
-                                    <input type="button" class="black-fill white-border" name="next" value="Next">
+                                    <input type="button" class="fill-in black-fill white-border" name="back" value="Prev">
+                                    <input type="button" class="fill-in black-fill white-border" name="next" value="Next">
                                 </div>
                             </div>
                         </div>
@@ -1043,7 +1043,7 @@
             </div>
         </div>
     </section>
-    <script src="script.js"></script>
+    <script src="scripts/msf-control.js"></script>
     <script type="module" src="glide-carousel.js"></script>
     <script type="module" src="accordion.js"></script>
     <script type="module" src="overlay-modal.js"></script>
@@ -1051,8 +1051,8 @@
     <script type="module" src="scripts/tagify.js"></script>
     <script src="navigation.js"></script>
     <script src="toggle-display.js"></script>
-    <script src="scripts/msf-control.js"></script>
     <script src="custom-select.js"></script>
+    <script src="script.js"></script>
 </body>
 
 </html>

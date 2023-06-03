@@ -1,5 +1,4 @@
 
-
 // define the class Coffee to better organise the data (I'm more used to work with OOP)
 class Coffee {
     constructor(name, type, roastLevel, roastDate, roaster, process, origin, weight, price, image, flavour) {
@@ -36,71 +35,119 @@ class Origin {
         this.varietal = varietal; //String
     }
 }
-
+class Dripper {
+    constructor(name,material,brand,image){
+        this.name =name;
+        this.material = material;
+        this.brand = brand;
+        this.image = image;
+    }
+}
+class Grinder {
+    constructor(name,burr,brand,image){
+        this.name =name;
+        this.burr = burr;
+        this.brand = brand;
+        this.image = image;
+    }
+}
+const setUnknown = value => value === "" ? "Unknown" : value;
 // the first form is adding coffee
 // here I will set up variables for HTML elements with DOM selection
-var coffeeForm = document.getElementById("coffee-form");
+let coffeeForm = document.getElementById("coffee-form");
+let gadgetForm =  document.getElementById("gadget-form");
 
 // setup localstorage to store the all the informations
 // if there is no such element, create a new array
 // there will be three parts of information stored in the local storage
-// they are coffees, gadgets, brews
+// they are coffees, gadgets(drippers,grinders), brews
 let coffeeArray = localStorage.getItem('coffees') ? JSON.parse(localStorage.getItem('coffees')) : [];
-let gadgetArray = localStorage.getItem('gadgets') ? JSON.parse(localStorage.getItem('gadgets')) : [];
-// adding a new coffee to the local storage after submiting the form
+let dripperArray = localStorage.getItem('drippers') ? JSON.parse(localStorage.getItem('drippers')) : [];
+let grinderArray = localStorage.getItem('grinders') ? JSON.parse(localStorage.getItem('grinders')) : [];
+
+
+//sending data to the localstorage after submitting the form
 coffeeForm.addEventListener("submit", event => {
     //prevent the defualt action of submitting the form
     event.preventDefault();
 
     //validate all the inputs to be valid before submission
-
-
-
+    //as validation already been done once in the msf-control.js, so here just want to make sure the value
+    //satisfy our specific format
     //retrieve all the input from the coffee form and create a new new coffee object
     let roaster = new Roaster(
-        coffeeForm.elements.roasterName.value,
-        coffeeForm.elements.roasterCountry.value,
+        coffeeForm.elements.roasterName.value, //required
+        coffeeForm.elements.roasterCountry.value, //required
     );
+    //if user doesn't fill in optional value, make it as unknown
     let origin = new Origin(
-        coffeeForm.elements.originCountry.value,
-        coffeeForm.elements.originRegion.value,
-        coffeeForm.elements.originFarm.value,
-        coffeeForm.elements.producerName.value,
-        coffeeForm.elements.elevation.value,
-        coffeeForm.elements.varietal.value
+        coffeeForm.elements.originCountry.value, //required
+        setUnknown(coffeeForm.elements.originRegion.value),
+        setUnknown(coffeeForm.elements.originFarm.value),
+        setUnknown(coffeeForm.elements.producerName.value),
+        setUnknown(coffeeForm.elements.elevation.value),
+        setUnknown(coffeeForm.elements.varietal.value)
     );
-    let coffee = new Coffee(
-        coffeeForm.elements.coffeeName.value,
-        coffeeForm.elements.coffeeType.value,
-        coffeeForm.elements.roastLevel.value,
-        coffeeForm.elements.roastDate.value,
-        roaster,
-        coffeeForm.elements.processingMethod.value,
-        origin,
-        coffeeForm.elements.coffeeWeight.value,
-        coffeeForm.elements.coffeePrice.value,
-        coffeeForm.elements.coffeeImage.value,
-        coffeeForm.elements.coffeeFlavour.value,
 
+    let newCoffee = new Coffee(
+        coffeeForm.elements.coffeeName.value, //required
+        coffeeForm.elements.coffeeType.value, //required
+        coffeeForm.elements.roastLevel.value, //required
+        //the default will generate yyyy-mm-dd, but we here at australia prefer dd--mm--yyyy
+        //this simple one line function will help reverse the date
+        coffeeForm.elements.roastDate.value.split("-").reverse().join("-"), //required
+        roaster, //reqruied
+        coffeeForm.elements.processingMethod.value, //required
+        origin, //reqruied
+        setUnknown(coffeeForm.elements.coffeeWeight.value),
+        setUnknown(coffeeForm.elements.coffeePrice.value),
+        coffeeForm.elements.coffeeImage.value,
+        coffeeForm.elements.coffeeFlavour.value
     );
 
     //push the new added coffee into localstorage
-    coffeeArray.push(coffee);
-    //update the value of key "coffees" in the localstorage
+    coffeeArray.push(newCoffee);
     localStorage.setItem('coffees', JSON.stringify(coffeeArray));
-
     //reset the form
     coffeeForm.reset();
 
     //update the coffeeList display on the webpage
-    updateCoffeeSection();
+});
+gadgetForm.addEventListener("submit", event => {
+    event.preventDefault();
+
+    if(gadgetForm.elements.gadgetType.value === "Grinder"){
+        let newGrinder = new Grinder(
+            gadgetForm.elements.grinderName.value,
+            gadgetForm.elements.burrType.value,
+            gadgetForm.elements.grinderBrand.value,
+            gadgetForm.elements.grinderImage.value);
+        
+            grinderArray.push(newGrinder);
+            localStorage.setItem('grinders', JSON.stringify(grinderArray));
+
+    }else if(gadgetForm.elements.gadgetType.value === "Dripper"){
+        let newDripper = new Grinder(
+            gadgetForm.elements.dripperName.value,
+            gadgetForm.elements.dripperMaterial.value,
+            gadgetForm.elements.dripperBrand.value,
+            gadgetForm.elements.dripperImage.value);
+
+
+            dripperArray.push(newDripper);
+            localStorage.setItem('drippers', JSON.stringify(dripperArray));
+    }
+
+    gadgetForm.reset();
+    console.log(grinderArray);
+
 });
 
 
 //----------------------------------------- UPDATE LOCAL STORAGE VALUES ----------------------------------------
 //update all the information stored in the local storage
 //it includes coffee list, gadget list, brew list
-updateCoffeeSection();
+
 
 
 

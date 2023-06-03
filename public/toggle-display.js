@@ -6,8 +6,6 @@ const coffeeItems = document.querySelectorAll("a.coffee-item");
 // select all the corresponding info descriptions
 const coffeeInfos = document.querySelectorAll(".coffee-item-info");
 
-console.log(coffeeInfos);
-console.log(coffeeItems);
 // select the hint text displayed at initial state
 const hintText = document.querySelector("#hint-text");
 // they correspond into pairs

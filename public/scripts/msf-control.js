@@ -1,20 +1,31 @@
-const showPage = (element) => {
-    element.classList.add("msf-show");
-    element.classList.remove("msf-hide");
-}
-const hidePage = (element) => {
-    element.classList.add("msf-hide");
-    element.classList.remove("msf-show");
-}
 
-var coffeeForm = document.getElementById("coffee-form");
-var gadgetForm = document.getElementById("gadget-form");
-setupMSF(coffeeForm);
-setupMSF(gadgetForm);
-// setupMSF("gadget-form");
-//this function will add functionalities to switch between different pages of the form
+
+
+
+setupMSF(document.getElementById("coffee-form"));
+setupMSF(document.getElementById("gadget-form"));
+
+
+
+
+
+//this function will setup a multistep display for different form
+//it require the form element as parameter and will generate relevant functioanlities
+//such as simple validation, change page....
 function setupMSF(form) {
-    const msfPages = document.querySelectorAll(`#${form.id} > .form-page`);
+
+    //toggle between different pages by adding/removing class name
+    const showPage = (element) => {
+        element.classList.add("msf-show");
+        element.classList.remove("msf-hide");
+    }
+    const hidePage = (element) => {
+        element.classList.add("msf-hide");
+        element.classList.remove("msf-show");
+    }
+
+    
+    let msfPages = document.querySelectorAll(`#${form.id} > .form-page`);
     //arrow function to display or hide the page
     //declare the total page count of the form and current page
     let msfIndex = 0;
@@ -46,7 +57,6 @@ function setupMSF(form) {
             inputsRequired.push(input);
         }
     });
-    console.log(inputsRequired);
 
 
     //user can always goes back to the previous page without any problem
@@ -78,6 +88,20 @@ function setupMSF(form) {
     //however, for going to next page or submit the form, it must pass some validations first
     //e.g. no empty values for all required field
     nextBtns.forEach(btn => {
+        btn.setAttribute("disabled", "true");
+        //create a eventlistener to listen when an input value changes
+        //when an input changes, validate required inputs
+        //if validation passes, activate the next button
+        inputsAll.forEach(input => {
+            input.addEventListener("change", e => {
+                if (validateInputs(inputsRequired, msfIndex)) {
+                    btn.disabled = false;
+                }else {
+                    btn.disabled = true;
+                }
+            })
+        });
+        //goes to the next page when it is activated and clicked
         btn.addEventListener("click", event => {
             event.preventDefault();
             //special validation for the gadget form
@@ -97,7 +121,6 @@ function setupMSF(form) {
                     //change the required image based on the type
                     form.elements.grinderImage.required = true;
                     form.elements.dripperImage.required = false;
-                    console.log(form.elements.grinderImage);
                     hidePage(currentPage);
                     msfIndex += 1;
                     //change the current page
@@ -173,15 +196,10 @@ function setupMSF(form) {
     })
 }
 
-function emptyValueCheck(value) {
-    return value === "" ? true : false;
-}
 
-function radioCheck(name) {
-    let checked = document.querySelector(`input[name = "${name}"]:checked`);
-    return checked !== null ? checked.value : null;
-}
-
+//Validation Function to determine if it is ok to change to the next page/or submit the form
+//before vaildation is sueccessful, the submit button will remain disabled
+//this serves as the first layer of data validation
 function validateInputs(inputs, index) {
     for (let i = 0; i < inputs.length; i++) {
         //i used a customised data attribute called data-group
@@ -217,4 +235,15 @@ function validateInputs(inputs, index) {
         }
     }
     return true;
+}
+
+//check whether a input is empty
+function emptyValueCheck(value) {
+    return value === "" ? true : false;
+}
+
+//check whether a radio button is checked
+function radioCheck(name) {
+    let checked = document.querySelector(`input[name = "${name}"]:checked`);
+    return checked !== null ? checked.value : null;
 }
