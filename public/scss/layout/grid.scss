@@ -39,3 +39,15 @@
 }
 
 
+
+#coffee{
+    .grid-container{
+        grid-template-rows: 1fr 9fr;
+        grid-template-areas:
+        "heading heading heading heading heading heading heading heading heading heading heading heading"
+        "content content content content content content content content content content content content";
+    }
+    .content {
+        border-bottom: 1px solid white;
+    }
+}

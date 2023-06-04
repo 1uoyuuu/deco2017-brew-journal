@@ -461,13 +461,13 @@
                                 <div class="form-row">
                                     <div class="form-item">
                                         <label for="coffeeWeight">The net weight of this coffee is</label>
-                                        <input type="number" id="coffeeWeight" name="coffeeWeight" data-group="0">
+                                        <input type="number" id="coffeeWeight" name="coffeeWeight" min="0"  onkeyup="if(value<0) value=0;" data-group="0">
                                         <span class="form-text">grams.</span>
                                     </div>
                                     <div class="form-item">
                                         <label for="coffeePrice">
                                             It cost</label>
-                                        <input type="number" id="coffeePrice" name="coffeePrice" data-group="0">
+                                        <input type="number" id="coffeePrice" name="coffeePrice" min="0" onkeyup="if(value<0) value=0;" data-group="0">
                                         <span class="form-text">dollars.</span>
                                     </div>
                                 </div>
@@ -503,14 +503,14 @@
                                             <option value="brazil">Brazil</option>
                                             <option value="burundi">Burundi</option>
                                             <option value="cameroon">Cameroon</option>
-                                            <option value="centralAfricanRepublic">Central African Republic</option>
+                                            <option value="central African Republic">Central African Republic</option>
                                             <option value="china">China</option>
                                             <option value="colombia">Colombia</option>
-                                            <option value="costaRica">Costa Rica</option>
+                                            <option value="costa Rica">Costa Rica</option>
                                             <option value="cuba">Cuba</option>
-                                            <option value="dominicanRepublic">Dominican Republic</option>
+                                            <option value="dominican Republic">Dominican Republic</option>
                                             <option value="ecuador">Ecuador</option>
-                                            <option value="elSalvador">El Salvador</option>
+                                            <option value="el Salvador">El Salvador</option>
                                             <option value="ethiopia">Ethiopia</option>
                                             <option value="gabon">Gabon</option>
                                             <option value="ghana">Ghana</option>
@@ -520,7 +520,7 @@
                                             <option value="honduras">Honduras</option>
                                             <option value="india">India</option>
                                             <option value="indonesia">Indonesia</option>
-                                            <option value="ivoryCoast">Ivory Coast</option>
+                                            <option value="ivory Coast">Ivory Coast</option>
                                             <option value="jamaica">Jamaica</option>
                                             <option value="kenya">Kenya</option>
                                             <option value="laos">Laos</option>
@@ -530,13 +530,13 @@
                                             <option value="mexico">Mexico</option>
                                             <option value="nicaragua">Nicaragua</option>
                                             <option value="nigeria">Nigeria</option>
-                                            <option value="papuaNewGuinea">Papua New Guinea</option>
+                                            <option value="papua New Guinea">Papua New Guinea</option>
                                             <option value="panama">Panama</option>
                                             <option value="paraguay">Paraguay</option>
                                             <option value="peru">Peru</option>
                                             <option value="philippines">Philippines</option>
                                             <option value="rwanda">Rwanda</option>
-                                            <option value="sierraLeone">Sierra Leone</option>
+                                            <option value="sierra Leone">Sierra Leone</option>
                                             <option value="tanzania">Tanzania</option>
                                             <option value="thailand">Thailand</option>
                                             <option value="togo">Togo</option>
@@ -582,7 +582,7 @@
                                 <div class="form-row">
                                     <div class="form-item">
                                         <label for="elevation">It was grown at an altitude of</label>
-                                        <input type="number" id="elevation" name="elevation" data-group="1" >
+                                        <input type="number" id="elevation" name="elevation" data-group="1" min="0" onkeyup="if(value<0) value=0;" >
                                         <span class="form-text">meters above sea level.</span>
                                     </div>
                                 </div>
@@ -672,10 +672,10 @@
                         <div class="form-page msf-hide">
                             <div class="form-input-container">
                                 <div class="form-row">
-                                    <div class="form-item">
+                                    <div class="form-item is-required">
                                         <label for="grinderName">This grinder is called</label>
                                         <input type="text" id="grinderName" name="grinderName"
-                                            placeholder="grinder name" size="16">
+                                            placeholder="grinder name" size="16" data-group="1" required>
                                     </div>
                                     <div class="form-item">
                                         <label for="grinderBrand">and it is from</label>
@@ -692,7 +692,7 @@
                                     <span class="form-text">and here is the photo of it.</span>
                                 </div>
                                 <div class="form-row">
-                                    <div class="form-item">
+                                    <div class="form-item is-required">
                                         <label for="grinderImage"></label>
                                         <input type="file" accept="image/*" id="grinderImage" name="grinderImage" data-group="1" required/>
                                     </div>
@@ -704,9 +704,9 @@
                                     <p>2 / 2</p>
                                 </div>
                                 <div class="progress-button">
-                                    <input type="button" class="black-fill white-border" name="back" value="Prev">
-                                    <input type="button" class="black-fill black-border" name="next" value="Next">
-                                    <input type="submit" class="white-fill white-border" name="submit" value="Submit"
+                                    <input type="button" class="fill-in black-fill white-border" name="back" value="Prev">
+                                    <input type="button" class="fill-in black-fill white-border" name="next" value="Next">
+                                    <input type="submit" class="fill-in black-fill white-border" name="submit" value="Submit"
                                         data-a11y-dialog-hide="add-coffee-dialog">
                                 </div>
                             </div>
@@ -714,10 +714,10 @@
                         <div class="form-page msf-hide">
                             <div class="form-input-container">
                                 <div class="form-row">
-                                    <div class="form-item">
+                                    <div class="form-item is-required">
                                         <label for="dripperName">This dripper is called</label>
                                         <input type="text" id="dripperName" name="dripperName"
-                                            placeholder="dripper name" size="16">
+                                            placeholder="dripper name" size="16" data-group="2" required>
                                     </div>
                                     <div class="form-item">
                                         <label for="dripperBrand">and it is from</label>
@@ -733,7 +733,7 @@
                                     </div>
                                 </div>
                                 <div class="form-row">
-                                    <div class="form-item">
+                                    <div class="form-item is-required">
                                         <label for="dripperImage">and here is the photo of it</label>
                                         <input type="file" accept="image/*" id="dripperImage" name="dripperImage" data-group="2" required/>
                                     </div>
@@ -745,9 +745,9 @@
                                     <p>2 / 2</p>
                                 </div>
                                 <div class="progress-button">
-                                    <input type="button" class="black-fill white-border" name="back" value="Prev">
-                                    <input type="button" class="black-fill black-border" name="next" value="Next">
-                                    <input type="submit" class="white-fill white-border" name="submit" value="Submit"
+                                    <input type="button" class="fill-in black-fill white-border" name="back" value="Prev">
+                                    <input type="button" class="fill-in black-fill white-border" name="next" value="Next">
+                                    <input type="submit" class="fill-in black-fill white-border" name="submit" value="Submit"
                                         data-a11y-dialog-hide="add-coffee-dialog">
                                 </div>
                             </div>

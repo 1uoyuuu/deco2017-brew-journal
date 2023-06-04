@@ -2,6 +2,7 @@
 class Coffee {
     constructor(name, type, roastLevel, roastDate, roaster, process, origin, weight, price, flavour) {
         //attributes of basic information
+        this.id = Date.now();
         this.name = name; //String
         this.type = type; //String
         this.process = process; //String
@@ -114,7 +115,7 @@ coffeeForm.addEventListener("submit", event => {
         setUnknown(coffeeForm.elements.varietal.value)
     );
     //extract the tags from the tagify input and turn into a array of string
-    let flavours = JSON.parse(document.getElementById("coffeeFlavour").value).map(tag => tag.value.trim());
+    let flavours = JSON.parse(document.getElementById("coffeeFlavour").value).map(tag => tag.value.trim().toLowerCase());
 
     let newCoffee = new Coffee(
         coffeeForm.elements.coffeeName.value.trim(), //required
@@ -184,14 +185,110 @@ gadgetForm.addEventListener("submit", event => {
 
 
 
-
+//----------------------------------------- WRITING HTML CONTENT ----------------------------------------
 updateCoffeeSection();
 updateGadgetSection();
 
+//update the html content based on the local storage 
+function updateCoffeeSection() {
+    const coffeeList = document.querySelector("#coffee-list > ul");
+    const coffeeInfo = document.querySelector("#coffee-info");
+    //reset the content in the coffeeList
+    //this will prevent the repetition of writing content into html
+    //as we go through all the index of the localstorage obejct everytime we call it
+    coffeeList.innerHTML = "";
+    coffeeInfo.innerHTML = `<p id="hint-text">Here’s a list of all the coffee you have added so far. Click on any of them
+    to reminisce about
+    your favourite cup.</p>`;
 
-//----------------------------------------- HELPER FUNCTION ----------------------------------------
-//add html content to the coffee, this will create a li element
+    // Retrieve the coffee array from localStorage
+    let coffees = JSON.parse(localStorage.getItem('coffees'));
 
+    // iterate through all the coffee entries when it's not null
+    if (coffees !== null) {
+        coffees.forEach((coffee,index) => {
+            let item = createCoffeeListItem(coffee);
+            let description = createCoffeeDescription(coffee,index);
+            //prepend the item as the first entry for both coffeeList and coffeeInfo
+            coffeeList.prepend(item);
+            coffeeInfo.prepend(description);
+        });
+    };
+    toggleDisplay();
+
+
+};
+
+// when user click on each coffee item, a full description will be shown on the left
+// using setTimeout to achieve smooth animation, between display none to block
+function toggleDisplay() {
+    // select all the coffee list items
+    const coffeeItems = document.querySelectorAll("a.coffee-item");
+    // select all the corresponding info descriptions
+    const coffeeInfos = document.querySelectorAll(".coffee-item-info");
+
+    // select the hint text displayed at initial state
+    const hintText = document.querySelector("#hint-text");
+    // they correspond into pairs
+    coffeeInfos.forEach(item => item.classList.add("is-hidden"));
+
+    for (let i = 0; i < coffeeItems.length; i++) {
+        coffeeItems[i].addEventListener("click", event => {
+            //hide the hint text as well, if a coffee item is clicked
+            if (!hintText.classList.contains("is-hidden")) {
+                hintText.classList.add("is-hidden");
+            }
+            //hide all the coffee-info-items 
+            coffeeInfos.forEach(item => item.classList.add("is-hidden"));
+            //only display the item that is being clicked
+            console.log(i);
+            //only display the item that is being clicked
+            coffeeInfos.forEach((item, index) => {
+                if (index === i) {
+                    console.log("running: " + i);
+                    item.style.display = "flex";
+                    window.setTimeout(function () {
+                        item.style.opacity = 1;
+                        item.style.transform = 'scale(1)';
+                    }, 100);
+                } else {
+                    item.style.opacity = 0;
+                    item.style.transform = 'scale(0)';
+                    window.setTimeout(function () {
+                        item.style.display = 'none';
+                    }, 0); // timed to match animation-duration
+                }
+            })
+        })
+    }
+}
+
+//update the html content based on the local storage 
+function updateGadgetSection(){
+    const coffeeGadget = document.querySelector("#gadget-carousel");
+
+    //delete all the previous content
+    coffeeGadget.innerHTML = "";
+
+    // Retrieve the coffee array from localStorage
+    let drippers = JSON.parse(localStorage.getItem('drippers'));
+    let grinders = JSON.parse(localStorage.getItem('grinders'));
+    //iterate through the local storage and add gadget into the carousel
+    if (drippers !== null) {
+        drippers.forEach((dripper,index) => {
+            let li = createNewGadget(dripper,index);
+            coffeeGadget.appendChild(li);
+        });
+    };
+    if (grinders !== null) {
+        grinders.forEach((grinder,index) => {
+            let li = createNewGadget(grinder,index);
+            coffeeGadget.appendChild(li);
+        });
+    }
+}
+
+//----------------------------------------- WRITING HTML CONTENT ----------------------------------------
 function createNewGadget(gadget,index) {
     //create a new li element
     const li = document.createElement("li");
@@ -204,7 +301,7 @@ function createNewGadget(gadget,index) {
                         <p>${gadget.material}</p>
                         <p>Dripper</p>
                     </div>
-                    <input id="${gadget.id}" class="gadget-delete black-fill white-border fill-in" type="button" value="Delete" />
+                    <input id="${gadget.id}" name="delete" class="gadget-delete black-fill white-border fill-in" type="button" value="Delete" />
                     <img class="color-thief-images" src="${dripperImageArray[index]}"
                         alt="a coffeee dripper ${gadget.name}">
                     <div class="flex-row">
@@ -216,7 +313,7 @@ function createNewGadget(gadget,index) {
                         <p>${gadget.burr}</p>
                         <p>Grinder</p>
                     </div>
-                    <input id="${gadget.id}" class="gadget-delete black-fill white-border fill-in" type="button" value="Delete" />
+                    <input id="${gadget.id}" name="delete" class="gadget-delete black-fill white-border fill-in" type="button" value="Delete" />
                     <img class="color-thief-images" src="${grinderImageArray[index]}"
                         alt="a coffeee grinder ${gadget.name}">
                     <div class="flex-row">
@@ -342,108 +439,12 @@ function createCoffeeDescription(coffee,index) {
                             <span class="info-item-label">Elevation:</span>
                             <span class="info-item-value">${coffee.origin.elevation} m.a.s.l</span>
                         </div>
-                    </div>`
+                    </div>
+                    <input id="${coffee.id}" name="delete" class="coffee-delete black-fill white-border fill-in" type="button" value="Delete" />`
     return div;
 }
 
 
-
-function updateCoffeeSection() {
-    const coffeeList = document.querySelector("#coffee-list > ul");
-    const coffeeInfo = document.querySelector("#coffee-info");
-    //reset the content in the coffeeList
-    //this will prevent the repetition of writing content into html
-    //as we go through all the index of the localstorage obejct everytime we call it
-    coffeeList.innerHTML = "";
-    coffeeInfo.innerHTML = `<p id="hint-text">Here's a list of all the coffee you have added so far. Click on any of them
-    to reminisce about
-    your favourite cup.</p>`;
-
-    // Retrieve the coffee array from localStorage
-    let coffees = JSON.parse(localStorage.getItem('coffees'));
-
-    // iterate through all the coffee entries when it's not null
-    if (coffees !== null) {
-        coffees.forEach((coffee,index) => {
-            let item = createCoffeeListItem(coffee);
-            let description = createCoffeeDescription(coffee,index);
-            //prepend the item as the first entry for both coffeeList and coffeeInfo
-            coffeeList.prepend(item);
-            coffeeInfo.prepend(description);
-        });
-    };
-    toggleDisplay();
-
-
-};
-
-// when user click on each coffee item, a full description will be shown on the left
-function toggleDisplay() {
-    // select all the coffee list items
-    const coffeeItems = document.querySelectorAll("a.coffee-item");
-    // select all the corresponding info descriptions
-    const coffeeInfos = document.querySelectorAll(".coffee-item-info");
-
-    // select the hint text displayed at initial state
-    const hintText = document.querySelector("#hint-text");
-    // they correspond into pairs
-    coffeeInfos.forEach(item => item.classList.add("is-hidden"));
-
-    for (let i = 0; i < coffeeItems.length; i++) {
-        coffeeItems[i].addEventListener("click", event => {
-            //hide the hint text as well, if a coffee item is clicked
-            if (!hintText.classList.contains("is-hidden")) {
-                hintText.classList.add("is-hidden");
-            }
-            //hide all the coffee-info-items 
-            coffeeInfos.forEach(item => item.classList.add("is-hidden"));
-            //only display the item that is being clicked
-            console.log(i);
-            //only display the item that is being clicked
-            coffeeInfos.forEach((item, index) => {
-                if (index === i) {
-                    console.log("running: " + i);
-                    item.style.display = "flex";
-                    window.setTimeout(function () {
-                        item.style.opacity = 1;
-                        item.style.transform = 'scale(1)';
-                    }, 100);
-                } else {
-                    item.style.opacity = 0;
-                    item.style.transform = 'scale(0)';
-                    window.setTimeout(function () {
-                        item.style.display = 'none';
-                    }, 0); // timed to match animation-duration
-                }
-            })
-        })
-    }
-}
-
-
-function updateGadgetSection(){
-    const coffeeGadget = document.querySelector("#gadget-carousel");
-
-    //delete all the previous content
-    coffeeGadget.innerHTML = "";
-
-    // Retrieve the coffee array from localStorage
-    let drippers = JSON.parse(localStorage.getItem('drippers'));
-    let grinders = JSON.parse(localStorage.getItem('grinders'));
-    //iterate through the local storage and add gadget into the carousel
-    if (drippers !== null) {
-        drippers.forEach((dripper,index) => {
-            let li = createNewGadget(dripper,index);
-            coffeeGadget.appendChild(li);
-        });
-    };
-    if (grinders !== null) {
-        grinders.forEach((grinder,index) => {
-            let li = createNewGadget(grinder,index);
-            coffeeGadget.appendChild(li);
-        });
-    }
-}
 
 
 
@@ -456,11 +457,11 @@ function getBase64(file, callback) {
 }
 
 
-const gadgetDel = document.querySelectorAll(".gadget-delete");
+const deleteBtns = document.querySelectorAll("input[name='delete']");
 
-gadgetDel.forEach(btn => {
+deleteBtns.forEach(btn => {
     btn.addEventListener("click", e => {
-        //traverse in the gadget array
+        //traverse all the item array
         //try to find the item with the same id with the delete button
         if(dripperArray !== null) {
             dripperArray.forEach((item,index) => {
@@ -475,7 +476,7 @@ gadgetDel.forEach(btn => {
 
                     window.location.reload();
                     //once it finds the item, no need to iterate, just return
-                    return
+                    return;
                 }
             });
         }
@@ -484,7 +485,6 @@ gadgetDel.forEach(btn => {
                 //notice here the item.id is a number, where the btn.id is a string
                 //so solution here is either parse the btn.id into a number or use == which will convert the type automatically
                 if(item.id === parseInt(btn.id)){
-                    console.log("this is the one");
                     //once it finds the corresponding item
                     //use splice to remove the item
                     grinderArray.splice(index,1);
@@ -492,6 +492,25 @@ gadgetDel.forEach(btn => {
                     //update the local storage
                     localStorage.setItem('grinders', JSON.stringify(grinderArray));
                     localStorage.setItem('grinderImages', JSON.stringify(grinderImageArray));
+
+                    window.location.reload();
+                    return
+
+                }
+            })
+        }
+        if(coffeeArray !== null){
+            coffeeArray.forEach((item,index) => {
+                //notice here the item.id is a number, where the btn.id is a string
+                //so solution here is either parse the btn.id into a number or use == which will convert the type automatically
+                if(item.id === parseInt(btn.id)){
+                    //once it finds the corresponding item
+                    //use splice to remove the item
+                    coffeeArray.splice(index,1);
+                    coffeeArray.splice(index,1);
+                    //update the local storage
+                    localStorage.setItem('coffees', JSON.stringify(coffeeArray));
+                    localStorage.setItem('coffeeImages', JSON.stringify(coffeeImageArray));
 
                     window.location.reload();
                     return

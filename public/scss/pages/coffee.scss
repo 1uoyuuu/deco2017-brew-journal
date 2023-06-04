@@ -65,14 +65,19 @@
 //styling the detailed page of coffee description
 #coffee-info {
     padding: 2%;
+
+    #hint-text {
+        margin-top: 2rem;
+        font-size: 2.5rem;
+    }
     .coffee-item-info{
-        transition: all 300ms ease-out;
+        transition: all 500ms cubic-bezier(0.72, 0.2, 0.34, 0.83);
         height: 100%; // make sure the information container take up the whole height
-        background-color: gray;
         display: flex;
+        flex-wrap: wrap;
         flex-direction: row;
         .info-col {
-            flex: 1; //even spliting the container
+            flex: 0 0 50%; //even spliting the container
             display: flex;
             flex-direction: column;
 
@@ -85,7 +90,7 @@
                 align-items: center;
                 justify-content: space-between;
 
-                &:not(:last-child){
+                &:not(:last-child) {
                     border-bottom: 1px solid white;
                 }
                 //the fourth child of the column will take up the remaining space
@@ -133,6 +138,13 @@
                 padding: 8%;
             }
 
+        }
+
+        .coffee-delete {
+            flex: 0 0 100%; //take up the whole row
+            max-width: none;
+            align-self: flex-end;
+            background-color: transparent;
         }
     }
 

@@ -34,9 +34,12 @@ imageBackground.forEach(img => {
         //the number above determines the quality, how many pixel it skips, the higher, the fuzzier it gets
         //as we goes for a proximity, so i don't really need a accurate dominant color here, so i increase the quality
         //all the way to 200, means it only runs maybe 2-3 times on an image size of 600-700px
-
-        const container = img.parentNode.parentNode.parentNode;
-        container.style.backgroundColor = rgbToHex(col);
+        // const infoContainers = document.querySelectorAll(".info-col");
+        // infoContainers.forEach(item => item.style.backgroundColor = rgbToHex(col))
+        const columnOne = img.parentNode.parentNode;
+        const columnTwo = columnOne.nextElementSibling;
+        columnTwo.style.backgroundColor = rgbToHex(col);
+        columnOne.style.backgroundColor = rgbToHex(col);
 
         //based on the color it got, it should choose the text color between white or black
         //here is my version of contrast checker with inspiration from: https://stackoverflow.com/questions/3942878/how-to-decide-font-color-in-white-or-black-depending-on-background-color

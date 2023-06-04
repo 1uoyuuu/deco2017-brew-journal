@@ -63,6 +63,7 @@
                 &:hover {
                     //blur the image when hovering on the delete button
                     & + * {
+                        transition: all 0.2s ease-in;
                         filter: blur(5px);
                     }
                 }

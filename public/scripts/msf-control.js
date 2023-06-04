@@ -58,7 +58,6 @@ function setupMSF(form) {
         }
     });
 
-
     //user can always goes back to the previous page without any problem
     //so the back buttons should work when user click it
     backBtns.forEach(btn => {
@@ -112,6 +111,8 @@ function setupMSF(form) {
                     //change the required image based on the type
                     form.elements.dripperImage.required = true;
                     form.elements.grinderImage.required = false;
+                    form.elements.grinderName.required = false;
+                    form.elements.dripperName.required = true;
                     hidePage(currentPage);
                     msfIndex += 2;
                     //change the current page
@@ -121,6 +122,8 @@ function setupMSF(form) {
                     //change the required image based on the type
                     form.elements.grinderImage.required = true;
                     form.elements.dripperImage.required = false;
+                    form.elements.grinderName.required = true;
+                    form.elements.dripperName.required = false;
                     hidePage(currentPage);
                     msfIndex += 1;
                     //change the current page
@@ -192,6 +195,8 @@ function setupMSF(form) {
             showPage(currentPage);
             //reset the form once user close the modal
             form.reset();
+            nextBtns.forEach(b => b.setAttribute("disabled","true"));
+            submitBtns.forEach(b => b.setAttribute("disabled","true"));
         });
     })
 }
