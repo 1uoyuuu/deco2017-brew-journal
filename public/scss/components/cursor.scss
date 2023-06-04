@@ -1,0 +1,13 @@
+
+#cursor {
+    z-index: 9999;
+    width: 12px;
+    height: 12px;
+    // border-radius: 50%;
+    background: $accent;
+    position: absolute;
+    // margin: -16px 0 0 -16px;
+    //regain the ability to click
+    pointer-events: none; /* ADD_ME */
+}
+

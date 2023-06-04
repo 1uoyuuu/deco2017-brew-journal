@@ -185,9 +185,90 @@ gadgetForm.addEventListener("submit", event => {
 
 
 
-//----------------------------------------- WRITING HTML CONTENT ----------------------------------------
+//----------------------------------------- RENDER CONTENT ON WEBPAGE ----------------------------------------
+
+//this two event listener will keep webpage at the same potion after refreshing
+//it is using sessionStorage, solution from: https://stackoverflow.com/questions/17642872/refresh-page-and-keep-scroll-position
+document.addEventListener("DOMContentLoaded", function (event) {
+    var scrollpos = sessionStorage.getItem('scrollpos');
+    if (scrollpos) {
+        window.scrollTo(0, scrollpos);
+        sessionStorage.removeItem('scrollpos');
+    }
+});
+
+window.addEventListener("beforeunload", function (e) {
+    sessionStorage.setItem('scrollpos', window.scrollY);
+});
+
+//---------------------- UPDATE CONTENT ----------------------
 updateCoffeeSection();
 updateGadgetSection();
+
+//---------------------- DELETE FUNCTION ----------------------
+const deleteBtns = document.querySelectorAll("input[name='delete']");
+
+deleteBtns.forEach(btn => {
+    btn.addEventListener("click", e => {
+        //traverse all the item array
+        //try to find the item with the same id with the delete button
+        if(dripperArray !== null) {
+            dripperArray.forEach((item,index) => {
+                if(item.id === parseInt(btn.id)){
+                    //once it finds the corresponding item
+                    //use splice to remove the item
+                    dripperArray.splice(index,1);
+                    dripperImageArray.splice(index,1);
+                    //update the local storage
+                    localStorage.setItem('drippers', JSON.stringify(dripperArray));
+                    localStorage.setItem('dripperImages', JSON.stringify(dripperImageArray));
+
+                    window.location.reload(true);
+                    //once it finds the item, no need to iterate, just return
+                    return;
+                }
+            });
+        }
+        if(grinderArray !== null) {
+            grinderArray.forEach((item,index) => {
+                //notice here the item.id is a number, where the btn.id is a string
+                //so solution here is either parse the btn.id into a number or use == which will convert the type automatically
+                if(item.id === parseInt(btn.id)){
+                    //once it finds the corresponding item
+                    //use splice to remove the item
+                    grinderArray.splice(index,1);
+                    grinderImageArray.splice(index,1);
+                    //update the local storage
+                    localStorage.setItem('grinders', JSON.stringify(grinderArray));
+                    localStorage.setItem('grinderImages', JSON.stringify(grinderImageArray));
+
+                    window.location.reload();
+                    return
+
+                }
+            })
+        }
+        if(coffeeArray !== null){
+            coffeeArray.forEach((item,index) => {
+                //notice here the item.id is a number, where the btn.id is a string
+                //so solution here is either parse the btn.id into a number or use == which will convert the type automatically
+                if(item.id === parseInt(btn.id)){
+                    //once it finds the corresponding item
+                    //use splice to remove the item
+                    coffeeArray.splice(index,1);
+                    coffeeArray.splice(index,1);
+                    //update the local storage
+                    localStorage.setItem('coffees', JSON.stringify(coffeeArray));
+                    localStorage.setItem('coffeeImages', JSON.stringify(coffeeImageArray));
+
+                    window.location.reload();
+                    return
+
+                }
+            })
+        }
+    })
+});
 
 //update the html content based on the local storage 
 function updateCoffeeSection() {
@@ -456,67 +537,3 @@ function getBase64(file, callback) {
     reader.readAsDataURL(file);
 }
 
-
-const deleteBtns = document.querySelectorAll("input[name='delete']");
-
-deleteBtns.forEach(btn => {
-    btn.addEventListener("click", e => {
-        //traverse all the item array
-        //try to find the item with the same id with the delete button
-        if(dripperArray !== null) {
-            dripperArray.forEach((item,index) => {
-                if(item.id === parseInt(btn.id)){
-                    //once it finds the corresponding item
-                    //use splice to remove the item
-                    dripperArray.splice(index,1);
-                    dripperImageArray.splice(index,1);
-                    //update the local storage
-                    localStorage.setItem('drippers', JSON.stringify(dripperArray));
-                    localStorage.setItem('dripperImages', JSON.stringify(dripperImageArray));
-
-                    window.location.reload();
-                    //once it finds the item, no need to iterate, just return
-                    return;
-                }
-            });
-        }
-        if(grinderArray !== null) {
-            grinderArray.forEach((item,index) => {
-                //notice here the item.id is a number, where the btn.id is a string
-                //so solution here is either parse the btn.id into a number or use == which will convert the type automatically
-                if(item.id === parseInt(btn.id)){
-                    //once it finds the corresponding item
-                    //use splice to remove the item
-                    grinderArray.splice(index,1);
-                    grinderImageArray.splice(index,1);
-                    //update the local storage
-                    localStorage.setItem('grinders', JSON.stringify(grinderArray));
-                    localStorage.setItem('grinderImages', JSON.stringify(grinderImageArray));
-
-                    window.location.reload();
-                    return
-
-                }
-            })
-        }
-        if(coffeeArray !== null){
-            coffeeArray.forEach((item,index) => {
-                //notice here the item.id is a number, where the btn.id is a string
-                //so solution here is either parse the btn.id into a number or use == which will convert the type automatically
-                if(item.id === parseInt(btn.id)){
-                    //once it finds the corresponding item
-                    //use splice to remove the item
-                    coffeeArray.splice(index,1);
-                    coffeeArray.splice(index,1);
-                    //update the local storage
-                    localStorage.setItem('coffees', JSON.stringify(coffeeArray));
-                    localStorage.setItem('coffeeImages', JSON.stringify(coffeeImageArray));
-
-                    window.location.reload();
-                    return
-
-                }
-            })
-        }
-    })
-});

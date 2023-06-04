@@ -41,7 +41,9 @@
 
 
 #coffee{
+    margin: 25vh 0;
     .grid-container{
+        grid-template-columns: 1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr;
         grid-template-rows: 1fr 9fr;
         grid-template-areas:
         "heading heading heading heading heading heading heading heading heading heading heading heading"
