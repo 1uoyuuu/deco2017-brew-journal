@@ -34,19 +34,37 @@ class Origin {
     }
 }
 class Dripper {
-    constructor(name, material, brand, image) {
+    constructor(name, material, brand) {
+        this.id = Date.now();
         this.name = name;
         this.material = material;
         this.brand = brand;
-        this.image = image;
+    }
+    toJSON() {
+		return {
+			type: "Dripper",
+			name: this.name,
+			material: this.material,
+            brand: this.brand,
+            id: this.id
+		};
     }
 }
 class Grinder {
-    constructor(name, burr, brand, image) {
+    constructor(name, burr, brand) {
+        this.id = Date.now();
         this.name = name;
         this.burr = burr;
         this.brand = brand;
-        this.image = image;
+    }
+    toJSON() {
+		return {
+			type: "Grinder",
+			name: this.name,
+			burr: this.burr,
+            brand: this.brand,
+            id: this.id
+		};
     }
 }
 const setUnknown = value => value === "" ? "Unknown" : value.trim();
@@ -112,6 +130,7 @@ coffeeForm.addEventListener("submit", event => {
         setZero(coffeeForm.elements.coffeePrice.value),
         flavours //array of strings
     );
+    //store the image inside the local storage
     getBase64(coffeeForm.elements.coffeeImage.files[0],e=>{
         coffeeImageArray.push(e);
         localStorage.setItem('coffeeImages', JSON.stringify(coffeeImageArray));
@@ -124,8 +143,10 @@ coffeeForm.addEventListener("submit", event => {
     //reset the form
     coffeeForm.reset();
 
-    //update the section when the form is submitted
-    updateCoffeeSection();
+    //refresh the webpage when the form is submitted, this will make sure all the images display correctly
+    //without refreshing, there have been several bugs such as the carousel out of height, the image wont show
+    //adding refresh function here prevents all these bugs i encountered
+    window.location.reload();
 
 });
 gadgetForm.addEventListener("submit", event => {
@@ -134,21 +155,19 @@ gadgetForm.addEventListener("submit", event => {
     if (gadgetForm.elements.gadgetType.value === "Grinder") {
         let newGrinder = new Grinder(
             gadgetForm.elements.grinderName.value,
-            gadgetForm.elements.burrType.value,
-            gadgetForm.elements.grinderBrand.value);
+            setUnknown(gadgetForm.elements.burrType.value),
+            setUnknown(gadgetForm.elements.grinderBrand.value));
         getBase64(gadgetForm.elements.grinderImage.files[0],e=>{
             grinderImageArray.push(e);
             localStorage.setItem('grinderImages', JSON.stringify(grinderImageArray));
         });
         grinderArray.push(newGrinder);
         localStorage.setItem('grinders', JSON.stringify(grinderArray));
-        createNewGadget();
-
     } else if (gadgetForm.elements.gadgetType.value === "Dripper") {
         let newDripper = new Dripper(
             gadgetForm.elements.dripperName.value,
-            gadgetForm.elements.dripperMaterial.value,
-            gadgetForm.elements.dripperBrand.value,
+            setUnknown(gadgetForm.elements.dripperMaterial.value),
+            setUnknown(gadgetForm.elements.dripperBrand.value),
             gadgetForm.elements.dripperImage.files[0]);
 
         getBase64(gadgetForm.elements.dripperImage.files[0],e=>{
@@ -157,56 +176,56 @@ gadgetForm.addEventListener("submit", event => {
             });
         dripperArray.push(newDripper);
         localStorage.setItem('drippers', JSON.stringify(dripperArray));
-        createNewGadget();
     }
+    //same here, after submitting the form successfully, reset the form and refresh the page
     gadgetForm.reset();
-
+    window.location.reload();
 });
 
 
 
 
 updateCoffeeSection();
-
+updateGadgetSection();
 
 
 //----------------------------------------- HELPER FUNCTION ----------------------------------------
 //add html content to the coffee, this will create a li element
 
-function createNewGadget(gadget) {
-    //select the carousel container
-    const gadgetCarousel = document.getElementById("gadget-carousel");
+function createNewGadget(gadget,index) {
     //create a new li element
     const li = document.createElement("li");
     li.className = "glide__slide";
     const div = document.createElement("div");
     div.className = "carousel-item";
-    if (gadget instanceof Dripper) {
+    if (gadget.type === "Dripper") {
+        console.log("running here");
         div.innerHTML = `<div class="flex-row">
                         <p>${gadget.material}</p>
                         <p>Dripper</p>
                     </div>
-                    <img class="color-thief-images" src="src/images/dripper-v60.png"
-                        alt="a silver metal v60 dripper">
+                    <input id="${gadget.id}" class="gadget-delete black-fill white-border fill-in" type="button" value="Delete" />
+                    <img class="color-thief-images" src="${dripperImageArray[index]}"
+                        alt="a coffeee dripper ${gadget.name}">
                     <div class="flex-row">
                         <p>${gadget.name}</p>
                         <p>${gadget.brand}</p>
                     </div>`
-    } else if (gadget instanceof Grinder) {
+    } else if (gadget.type === "Grinder") {
         div.innerHTML = `<div class="flex-row">
                         <p>${gadget.burr}</p>
                         <p>Grinder</p>
                     </div>
-                    <img class="color-thief-images" src="src/images/dripper-v60.png"
-                        alt="a silver metal v60 dripper">
+                    <input id="${gadget.id}" class="gadget-delete black-fill white-border fill-in" type="button" value="Delete" />
+                    <img class="color-thief-images" src="${grinderImageArray[index]}"
+                        alt="a coffeee grinder ${gadget.name}">
                     <div class="flex-row">
                         <p>${gadget.name}</p>
                         <p>${gadget.brand}</p>
                     </div>`
     }
     li.appendChild(div);
-    gadgetCarousel.appendChild(li);
-    console.log(li);
+    return li;
 }
 
 function createCoffeeListItem(coffee) {
@@ -230,9 +249,12 @@ function createCoffeeListItem(coffee) {
 }
 //add description to the coffee, this will create a div container with all the information about the coffee
 function createCoffeeDescription(coffee,index) {
+    //div container for the coffeee description content
     const div = document.createElement("div");
 
     //create tags for flavours
+    //it's easier for me to manage the html content here
+    //as one coffee may have multiple tags, so a for loop here will translate all tags into the span
     let tempDiv = document.createElement("div");
     let flavourDiv = document.createElement("div");
     flavourDiv.className = "special-row-2";
@@ -247,6 +269,8 @@ function createCoffeeDescription(coffee,index) {
         flavourDiv.appendChild(tag);
     }
     tempDiv.appendChild(flavourDiv);
+
+    //adding html content to the div 
     div.classList.add("coffee-item-info");
     div.innerHTML = `<div class="info-col">
                             <div class="info-row">
@@ -262,7 +286,7 @@ function createCoffeeDescription(coffee,index) {
                                 <span class="info-item-value">${coffee.roaster.name}</span>
                             </div>
                             <div class="info-row image-row">
-                                <img src="${coffeeImageArray[index]}" alt="a photo of ${coffee.name}">
+                                <img class="color-thief-images-for-bg" src="${coffeeImageArray[index]}" alt="a photo of ${coffee.name}">
                             </div>
                             <div class="info-row">
                                 <span class="info-item-label">Origin Country:</span>
@@ -323,6 +347,7 @@ function createCoffeeDescription(coffee,index) {
 }
 
 
+
 function updateCoffeeSection() {
     const coffeeList = document.querySelector("#coffee-list > ul");
     const coffeeInfo = document.querySelector("#coffee-info");
@@ -334,7 +359,7 @@ function updateCoffeeSection() {
     to reminisce about
     your favourite cup.</p>`;
 
-    // Retrieve the favourite countries from localStorage
+    // Retrieve the coffee array from localStorage
     let coffees = JSON.parse(localStorage.getItem('coffees'));
 
     // iterate through all the coffee entries when it's not null
@@ -351,7 +376,6 @@ function updateCoffeeSection() {
 
 
 };
-
 
 // when user click on each coffee item, a full description will be shown on the left
 function toggleDisplay() {
@@ -397,9 +421,83 @@ function toggleDisplay() {
 }
 
 
+function updateGadgetSection(){
+    const coffeeGadget = document.querySelector("#gadget-carousel");
+
+    //delete all the previous content
+    coffeeGadget.innerHTML = "";
+
+    // Retrieve the coffee array from localStorage
+    let drippers = JSON.parse(localStorage.getItem('drippers'));
+    let grinders = JSON.parse(localStorage.getItem('grinders'));
+    //iterate through the local storage and add gadget into the carousel
+    if (drippers !== null) {
+        drippers.forEach((dripper,index) => {
+            let li = createNewGadget(dripper,index);
+            coffeeGadget.appendChild(li);
+        });
+    };
+    if (grinders !== null) {
+        grinders.forEach((grinder,index) => {
+            let li = createNewGadget(grinder,index);
+            coffeeGadget.appendChild(li);
+        });
+    }
+}
+
+
+
+//this function will translate an image file into a based 64 string
 function getBase64(file, callback) {
 
     const reader = new FileReader();
     reader.addEventListener('load', () => callback(reader.result));
     reader.readAsDataURL(file);
 }
+
+
+const gadgetDel = document.querySelectorAll(".gadget-delete");
+
+gadgetDel.forEach(btn => {
+    btn.addEventListener("click", e => {
+        //traverse in the gadget array
+        //try to find the item with the same id with the delete button
+        if(dripperArray !== null) {
+            dripperArray.forEach((item,index) => {
+                if(item.id === parseInt(btn.id)){
+                    //once it finds the corresponding item
+                    //use splice to remove the item
+                    dripperArray.splice(index,1);
+                    dripperImageArray.splice(index,1);
+                    //update the local storage
+                    localStorage.setItem('drippers', JSON.stringify(dripperArray));
+                    localStorage.setItem('dripperImages', JSON.stringify(dripperImageArray));
+
+                    window.location.reload();
+                    //once it finds the item, no need to iterate, just return
+                    return
+                }
+            });
+        }
+        if(grinderArray !== null) {
+            grinderArray.forEach((item,index) => {
+                //notice here the item.id is a number, where the btn.id is a string
+                //so solution here is either parse the btn.id into a number or use == which will convert the type automatically
+                if(item.id === parseInt(btn.id)){
+                    console.log("this is the one");
+                    //once it finds the corresponding item
+                    //use splice to remove the item
+                    grinderArray.splice(index,1);
+                    grinderImageArray.splice(index,1);
+                    //update the local storage
+                    localStorage.setItem('grinders', JSON.stringify(grinderArray));
+                    localStorage.setItem('grinderImages', JSON.stringify(grinderImageArray));
+
+                    window.location.reload();
+                    return
+
+                }
+            })
+        }
+    })
+});

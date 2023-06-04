@@ -97,9 +97,6 @@
             .special-row {
                 display: flex;
                 flex-direction: column;
-                img {
-                    max-width: 23vw;
-                }
                 & > * {
                     width: 100%;
                     display: flex;
@@ -124,6 +121,16 @@
                         flex-direction: column;
                     }
                 }
+            }
+
+            //for the image row it is the same as the special row
+            .image-row {
+                img {
+                    object-fit: contain;
+                    width: 100%;
+                    border: 1px solid white;
+                }
+                padding: 8%;
             }
 
         }

@@ -10,28 +10,64 @@
     justify-content: center;
     margin: auto 2%;
 }
-.carousel-item {
-    // width: 600px;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    border: 1px solid white;
-    padding: 5%;
-    .flex-row {
-        width: 100%;
-        display: flex;
-        justify-content: space-between;
 
+
+#gadget-carousel {
+
+    li.glide__slide {
+        //make sure it has the same height as the parent container
+        height: inherit;
     }
-    p {
-        font-size: 1.5rem;
-    }
-    img {
-        // flex: 1;
-        border: 2vh solid rgb(255, 229, 233);
-        max-width: 100%;
-        max-height: 100%;
-        margin: auto;
+
+    .carousel-item {
+        height: 100%;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        border: 1px solid white;
+        padding: 5%;
+        position: relative;
+        .flex-row {
+            width: 100%;
+            display: flex;
+            justify-content: space-between;
+    
+        }
+        p {
+            font-size: 1.5rem;
+            text-transform: capitalize;
+        }
+        img {
+            flex: 1;
+            border: 2vh solid white;
+            object-fit: contain;
+            width: 100%;
+            margin: auto;
+        }
+        .gadget-delete {
+            display: none;
+            
+        }
+        &:hover {
+            .gadget-delete {
+                z-index: 999;//make sure the button is at the top for us to see
+                display: block;
+                //center the delete button without the translate
+                //translate will disrupt the scale animation
+                position: absolute;
+                top: 0;
+                bottom: 0;
+                left: 0;
+                right: 0;
+                margin: auto;
+                &:hover {
+                    //blur the image when hovering on the delete button
+                    & + * {
+                        filter: blur(5px);
+                    }
+                }
+            }
+        }
     }
 }
 

@@ -2,6 +2,7 @@ import Glide from '@glidejs/glide';
 
 const config = {
     type: 'slider',
+    rewind: true,
     startAt: 0,
     perView: 3,
     autoplay: false, //autoplay the carousel every 2 seconds
@@ -18,3 +19,5 @@ const config = {
 
 }
 new Glide('.glide', config).mount();
+
+

@@ -3,20 +3,20 @@ button {
     font-size: 1.5rem;
     position: relative;
     cursor: pointer;
+
     // height: 3rem;
     // max-width: 10rem;
     //add a click effect for all the buttons
-    &:active {
-        transform: scale(0.96);
-        transition: all .3s ease;
-    }
 }
 
 // fill in animation for buttons
 .fill-in {
+    transition: all .5s ease;
     &:hover {
-        transition: all 1s ease;
         box-shadow: inset 0 0 0 2em $accent;
+    }
+    &:active {
+        transform: scale(0.96);
     }
 }
 
@@ -33,8 +33,9 @@ input[type="button"] {
         border-color: $gray;
         color: $gray;
         cursor: not-allowed;
+
         //remove the box-shadow animation when a button is disabled
-        &:hover{
+        &:hover {
             box-shadow: none;
         }
     }
@@ -60,22 +61,12 @@ input[type="button"] {
     border: 1px solid white;
 }
 
-.fill::before {
-    content: "";
+input[name="close"] {
+    bottom: -50%;
+    right: -4%;
     position: absolute;
-    background: white;
-    bottom: 0;
-    left: 100%;
-    right: 0;
-    top: 0;
-    z-index: -1;
-    -webkit-transition: left 0.1s ease-in;
-}
 
-.fill:hover {
-    color: $black;
-}
-
-.fill:hover::before {
-    left: 0;
+    width: 6rem;
+    height: 6rem;
+    border-radius: 50%;
 }
