@@ -1,44 +1,39 @@
-(function () {
+//original code inspiration from: https://codepen.io/ntenebruso/pen/QWLzVjY
 
-    const follower = document.querySelector('#cursor');
-    window.addEventListener("mousedown", ()=>{
-        follower.style.opacity = "0";
-        follower.style.transition = "opacity 200ms ease";
+var cursor = document.querySelector('.cursor');
+var cursorinner = document.querySelector('.cursor2');
+var a = document.querySelectorAll('a');
+
+document.addEventListener('mousemove', function (e) {
+    let ease = 0.1;
+    var x = e.clientX;
+    var y = e.clientY;
+
+    cursor.style.transform = `translate3d(calc(${e.clientX}px - 50%), calc(${e.clientY}px - 50%), 0)`
+});
+
+document.addEventListener('mousemove', function (e) {
+    var x = e.clientX;
+    var y = e.clientY;
+    cursorinner.style.left = x + 'px';
+    cursorinner.style.top = y + 'px';
+});
+
+document.addEventListener('mousedown', function () {
+    cursor.classList.add('click');
+    cursorinner.classList.add('cursorinnerhover')
+});
+
+document.addEventListener('mouseup', function () {
+    cursor.classList.remove('click')
+    cursorinner.classList.remove('cursorinnerhover')
+});
+
+a.forEach(item => {
+    item.addEventListener('mouseover', () => {
+        cursor.classList.add('hover');
     });
-    window.addEventListener("mouseup", ()=>{
-        follower.style.opacity = "1";
+    item.addEventListener('mouseleave', () => {
+        cursor.classList.remove('hover');
     });
-
-    let posX = 0;
-    let posY = 0;
-    let mouseX = 0;
-    let mouseY = 0;
-
-    const ease = 0.1;
-
-    function easeTo() {
-        const followerBounds = follower.getBoundingClientRect();
-
-        const dX = mouseX - (followerBounds.left + 6);
-        const dY = mouseY - (followerBounds.top + 6);
-
-        posX += dX * ease;
-        posY += dY * ease;
-    }
-
-    function update() {
-        easeTo();
-        follower.style.transform = `translate3d(${posX}px, ${posY}px, 0)`;
-        requestAnimationFrame(update);
-    }
-
-    function setCoords(e) {
-        mouseX = e.clientX;
-        mouseY = e.clientY;
-    }
-
-    document.onmousemove = setCoords;
-    update();
-})();
-
-
+})

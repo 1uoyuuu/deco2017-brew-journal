@@ -1,13 +1,35 @@
-
-#cursor {
+.cursor {
+    width: 24px;
+    height: 24px;
+    border-radius: 100%;
+    border: 1px solid white;
+    transition: all 200ms ease-out;
+    position: fixed;
+    pointer-events: none;
+    left: 0;
+    top: 0;
+    transform: translate(calc(-50% + 15px), -50%);
     z-index: 9999;
-    width: 12px;
-    height: 12px;
-    // border-radius: 50%;
-    background: $accent;
-    position: absolute;
-    // margin: -16px 0 0 -16px;
-    //regain the ability to click
-    pointer-events: none; /* ADD_ME */
 }
 
+.cursor2 {
+    width: 8px;
+    height: 8px;
+    border-radius: 100%;
+    background-color: $accent;
+    position: fixed;
+    transform: translate(-50%, -50%);
+    pointer-events: none;
+    transition: width .3s, height .3s, opacity .3s;
+    z-index: 9999;
+}
+
+.hover {
+    background-color: white;
+    opacity: 0.5;
+}
+
+.cursorinnerhover {
+    width: 24px;
+    height: 24px;;
+}
