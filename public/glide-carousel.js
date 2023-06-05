@@ -18,6 +18,16 @@ const config = {
     }
 
 }
-new Glide('.glide', config).mount();
+
+const carousel = document.querySelector(".glide");
+const glide = new Glide('.glide', config);
+
+document.addEventListener("DOMContentLoaded", function () {
+    //after content fully loaded, then turn on the carousel visibility
+    //this helps prevent the image flickering bug when refreshing the page
+    carousel.style.visibility = "visible";
+    glide.mount();
+});
+
 
 

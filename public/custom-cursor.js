@@ -2,10 +2,9 @@
 
 var cursor = document.querySelector('.cursor');
 var cursorinner = document.querySelector('.cursor2');
-var a = document.querySelectorAll('a');
+var a = document.querySelectorAll('nav a');
 
 document.addEventListener('mousemove', function (e) {
-    let ease = 0.1;
     var x = e.clientX;
     var y = e.clientY;
 

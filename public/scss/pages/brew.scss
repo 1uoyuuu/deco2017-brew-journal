@@ -30,7 +30,8 @@
         //each link will span 2 grid column
         grid-column: span 2;
         text-decoration: none;
-        font-size: 1.5rem;
+        font-size: 1.2rem;
+        padding: 2% 0;
     }
 }
 
@@ -39,6 +40,7 @@
 
 //item title
 .brew-basic-info-wrapper {
+
     align-items: center;
     p {
         grid-column: span 2;
@@ -132,5 +134,60 @@
 
 
 
+    }
+}
+
+
+
+#brew-form {
+    .form-page {
+        justify-content: flex-end;
+        gap: 3rem;
+
+        .form-input-container {
+
+            .custom-select {
+                width: 12vw;
+
+                .select-items {
+                    height: 8rem;
+
+                    div {
+                        //make sure the first three item has bottom border, even if they are the last children
+                        &:nth-child(-n+3){
+                            border-bottom: 1px solid $gray;
+                        }
+                    }
+                }
+            }
+        }
+
+
+        &:nth-child(2) {
+
+            .form-text {
+                margin: 0;
+            }
+
+            .form-row:nth-child(3){
+                .form-item:first-child {
+                    .form-text {
+                        margin: 0 0.5rem;
+                    }
+                }
+                .form-item:nth-child(2) {
+                    margin-left: 1.5rem;
+                }
+            }
+        }
+
+        &:last-child {
+            .form-text {
+                margin: 0;
+            }
+            textarea {
+                margin-top: 5rem;
+            }
+        }
     }
 }

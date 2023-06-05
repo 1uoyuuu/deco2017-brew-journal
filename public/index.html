@@ -39,7 +39,7 @@
             <div class="content">
                 <section>
                     <h2>Coffee Flavour Wheel.</h2>
-                    <figure><img src="src/images/coffee-wheel.png" width="400px" alt=""></figure>
+                    <div id="flavour-chart"></div>
                 </section>
                 <section>
                     <h2>Statistics.</h2>
@@ -601,12 +601,12 @@
             </div>
             <div class="content">
                 <!-- a glide carousel structure -->
-                <section class="glide">
+                <div class="glide" style="visibility:hidden">
                     <div class="glide__track" data-glide-el="track">
                         <ul id="gadget-carousel" class="glide__slides">
                         </ul>
                     </div>
-                </section>
+                </div>
             </div>
             <div class="bottom-white-space"></div>
         </div>
@@ -743,7 +743,8 @@
     <section id="brew">
         <div class="heading">
             <h1>Brew.</h1>
-            <button id="add-new-brew" data-a11y-dialog-show="add-brew-dialog" class="white-border black-fill">Add
+            <button id="add-new-brew" data-a11y-dialog-show="add-brew-dialog"
+                class="fill-in white-border black-fill">Add
                 New</button>
         </div>
         <div class="content">
@@ -845,7 +846,8 @@
                                 <div class="info-col">
                                     <div class="info-row special-row">
                                         <span class="info-item-label">Note:</span>
-                                        <span class="info-item-value text-area">Lorem ipsum dolor sit amet, consectetur adipiscing elit</span>
+                                        <span class="info-item-value text-area">Lorem ipsum dolor sit amet, consectetur
+                                            adipiscing elit</span>
                                     </div>
                                 </div>
                             </div>
@@ -944,7 +946,8 @@
                                 <div class="info-col">
                                     <div class="info-row special-row">
                                         <span class="info-item-label">Note:</span>
-                                        <span class="info-item-value text-area">Lorem ipsum dolor sit amet, consectetur adipiscing elit</span>
+                                        <span class="info-item-value text-area">Lorem ipsum dolor sit amet, consectetur
+                                            adipiscing elit</span>
                                     </div>
                                 </div>
                             </div>
@@ -1043,7 +1046,8 @@
                                 <div class="info-col">
                                     <div class="info-row special-row">
                                         <span class="info-item-label">Note:</span>
-                                        <span class="info-item-value text-area">Lorem ipsum dolor sit amet, consectetur adipiscing elit</span>
+                                        <span class="info-item-value text-area">Lorem ipsum dolor sit amet, consectetur
+                                            adipiscing elit</span>
                                     </div>
                                 </div>
                             </div>
@@ -1061,22 +1065,209 @@
             <div class="dialog-overlay"></div>
             <!-- The actual dialog -->
             <div class="dialog-content" role="dialog">
-                <div class="form-container">
-                    <div class="form-heading">
-                        <h1>Wow, new brew!</h1>
-                        <input type="button" class="white-fill black-border" name="close" value="Close"
-                            data-a11y-dialog-hide="add-brew-dialog" aria-label="Close dialog">
-                    </div>
+                <div class="modal-heading">
+                    <h1>New Brew.</h1>
+                    <input type="button" class="fill-in black-fill white-border" name="close" value="Close"
+                        data-a11y-dialog-hide="add-brew-dialog" aria-label="Close dialog">
                 </div>
+                <form action="#" id="brew-form">
+                    <div class="form-page msf-hide">
+                        <div class="form-input-container">
+                            <div class="form-row">
+                                <div class="form-item is-required">
+                                    <label class="brewCoffee">Today, I am going to brew</label>
+                                    <div class="custom-select">
+                                        <select id="brewCoffee" name="brewCoffee" data-group="0" required>
+                                            <option value="" label="Select a coffee" selected="selected">Select a
+                                                coffee</option>
+                                        </select>
+                                    </div>
+                                </div>
+                                <div class="form-item is-required">
+                                    <label for="brewDripper">with my</label>
+                                    <div class="custom-select">
+                                        <select id="brewDripper" name="brewDripper" data-group="0" required>
+                                            <option value="" label="Select a dripper" selected="selected">Select a
+                                                dripper</option>
+                                        </select>
+                                    </div>
+                                </div>
+                                <span class="form-text">dripper.</span>
+                            </div>
+                            <div class="form-row">
+                                <div class="form-item is-required">
+                                    <label for="brewGrinder">I am using</label>
+                                    <div class="custom-select">
+                                        <select id="brewGrinder" name="brewGrinder" data-group="0" required>
+                                            <option value="" label="Select a grinder" selected="selected">Select a
+                                                grinder</option>
+                                        </select>
+                                    </div>
+                                </div>
+                                <div class="form-item">
+                                    <label for="grinderSetting">and set it at</label>
+                                    <input type="text" id="grinderSetting" name="grinderSetting" data-group="0"
+                                        placeholder="grinder setting" size="20">
+                                    <span class="form-text">to grind the coffee.</span>
+                                </div>
+                            </div>
+                            <div class="form-row">
+                                <div class="form-item">
+                                    <label for="recipeLink">Today’s brew inspiration comes from</label>
+                                    <input type="text" id="recipeLink" name="recipeLink"
+                                        placeholder="recipe link (if any)" size="48">
+                                </div>
+                            </div>
+                        </div>
+                        <div class="progress-container">
+                            <div class="progress-text">
+                                <h2>Preparation.</h2>
+                                <p>1 / 3</p>
+                            </div>
+                            <div class="progress-button">
+                                <input type="button" class="fill-in black-fill white-border" name="back" value="Prev">
+                                <input type="button" class="fill-in black-fill white-border" name="next" value="Next">
+                            </div>
+                        </div>
+                    </div>
+                    <div class="form-page msf-hide">
+                        <div class="form-input-container">
+                            <div class="form-row">
+                                <div class="form-item is-required">
+                                    <label for="brewTemperature">I will set the water temperature at</label>
+                                    <input type="number" id="brewTemperature" name="brewTemperature" min="0" max="100"
+                                        onkeyup="if(value<0) value=0; else if(value>100) value=100;" data-group="1"
+                                        required>
+
+                                </div>
+                                <span class="form-text">°C.</span>
+                                <div class="form-item is-required">
+                                    <label for="waterAmount">I will use</label>
+                                    <input type="number" id="waterAmount" name="waterAmount" min="0"
+                                        onkeyup="if(value<0) value=0;" data-group="1" required>
+
+                                </div>
+                                <span class="form-text">grams water</span>
+                            </div>
+                            <div class="form-row">
+                                <div class="form-item is-required">
+                                    <label for="coffeeAmount">to brew</label>
+                                    <input type="number" id="coffeeAmount" name="coffeeAmount" min="0"
+                                        onkeyup="if(value<0) value=0;" data-group="1" required>
+                                </div>
+                                <span class="form-text">grams coffee.</span>
+                                <div class="form-item is-required">
+                                    <label for="bloomTime">I will bloom for</label>
+                                    <input type="number" id="bloomTime" name="bloomTime" min="0"
+                                        onkeyup="if(value<0) value=0;" data-group="1" required>
+
+                                </div>
+                                <span class="form-text">seconds. The brewing</span>
+                            </div>
+                            <div class="form-row">
+                                <div class="form-item is-required">
+                                    <label for="brewMinute">will yield at</label>
+                                    <input type="number" id="brewMinute" name="brewMinute" min="0"
+                                        onkeyup="if(value<0) value=0;" data-group="1" placeholder="min" required>
+                                    <span class="form-text">:</span>
+                                    <input type="number" id="brewSecond" name="brewSecond" min="0"
+                                        onkeyup="if(value<0) value=0;" data-group="1" placeholder="sec" required>
+                                </div>
+                                <div class="form-item">
+                                    <label for="beverageAmount">The total beverage weight is</label>
+                                    <input type="number" id="beverageAmount" name="beverageAmount" min="0"
+                                        onkeyup="if(value<0) value=0;" data-group="1">
+
+                                </div>
+                                <span class="form-text">grams.</span>
+                            </div>
+                        </div>
+                        <div class="progress-container">
+                            <div class="progress-text">
+                                <h2>Brewing.</h2>
+                                <p>2 / 3</p>
+                            </div>
+                            <div class="progress-button">
+                                <input type="button" class="fill-in black-fill white-border" name="back" value="Prev">
+                                <input type="button" class="fill-in black-fill white-border" name="next" value="Next">
+                            </div>
+                        </div>
+                    </div>
+                    <div class="form-page msf-hide">
+                        <div class="form-input-container">
+                            <div class="form-row">
+                                <div class="form-item tag-container is-required">
+                                    <label for="tastingNote">This coffee tastes like</label>
+                                        <input type="text" id="tastingNote" name="tastingNote" data-group="2"
+                                        required>
+                                </div>
+                            </div>
+                            <div class="form-row">
+                                <div class="form-item is-required">
+                                    <label for="rating">I will give this cup a rating of</label>
+                                    <div class="heart-rating">
+                                        <input id="rating1" type="radio" name="rating" value="1" data-group="2" required>
+                                        <label for="rating1"><svg class="unfill-heart" width="28" height="26" viewBox="0 0 28 26" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                            <path d="M14.3327 24.705C14.1429 24.8732 13.8572 24.8727 13.6681 24.7037L12.0665 23.2736C5.19984 17.1657 0.666504 13.1373 0.666504 8.19346C0.666504 4.16512 3.2265 1 7.33317 1C10.3906 1 12.2254 3.51773 13.6297 5.22638C13.8227 5.4613 14.1769 5.4613 14.37 5.22638C15.7743 3.51773 17.609 1 20.6665 1C24.7732 1 27.3332 4.16512 27.3332 8.19346C27.3332 13.1373 22.7998 17.1657 15.9332 23.2866L14.3327 24.705Z" stroke="white"/>
+                                            </svg>
+                                            </label>
+                                        <input id="rating2" type="radio" name="rating" value="2" data-group="2" required>
+                                        <label for="rating2"><svg class="unfill-heart" width="28" height="26" viewBox="0 0 28 26" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                            <path d="M14.3327 24.705C14.1429 24.8732 13.8572 24.8727 13.6681 24.7037L12.0665 23.2736C5.19984 17.1657 0.666504 13.1373 0.666504 8.19346C0.666504 4.16512 3.2265 1 7.33317 1C10.3906 1 12.2254 3.51773 13.6297 5.22638C13.8227 5.4613 14.1769 5.4613 14.37 5.22638C15.7743 3.51773 17.609 1 20.6665 1C24.7732 1 27.3332 4.16512 27.3332 8.19346C27.3332 13.1373 22.7998 17.1657 15.9332 23.2866L14.3327 24.705Z" stroke="white"/>
+                                            </svg>
+                                            </label>
+                                        <input id="rating3" type="radio" name="rating" value="3" data-group="2" required>
+                                        <label for="rating3"><svg class="unfill-heart" width="28" height="26" viewBox="0 0 28 26" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                            <path d="M14.3327 24.705C14.1429 24.8732 13.8572 24.8727 13.6681 24.7037L12.0665 23.2736C5.19984 17.1657 0.666504 13.1373 0.666504 8.19346C0.666504 4.16512 3.2265 1 7.33317 1C10.3906 1 12.2254 3.51773 13.6297 5.22638C13.8227 5.4613 14.1769 5.4613 14.37 5.22638C15.7743 3.51773 17.609 1 20.6665 1C24.7732 1 27.3332 4.16512 27.3332 8.19346C27.3332 13.1373 22.7998 17.1657 15.9332 23.2866L14.3327 24.705Z" stroke="white"/>
+                                            </svg>
+                                            </label>
+                                        <input id="rating4" type="radio" name="rating" value="4" data-group="2" required>
+                                        <label for="rating4"><svg class="unfill-heart" width="28" height="26" viewBox="0 0 28 26" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                            <path d="M14.3327 24.705C14.1429 24.8732 13.8572 24.8727 13.6681 24.7037L12.0665 23.2736C5.19984 17.1657 0.666504 13.1373 0.666504 8.19346C0.666504 4.16512 3.2265 1 7.33317 1C10.3906 1 12.2254 3.51773 13.6297 5.22638C13.8227 5.4613 14.1769 5.4613 14.37 5.22638C15.7743 3.51773 17.609 1 20.6665 1C24.7732 1 27.3332 4.16512 27.3332 8.19346C27.3332 13.1373 22.7998 17.1657 15.9332 23.2866L14.3327 24.705Z" stroke="white"/>
+                                            </svg>
+                                            </label>
+                                        <input id="rating5" type="radio" name="rating" value="5" data-group="2" required>
+                                        <label for="rating5"><svg class="unfill-heart" width="28" height="26" viewBox="0 0 28 26" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                            <path d="M14.3327 24.705C14.1429 24.8732 13.8572 24.8727 13.6681 24.7037L12.0665 23.2736C5.19984 17.1657 0.666504 13.1373 0.666504 8.19346C0.666504 4.16512 3.2265 1 7.33317 1C10.3906 1 12.2254 3.51773 13.6297 5.22638C13.8227 5.4613 14.1769 5.4613 14.37 5.22638C15.7743 3.51773 17.609 1 20.6665 1C24.7732 1 27.3332 4.16512 27.3332 8.19346C27.3332 13.1373 22.7998 17.1657 15.9332 23.2866L14.3327 24.705Z" stroke="white"/>
+                                            </svg>
+                                            </label>
+                                    </div>
+                                </div>
+                                <span class="form-text">, and in my further brewing I think</span>
+                            </div>
+                            <div class="form-row">
+                                <div class="form-item">
+                                    <label for="note"> I can make it taste better if I can</label>
+                                    <textarea id="note" name="note" placeholder="write any note you have here" rows="4" cols="64"
+                                        data-group="2"></textarea>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="progress-container">
+                            <div class="progress-text">
+                                <h2>Tasting.</h2>
+                                <p>3 / 3</p>
+                            </div>
+                            <div class="progress-button">
+                                <input type="button" class="fill-in black-fill white-border" name="back" value="Prev">
+                                <input type="button" class="fill-in black-fill white-border" name="next" value="Next">
+                                <input type="submit" class="fill-in black-fill white-border" name="submit"
+                                    value="Submit" data-a11y-dialog-hide="add-coffee-dialog">
+                            </div>
+                        </div>
+                    </div>
+                </form>
             </div>
         </div>
     </section>
     <div class="cursor"></div>
     <div class="cursor2"></div>
+
     <script src="custom-cursor.js"></script>
     <script src="scripts/msf-control.js"></script>
     <script src="script.js"></script>
     <script type="module" src="glide-carousel.js"></script>
+    <script type="module" src="scripts/interactive-chart.js"></script>
     <script type="module" src="accordion.js"></script>
     <script type="module" src="overlay-modal.js"></script>
     <script type="module" src="scripts/colorthief.js"></script>

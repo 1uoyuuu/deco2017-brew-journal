@@ -15,7 +15,6 @@
 .cursor2 {
     width: 8px;
     height: 8px;
-    border-radius: 100%;
     background-color: $accent;
     position: fixed;
     transform: translate(-50%, -50%);
@@ -25,20 +24,23 @@
 }
 
 .hover {
-    background-color: white;
-    opacity: 0.5;
+    width: 36px;
+    height: 36px;
+    border: 1px solid $accent;
 }
 
+//responsible for inner cursor when clicking
 .cursorinnerhover {
-    width: 24px;
-    height: 24px;
-    ;
+    background-color: white;
 }
-
+.click {
+    width: 48px;
+    height: 48px;
+}
 
 //Customised Icons
 .arrow {
-    background: #fff;
+    background-color: white;
     height: 1px;
     width: 24px;
     margin: 0 auto;
@@ -49,7 +51,7 @@
     &:before,
     &:after {
         content: "";
-        background: #fff;
+        background-color: white;
         position: absolute;
         height: 1px;
         width: 12px;

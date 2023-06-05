@@ -126,16 +126,16 @@ form {
     &::after {
         content: "*";
         color: $accent;
-        font-size: 0.8rem;
+        font-size: 1rem;
         position: absolute;
-        right: -2%;
-        top: 10%;
+        right: -10px;
+        top: 16px;
 
     }
 }
 
 //styling the text input field
-input[type=text] {
+input[type=text], textarea {
     background-color: transparent;
     border: none;
     border-bottom: 1px solid $gray;
@@ -169,6 +169,12 @@ input[type=number] {
     &:focus {
         border: 1px solid $accent;
         transition: 200ms all ease-in-out;
+    }
+    &::placeholder {
+        text-transform: uppercase;
+        letter-spacing: 0.01rem;
+        color: $gray;
+        font-size: 1rem;
     }
 }
 
@@ -362,6 +368,50 @@ input[type=date] {
     flex-direction: column;
     align-items: flex-start !important;
 }
+
+
+
+//styling the star rating
+/* We use display: flex to create a row of stars, otherwise, the stars will appear vertically and inline (if that's what you want by all means go ahead) */
+.heart-rating {
+    display: flex;
+    gap: 1rem;
+
+    input {
+        visibility: hidden;
+        display: none;
+    }
+
+    label {
+        width: 1.5rem;
+        height: 1.5rem;
+        cursor: pointer;
+        &:hover {
+            svg path{
+                stroke: white !important;
+            }
+        }
+        &:active {
+            transform: scale(1.2);
+            transition: all 300ms ease-out;
+        }
+        svg{
+            transition: all 200ms ease-in;
+            fill: $accent;
+
+            &.unfill-heart {
+                fill: none;
+                path {
+                    stroke: $gray;
+                }
+            }
+        }
+
+    }
+}
+
+
+
 
 //remove the default autofill background
 /* Change Autocomplete styles in Chrome*/

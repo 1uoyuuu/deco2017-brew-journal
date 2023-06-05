@@ -14,18 +14,13 @@
             padding: 1% 2%;
         }
 
-        figure {
-            flex: 1;
-            margin: 2%;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            overflow: hidden; // prevent the image flow out of the parent
+        #flavour-chart {
+            height: 100%;
 
-            img {
-                max-width: 100%;
-                max-height: 100%;
-                margin: auto;
+            text {
+                fill: white !important;
+                stroke: none !important;
+                font-family: suisse_intllight, Helvetica, sans-serif !important;
             }
         }
 

@@ -38,7 +38,11 @@
     }
 }
 
-
+#overview {
+    .grid-container {
+        grid-template-rows: 0.5fr 1fr 8fr 0.5fr;
+    }
+}
 
 #coffee{
     margin: 25vh 0;

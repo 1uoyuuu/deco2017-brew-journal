@@ -4,6 +4,7 @@
 
 setupMSF(document.getElementById("coffee-form"));
 setupMSF(document.getElementById("gadget-form"));
+setupMSF(document.getElementById("brew-form"));
 
 
 
@@ -31,7 +32,6 @@ function setupMSF(form) {
     let msfIndex = 0;
     let currentPage = msfPages[msfIndex];
     showPage(currentPage);
-
     //get all the buttons
     const backBtns = document.querySelectorAll(`#${form.id}  input[name=back]`);
     const nextBtns = document.querySelectorAll(`#${form.id}  input[name=next]`);
@@ -57,19 +57,21 @@ function setupMSF(form) {
             inputsRequired.push(input);
         }
     });
-
     //user can always goes back to the previous page without any problem
     //so the back buttons should work when user click it
     backBtns.forEach(btn => {
         btn.addEventListener("click", event => {
             //prevent automatically refreshing the page
             event.preventDefault();
+
+
             if (form.id === "gadget-form") {
                 hidePage(currentPage);
                 msfIndex = 0;
                 //change the current page
                 currentPage = msfPages[msfIndex];
                 showPage(currentPage);
+                nextBtns[msfIndex].disabled = false;
                 //end the event for gadget form
                 return;
             }
@@ -78,6 +80,7 @@ function setupMSF(form) {
                 //decrement the page index
                 msfIndex--;
             }
+            nextBtns[msfIndex].disabled = false;
             //change the current page
             currentPage = msfPages[msfIndex];
             showPage(currentPage);
@@ -86,16 +89,18 @@ function setupMSF(form) {
 
     //however, for going to next page or submit the form, it must pass some validations first
     //e.g. no empty values for all required field
-    nextBtns.forEach(btn => {
-        btn.setAttribute("disabled", "true");
+    nextBtns.forEach((btn,index) => {
+        btn.setAttribute("disabled","true");
         //create a eventlistener to listen when an input value changes
         //when an input changes, validate required inputs
         //if validation passes, activate the next button
         inputsAll.forEach(input => {
             input.addEventListener("change", e => {
-                if (validateInputs(inputsRequired, msfIndex)) {
+                //if all the required inputs are filled in, only enable the current page next button
+                if (validateInputs(inputsRequired, msfIndex) && msfIndex === index) {
                     btn.disabled = false;
-                }else {
+                } 
+                if(!validateInputs(inputsRequired,msfIndex)){
                     btn.disabled = true;
                 }
             })
@@ -252,3 +257,24 @@ function radioCheck(name) {
     let checked = document.querySelector(`input[name = "${name}"]:checked`);
     return checked !== null ? checked.value : null;
 }
+
+
+
+//heart rating control inspiration from: https://codepen.io/roseyrobertson/pen/yLLVoYJ
+const hearts = Array.from(document.getElementsByClassName("unfill-heart"));
+console.log(hearts);
+const ratingInputs = document.querySelectorAll("input[name='rating']");
+ratingInputs.forEach(rating =>{
+    rating.addEventListener("change", e => {
+        hearts.forEach(h => {
+            if(!h.classList.contains("unfill-heart")){
+                h.classList.add("unfill-heart");
+            }
+        });
+
+        for(let i = 0; i < Number(e.target.value); i++){
+            hearts[i].classList.remove("unfill-heart");
+            console.log(hearts[i]);
+        }
+    });
+});

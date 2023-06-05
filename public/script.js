@@ -204,6 +204,7 @@ window.addEventListener("beforeunload", function (e) {
 //---------------------- UPDATE CONTENT ----------------------
 updateCoffeeSection();
 updateGadgetSection();
+updateBrewFormSelect();
 
 //---------------------- DELETE FUNCTION ----------------------
 const deleteBtns = document.querySelectorAll("input[name='delete']");
@@ -525,10 +526,32 @@ function createCoffeeDescription(coffee,index) {
     return div;
 }
 
+function updateBrewFormSelect(){
+    const coffeeSelect = document.getElementById("brewCoffee");
+    const dripperSelect = document.getElementById("brewDripper");
+    const grinderSelect = document.getElementById("brewGrinder");
+
+    createSelectOption(coffeeArray,coffeeSelect);
+    createSelectOption(grinderArray,grinderSelect);
+    createSelectOption(dripperArray,dripperSelect);
+
+}
+//this function will generate an array of options based on its source
+//and append all the options into the selectContainer
+function createSelectOption(arr,selectContainer) { 
+    if(arr !== null){
+        for(let i = 0; i< arr.length; i++){
+            let option = document.createElement("option");
+            option.innerHTML = arr[i].name;
+            option.value = arr[i].id;
+
+            selectContainer.appendChild(option);
+        }
+    }
+}
 
 
-
-
+//----------------------------------------- HELPER FUNCTIONS ----------------------------------------
 //this function will translate an image file into a based 64 string
 function getBase64(file, callback) {
 
