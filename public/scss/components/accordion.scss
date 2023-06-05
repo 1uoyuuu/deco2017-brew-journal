@@ -15,9 +15,15 @@
                 font-family: suisse_intllight, Helvetica, sans-serif;
                 color: white;
             }
+
             button::after {
-                content: "\f178";
-                font-family: FontAwesome;
+                content: "" !important; //reset the default style provided with accordion.min.css
+            }
+        }
+        //styling the active state(accordion is opened)
+        &.is-active{
+            button::after {
+                content: "" !important; //reset the default style provided with accordion.min.css
             }
         }
         .ac-panel {
@@ -25,3 +31,4 @@
         }
     }
 }
+

@@ -31,5 +31,47 @@
 
 .cursorinnerhover {
     width: 24px;
-    height: 24px;;
+    height: 24px;
+    ;
+}
+
+
+//Customised Icons
+.arrow {
+    background: #fff;
+    height: 1px;
+    width: 24px;
+    margin: 0 auto;
+    position: relative;
+    cursor: pointer;
+    transition: all 200ms ease;
+
+    &:before,
+    &:after {
+        content: "";
+        background: #fff;
+        position: absolute;
+        height: 1px;
+        width: 12px;
+    }
+
+    &:before {
+        right: -2px;
+        bottom: -4px;
+        transform: rotate(-45deg);
+    }
+
+    &:after {
+        right: -2px;
+        top: -4px;
+        transform: rotate(45deg);
+    }
+}
+
+.down-arrow {
+    transform: rotate(90deg);
+}
+
+.up-arrow {
+    transform: rotate(-90deg);
 }

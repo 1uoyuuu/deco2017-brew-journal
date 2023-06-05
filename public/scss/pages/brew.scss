@@ -3,7 +3,7 @@
 #brew {
     min-height: 100vh;
     margin-top: 10vh;
-    
+
     .heading {
         padding: 0 2%;
         border-bottom: 1px solid white;
@@ -11,18 +11,19 @@
         justify-content: space-between;
         align-items: center;
     }
+
     .col-grid {
         display: grid;
-        grid-template-columns: repeat(12,1fr);
+        grid-template-columns: repeat(12, 1fr);
         gap: 16px;
         padding: 0 2%;
     }
 }
 
 //styling the brew list heading items
-.list-th{
+.list-th {
     border-bottom: 1px solid white;
-    
+
     //styling individual item link
     //add a uparrow at the start of each item
     a {
@@ -35,19 +36,101 @@
 
 
 //styling individual brew item
+
+//item title
 .brew-basic-info-wrapper {
+    align-items: center;
     p {
         grid-column: span 2;
         font-size: 1.5rem;
+        //if it is the last p element, only span 1, leave some room for the arrow
+        &:last-of-type {
+            grid-column: span 1;
+        }
+    }
+    div.arrow {
+        grid-column: span 1;
+        justify-self:end;
+        margin: 0;
     }
 }
+//item expanded content
+.brew-detail-info-wrapper {
+    padding: 4% 2%;
+    align-items: space-between;
 
-.brew-detail-info-wrapper{
-    padding: 0 2%;
-    display: flex;
-    justify-content: space-between;
-    
-    .flex-item{
-        width: 200px;
+    .grid-item {
+        margin: 1rem 0 2rem 0;
+        display: flex;
+        flex-direction: column;
+        // justify-content: center;
+
+        //this is a 12-column grid, each grid-item by default takes 3 column
+        grid-column: span 2;
+
+        //for special grid-item, such as the first and last one, as they don't contain much information
+        //adjust them to span only 2 and 1 column respectively
+        //as a result, 12 columns will be distrubuted evenly
+        &:first-child {
+            align-self: center;
+            grid-column: span 2;
+            img{
+                border: 2vh solid white;
+                object-fit: contain;
+            }
+        }
+
+        &:last-child {
+            //the last child should be the delete button area, it should only take less total width
+            grid-column: span 1;
+            align-self: flex-start;
+        }
+
+        //tasting section
+        &:nth-last-child(2) {
+            flex-wrap: wrap;
+            align-content: center;
+            justify-content: space-between !important;
+            flex-direction: row;
+            grid-column: span 5;
+            h3 {
+                flex-basis: 100%;
+            }
+            .info-col {
+                flex-basis: 49%;
+
+                //for the special row, we need some adjustment as well, the label should take 100%
+                //forcing the tags/chips to go to next line
+                .special-row {
+                    display: flex;
+                    flex-wrap: wrap;
+                    justify-content: flex-start;
+                    gap: 8px;//gap between each tag/chip
+                    
+
+                    &>*:first-child {
+                        flex-basis: 100%;
+                    }
+
+                    //for the note, giving it a border
+                    .text-area{
+                        border: 1px solid white;
+                        padding: 2%;
+                        text-transform: none;
+                        font-size: 0.8rem;
+                    }
+                }
+            }
+        }
+        .info-row {
+            display: flex;
+            justify-content: space-between;
+            padding: 2%;
+        }
+
+
+
+
+
     }
 }
