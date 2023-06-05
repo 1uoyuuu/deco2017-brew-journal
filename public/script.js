@@ -68,6 +68,32 @@ class Grinder {
 		};
     }
 }
+
+class Brew {
+    constructor(coffee,image,dripper,grinder,grinderSetting,recipe,waterTemperature,coffeeAmount,waterAmount,timeMinute,timeSecond,bloomTime,beverageAmount,rating,tastingNote,note){
+        this.id = Date.now();
+        this.date = new Date().toLocaleDateString(); //generate today's date with the dd/mm/yyyy format
+        this.coffee = coffee; //store the coffee Object
+        this.image = image;
+        this.dripper = dripper.name; //only retrieve the dripper name
+        this.grinder = grinder.name; //same for grinder
+        this.grinderSetting = grinderSetting; //string
+        this.recipe = recipe; //string(url)
+        this.waterTemperature = waterTemperature;
+        this.coffeeAmount = Number(coffeeAmount);
+        this.waterAmount = Number(waterAmount);
+        this.ratio = waterAmount/coffeeAmount;
+        this.beverageAmount = beverageAmount;
+        this.timeMinute = timeMinute;
+        this.timeSecond = timeSecond;
+        this.bloomTime = bloomTime;
+        this.rating = rating;
+        this.tastingNote = tastingNote;
+        this.note = note;
+
+    }
+}
+
 const setUnknown = value => value === "" ? "Unknown" : value.trim();
 
 //for number input, if it is optional and user omits it, then set it at 0 by default
@@ -76,7 +102,7 @@ const setZero = value => value === "" ? 0 : value;
 // here I will set up variables for HTML elements with DOM selection
 let coffeeForm = document.getElementById("coffee-form");
 let gadgetForm = document.getElementById("gadget-form");
-
+let brewForm = document.getElementById("brew-form");
 // setup localstorage to store the all the informations
 // if there is no such element, create a new array
 // there will be three parts of information stored in the local storage
@@ -84,7 +110,7 @@ let gadgetForm = document.getElementById("gadget-form");
 let coffeeArray = localStorage.getItem('coffees') ? JSON.parse(localStorage.getItem('coffees')) : [];
 let dripperArray = localStorage.getItem('drippers') ? JSON.parse(localStorage.getItem('drippers')) : [];
 let grinderArray = localStorage.getItem('grinders') ? JSON.parse(localStorage.getItem('grinders')) : [];
-
+let brewArray = localStorage.getItem('brews') ? JSON.parse(localStorage.getItem('brews')) : [];
 let coffeeImageArray = localStorage.getItem('coffeeImages') ? JSON.parse(localStorage.getItem('coffeeImages')) : [];
 let grinderImageArray = localStorage.getItem('grinderImages') ? JSON.parse(localStorage.getItem('grinderImages')) : [];
 let dripperImageArray = localStorage.getItem('dripperImages') ? JSON.parse(localStorage.getItem('dripperImages')) : [];
@@ -182,7 +208,41 @@ gadgetForm.addEventListener("submit", event => {
     gadgetForm.reset();
     window.location.reload();
 });
+brewForm.addEventListener("submit", event => {
+    event.preventDefault();
+    //as the raw input from html form are all string, we need to parse it into number first
+    let coffeeID = Number(brewForm.elements.brewCoffee.value);
+    let dripperID = Number(brewForm.elements.brewDripper.value);
+    let grinderID = Number(brewForm.elements.brewGrinder.value);
+    let coffee = coffeeArray.find(element => element.id === coffeeID);
+    let dripper = dripperArray.find(element => element.id === dripperID);
+    let grinder = grinderArray.find(element => element.id === grinderID);
 
+    let tastingNote = JSON.parse(document.getElementById("tastingNote").value).map(tag => tag.value.trim().toLowerCase());
+
+    let newBrew = new Brew(coffee,
+        coffeeArray.findIndex(e => e.id === coffeeID), // the image index
+        dripper,
+        grinder,
+        brewForm.elements.grinderSetting.value,
+        brewForm.elements.recipeLink.value,
+        brewForm.elements.brewTemperature.value,
+        brewForm.elements.coffeeAmount.value,
+        brewForm.elements.waterAmount.value,
+        brewForm.elements.brewMinute.value,
+        brewForm.elements.brewSecond.value,
+        brewForm.elements.bloomTime.value,
+        brewForm.elements.beverageAmount.value,
+        tastingNote,
+        parseFloat(brewForm.elements.rating.value).toFixed(1),
+        brewForm.elements.note.value
+        );
+    brewArray.push(newBrew);
+    localStorage.setItem('brews', JSON.stringify(brewArray));
+    //reset the form
+    coffeeForm.reset();
+
+});
 
 
 //----------------------------------------- RENDER CONTENT ON WEBPAGE ----------------------------------------
@@ -548,6 +608,12 @@ function createSelectOption(arr,selectContainer) {
             selectContainer.appendChild(option);
         }
     }
+}
+
+
+//this function will generate content for the brew section accordion element
+function createBrewItem(brew){
+
 }
 
 

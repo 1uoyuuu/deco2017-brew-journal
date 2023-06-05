@@ -259,22 +259,3 @@ function radioCheck(name) {
 }
 
 
-
-//heart rating control inspiration from: https://codepen.io/roseyrobertson/pen/yLLVoYJ
-const hearts = Array.from(document.getElementsByClassName("unfill-heart"));
-console.log(hearts);
-const ratingInputs = document.querySelectorAll("input[name='rating']");
-ratingInputs.forEach(rating =>{
-    rating.addEventListener("change", e => {
-        hearts.forEach(h => {
-            if(!h.classList.contains("unfill-heart")){
-                h.classList.add("unfill-heart");
-            }
-        });
-
-        for(let i = 0; i < Number(e.target.value); i++){
-            hearts[i].classList.remove("unfill-heart");
-            console.log(hearts[i]);
-        }
-    });
-});
