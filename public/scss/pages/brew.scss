@@ -35,6 +35,12 @@
     }
 }
 
+.desktop-version {
+    display: block;
+}
+.mobile-version {
+    display: none;
+}
 
 //styling individual brew item
 
@@ -147,13 +153,20 @@
 
 #brew-form {
     .form-page {
-        justify-content: flex-end;
-        gap: 3rem;
 
         .form-input-container {
+            padding: 6%;
 
+            label {
+                flex-shrink: 0;
+            }
+
+            .form-text:not(:first-child) {
+                margin-left: 1rem;
+            }
             .custom-select {
-                width: 12vw;
+                flex-grow: 1;
+                min-width: 15ch;
 
                 .select-items {
                     height: 8rem;
@@ -168,32 +181,151 @@
             }
         }
 
-
-        &:nth-child(2) {
-
-            .form-text {
-                margin: 0;
-            }
-
-            .form-row:nth-child(3){
-                .form-item:first-child {
-                    .form-text {
-                        margin: 0 0.5rem;
-                    }
-                }
-                .form-item:nth-child(2) {
-                    margin-left: 1.5rem;
-                }
-            }
-        }
-
         &:last-child {
-            .form-text {
-                margin: 0;
+
+            .form-item:first-child {
+                flex-basis: 100%;
+            }
+
+            .form-item:nth-child(2){
+                .heart-rating {
+                    flex-grow: 1;
+                    margin-left: 2rem;
+                }
             }
             textarea {
                 margin-top: 5rem;
+                flex-grow: 1;
             }
         }
     }
+}
+
+
+@media screen and (max-width: 480px) {
+
+    #brew-form {
+        .form-page {
+            .form-input-container {
+                padding-top: 20%;
+            }
+
+            &:first-child .form-item:last-child {
+                flex-direction: column;
+                justify-content: flex-start;
+                align-items: flex-start;
+                input {
+                    width: 100%;
+                }
+                    
+                
+            }
+
+            &:last-child {
+
+                .form-input-container {
+                    gap: 2rem;
+                }
+                .form-text {
+                    margin: 0;
+                }
+                .form-item {
+                    flex-direction: column;
+                    align-items: flex-start;
+                }
+                .heart-rating {
+                    justify-content: space-around;
+                    margin: 1rem 0 !important;
+                    
+                    width: 100%;
+                    
+                }
+            }
+        }
+    }
+
+    #brew {
+        //hide the desktop-version heading
+        .desktop-version {
+            display: none;
+        }
+        .mobile-version {
+            display: block;
+            h2{
+                padding: 1% 2%;
+            }
+        }
+        .heading {
+            padding: 0 4%;
+        }
+        .content {
+            margin: 0 4%;
+            border-left: 1px solid white;
+            border-right: 1px solid white;
+            
+            .col-grid {
+                gap: 8px;
+            }
+
+            .accordion-container {
+                .brew-basic-info-wrapper {
+
+                    p {
+                        grid-column: span 5;
+                        &:first-child, &:last-of-type {
+                            grid-row: 1;
+                        }
+                        &:nth-child(2), &:nth-child(5){
+                            grid-row: 2;
+                        }
+                    }
+                    div.arrow {
+                        grid-column: 12;
+                        grid-row: 2;
+                    }
+                }
+                .brew-detail-info-wrapper {
+                    .grid-item {
+                        margin: 0;
+                        &:first-child {
+                            grid-row: 1;
+                            grid-column: 1 / 8;
+                        }
+                        &:nth-child(2) {
+                            grid-row: 2;
+                            grid-column: span 12;
+                        }
+
+                        &:nth-child(3){
+                            grid-row: 3;
+                            grid-column: span 12;
+                        }
+                        &:nth-child(4) {
+                            grid-row: 4;
+                            grid-column: span 12;
+                        }
+                        &:last-child {
+                            grid-row: 1;
+                            grid-column: 9 / -1;
+                        }
+                        
+                    }
+                    .info-row {
+                        padding: 0;
+                        .info-item-label {
+                            font-size: 1.2rem;
+                        }
+                        .info-item-value {
+                            font-size: 1.5rem;
+                        }
+                        .text-area {
+                            min-width: 0;
+                        }
+                    }
+                    
+                }
+            }
+        }
+    }
+    
 }

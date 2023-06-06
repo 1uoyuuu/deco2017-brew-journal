@@ -77,28 +77,28 @@
 
     & .form-page {
         justify-content: flex-end;
-        gap: 3rem;
+        gap: 5rem;
 
-        .form-row {
-            margin-left: 12rem;
-        }
         //adjust the first page of the gadget form
         &:first-child {
-            gap: 5rem;
             .form-item {
+                gap: 2rem;
                 height: 10rem;
+                & > *:first-child {
+                    align-self: flex-start;
+                }
                 .radio-wrapper {
-                    margin-left: 5rem;
-
+                    display: flex;
+                    gap: 2rem;
                     .radio-text {
                         font-size: 2.5rem;
                     }
                 }
             }
-
         }
-        .form-text{
-            margin: 0;
+        //adjust the rest two pages
+        &:not(:first-child){
+
         }
     }
 }
@@ -108,10 +108,32 @@
 //------------------------------------------- RESPONSIVE BREAKPOINT -------------------------------------------
 @media screen and (max-width: 480px) {
     #gadget .grid-container {
-
         height: 80vh;
         p {
             font-size: 2rem;
+        }
+    }
+
+    #gadget-form {
+        .form-page {
+            &:first-child {
+                .form-item {
+                    flex-direction: column;
+                }
+            }
+            .form-input-container {
+                padding: 0 8%;
+            }
+            .form-item:not(:last-child) {
+                width: 100%;
+
+                input {
+                    flex-grow: 1;
+                }
+                
+                
+            }
+
         }
     }
 }

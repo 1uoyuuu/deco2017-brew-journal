@@ -15,41 +15,41 @@ form {
 
     .form-input-container {
         display: flex;
-        flex-direction: column;
-        padding: 2% 0;
+        flex-direction: row;
+        flex-wrap: wrap;
+        flex-basis: 33%;
+        padding: 0 5%;
+        gap: 0 1rem;
 
-        .form-row {
-            margin-left: 10%;
-            display: flex;
+        .form-item {
+            height: 5rem;
+            flex-grow: 1;
+            color: $black;
+            display: inline-flex;
+            position: relative;
             align-items: center;
-            justify-content: flex-start;
-            gap: 1rem;
 
-            .form-item {
-                // border: 1px solid pink;
-                height: 5rem;
-                color: $black;
-                display: inline-flex;
-                position: relative;
-                align-items: center;
-
-                &>label {
-                    font-size: 1.5rem;
-                    margin-right: 1rem;
-                }
-            }
-
-            .form-text {
-                //align the text to the vertical center
-                margin: auto 0;
+            &>label {
                 font-size: 1.5rem;
-                display: inline-block;
-
-                &:not(:first-child) {
-                    margin-left: 1rem;
-                }
-
+                margin-right: 1rem;
             }
+
+            &>input {
+                flex-grow: 1;
+            }
+
+        }
+
+        .form-text {
+            //align the text to the vertical center
+            margin: auto 0;
+            font-size: 1.5rem;
+            display: inline-block;
+            align-self: center;
+
+            // &:not(:first-child) {
+            //     margin-left: 1rem;
+            // }
         }
     }
 
@@ -100,13 +100,21 @@ form {
 
     // responsive breakpoint
     @media screen and (max-width: 480px) {
+
         //.form-page styling
         & {
-            justify-content: center !important;
+            .progress-container {
+                padding:8%;
+                flex-wrap: wrap;
 
-            .form-input-container {
-                .form-row {
-                    margin: 0 auto !important;
+                .progress-text {
+                    min-width: 0;
+                    flex-basis: 100%;
+                    margin: 0 auto;
+                }
+
+                .progress-button {
+                    padding: 0;
                 }
             }
         }
@@ -139,16 +147,23 @@ form {
     &::after {
         content: "*";
         color: $accent;
-        font-size: 1rem;
+        font-size: 1.5rem;
         position: absolute;
         right: -10px;
         top: 16px;
 
     }
+    @media screen and (max-width: 480px){
+        &::after {
+            font-size: 2rem;
+            top: 0;
+        }
+    }
 }
 
 //styling the text input field
-input[type=text], textarea {
+input[type=text],
+textarea {
     background-color: transparent;
     border: none;
     border-bottom: 1px solid $gray;
@@ -183,6 +198,7 @@ input[type=number] {
         border: 1px solid $accent;
         transition: 200ms all ease-in-out;
     }
+
     &::placeholder {
         text-transform: uppercase;
         letter-spacing: 0.01rem;
@@ -215,6 +231,11 @@ input[type=date] {
     }
 
     // turn the indicator button to white
+}
+
+input[type=file] {
+    max-width: 20ch;
+    margin: 0;
 }
 
 //styling customised radio button, credit to https://moderncss.dev/pure-css-custom-styled-radio-buttons/
@@ -268,7 +289,7 @@ input[type=date] {
 /*the container must be positioned relative:*/
 .custom-select {
     margin: 4px 0;
-    width: 20vw;
+    width: 100%;
     position: relative;
     display: inline-block;
 
@@ -351,6 +372,7 @@ input[type=date] {
         color: $accent;
         background-color: rgba(0, 0, 0, 0.1);
         -webkit-box-shadow: inset 0 0 6px rgba(0, 0, 0, 0.1);
+        box-shadow: inset 0 0 6px rgba(0, 0, 0, 0.1);
     }
 
     /* scrollbar width */
@@ -378,9 +400,11 @@ input[type=date] {
 
 //styling the tag text input area
 .tag-container {
-    flex-direction: column;
-    align-items: flex-start !important;
+    label {
+        flex-shrink: 0;
+    }
 }
+
 //styling the star rating
 /* We use display: flex to create a row of stars, otherwise, the stars will appear vertically and inline (if that's what you want by all means go ahead) */
 .heart-rating {
@@ -396,21 +420,25 @@ input[type=date] {
         width: 1.5rem;
         height: 1.5rem;
         cursor: pointer;
+
         &:hover {
-            svg path{
+            svg path {
                 stroke: white !important;
             }
         }
+
         &:active {
             transform: scale(1.2);
             transition: all 300ms ease-out;
         }
-        svg{
+
+        svg {
             transition: all 200ms ease-in;
             fill: $accent;
 
             &.unfill-heart {
                 fill: none;
+
                 path {
                     stroke: $gray;
                 }
@@ -431,4 +459,3 @@ input:-webkit-autofill:focus {
     -webkit-box-shadow: 0 0 0px 1000px $black inset; //change the background color
     transition: background-color 5000s ease-in-out 0s;
 }
-

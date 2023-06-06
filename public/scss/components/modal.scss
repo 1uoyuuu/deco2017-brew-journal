@@ -34,31 +34,24 @@
     background-color: $black;
     animation: fade-in 200ms 200ms both, pop-up 200ms 200ms both;
     flex: 1;
-    margin: 10%;
-    margin-bottom: 5%;
+    margin: 4% 10%;
+
+    display: flex;
+    flex-direction: column;
 
     .modal-heading {
-        position: absolute;
-        top: -14%;//to take up the remaining space
         width: 100%;
         display: flex;
         justify-content: space-between;
         align-items: center;
-        padding: 0 2%;
+        padding: 2% 4%;
+        border-bottom: 1px solid white;
         h1{
             color: white;
         }
     
     }
 }
-
-
-
-
-
-
-
-
 
 
 
@@ -90,15 +83,18 @@
 //------------------------------------------- RESPONSIVE BREAKPOINT -------------------------------------------
 @media screen and (max-width: 480px) {
     .dialog-content {
+        margin: 4%;
         width: 90vw;
-        margin: 0;
-        border: none;
 
         .modal-heading {
-            top: 0;
-            justify-content: center;
+            align-items: center;
+            h1 {
+                font-size: 3rem;
+            }
             input {
                 position: relative;
+                top: 0;
+                right: 0;
             }
         }
     }

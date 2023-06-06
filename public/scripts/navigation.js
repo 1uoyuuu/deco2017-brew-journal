@@ -1,13 +1,22 @@
-function togglemenu() {
-    var x = document.getElementById("top-nav");
-    if (x.className === "nav") {
-        x.className += " nav--open";
-    } else {
-        x.className = "nav";
+let menu = document.getElementById("menu");
+const overlay = document.querySelector(".overlay");
+menu.addEventListener("click", ()=> {
+    
+    if(!overlay.classList.contains("open")){
+        overlay.classList.add("open");
+        menu.innerHTML = "CLOSE";
+    }else{
+        overlay.classList.remove("open");
+        menu.innerHTML = "MENU";
     }
-    var element = document.getElementById("menu-toggle");
-    element.classList.toggle("menu-toggle--open");
-}
+});
+
+let overlayOptions = document.querySelectorAll("#overlay-menu a");
+overlayOptions.forEach(btn => {
+    btn.addEventListener("click", ()=>{
+        overlay.classList.remove("open");
+    });
+});
 
 
 //smart sticky navigation bar with accessibility concern by Jemima Abu 

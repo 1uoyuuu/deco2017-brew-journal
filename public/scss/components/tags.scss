@@ -7,7 +7,7 @@ $gray: #797979;
 .tagify {
     border: none;
     border-bottom: 1px solid $gray;
-    width: 60vw;
+    width: 100%;
     &:focus-within {
         border-color: $accent;
         transition: 200ms all ease-in-out;

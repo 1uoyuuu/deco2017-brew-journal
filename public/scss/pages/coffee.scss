@@ -188,6 +188,39 @@
 
 }
 
+#coffee-form {
+
+    .form-page {
+        .form-input-container {
+            padding: 6%;
+            label {
+                flex-shrink: 0;
+            }
+            .form-text:not(:first-child) {
+                margin-left: 1rem;
+            }
+
+        }
+        &:first-child{
+            .form-input-container {
+                .form-item {
+                    &:first-child {
+                        flex-grow: 0;
+                    }
+    
+                    &:nth-last-child(2),
+                    &:nth-last-child(3) {
+                        flex-grow: 0;
+                    }
+    
+                }    
+            }   
+            
+        }
+
+    }
+}
+
 
 //------------------------------------------- RESPONSIVE BREAKPOINT -------------------------------------------
 @media screen and (max-width: 480px) {
@@ -226,12 +259,46 @@
                             border-bottom: none;
                         }
                     }
+
                     &:nth-child(-n+2) {
                         .coffee-item {
                             border-bottom: 1px solid white;
                         }
                     }
                 }
+            }
+        }
+
+        #coffee-form {
+            .form-page {
+                justify-content: space-between;
+                .form-input-container {
+                    padding-top: 20%;
+
+                    .form-item {
+                        flex-grow: 1;
+
+                        label {
+                            flex-shrink: 0;
+                        }
+                    }
+
+                    .form-item:nth-child(5) {
+                        flex-basis: 100%; //take up the whole line
+                    }
+
+                    .tag-container {
+                        flex-basis: 100%;
+                        flex-direction: column;
+                        align-items: flex-start;
+                    }
+
+                }
+            }
+
+            .progress-container {
+                padding: 10% 6%;
+                flex-direction: row-reverse;
             }
         }
 

@@ -15,16 +15,18 @@
     <!-- it need enough height to be sticky through the whole page, so instead of nesting it inside the header, it is better to directly nest it into body element -->
     <nav id="top-nav">
         <a href="#landing-page"><img src="/public/src/images/logo.png" alt="logo of brew journal" height="35px"></a>
-        <a href="#overview">Overview</a>
-        <a href="#coffee">Coffee</a>
-        <a href="#gadget">Gadget</a>
-        <a href="#brew">Brew</a>
-        <a href="javascript:void(0);" id="menu-toggle" onclick="togglemenu()">
-            <div class="menu-toggle__bar1"></div>
-            <div class="menu-toggle__bar2"></div>
-            <div class="menu-toggle__bar3"></div>
-        </a>
+        <a id="menu">MENU</a>
     </nav>
+    <div class="overlay">
+        <nav id="overlay-menu">
+            <ul>
+                <li><a href="#overview">Overview</a></li>
+                <li><a href="#coffee">Coffee</a></li>
+                <li><a href="#gadget">Gadget</a></li>
+                <li><a href="#brew">Brew</a></li>
+            </ul>
+        </nav>
+    </div>
     <section id="landing-page">
         <h1>It’s time to elevate your<br>brewing experience.</h1>
         <figure><img src="/public/src/images/hero-image.png" alt=" An image of a cup of black coffee
@@ -103,359 +105,358 @@
             <div class="dialog-content" role="dialog">
                 <div class="modal-heading">
                     <h1>New Coffee.</h1>
-                    <input type="button" class="fill-in white-border black-fill" name="close" value="Close"
+                    <input type="button" class="fill-in white-border black-fill" name="close"
                         data-a11y-dialog-hide="add-coffee-dialog" aria-label="Close dialog">
                 </div>
                 <form action="#" id="coffee-form">
                     <div class="form-page msf-hide">
                         <div class="form-input-container">
-                            <div class="form-row">
-                                <div class="form-item is-required">
-                                    <span class="form-text">Today, I am adding a new</span>
-                                    <div class="radio-wrapper">
-                                        <label class="radio-container">
-                                            <input type="radio" id="coffeeType" name="coffeeType" value="single origin"
-                                                data-group="0" required>
-                                            <span class="radio-text">Single Origin</span>
-                                        </label>
-                                        <label class="radio-container">
-                                            <input type="radio" id="coffeeType" name="coffeeType" value="blend"
-                                                data-group="0" required>
-                                            <span class="radio-text">Blend</span>
-                                        </label>
-                                    </div>
-                                </div>
-                                <span class="form-text">coffee.</span>
-                                <div class="form-item is-required">
-                                    <label for="coffeeName">It’s called</label>
-                                    <input type="text" id="coffeeName" name="coffeeName" data-group="0"
-                                        placeholder="coffee name" size="16" required>
-                                </div>
-                            </div>
-                            <div class="form-row">
-                                <div class="form-item is-required">
-                                    <label for="roasterName">It was roasted by</label>
-                                    <input type="text" id="roasterName" name="roasterName" data-group="0"
-                                        placeholder="roaster name" size="16" required>
-                                </div>
-                                <div class="form-item is-required">
-                                    <label for="roasterCountry">from</label>
-                                    <div class="custom-select">
-                                        <select id="roasterCountry" name="roasterCountry" data-group="0" required>
-                                            <option value="" label="Select a country" selected="selected">Select a
-                                                country</option>
-                                            <option value="Afghanistan">Afghanistan</option>
-                                            <option value="Aland Islands">Aland Islands</option>
-                                            <option value="Albania">Albania</option>
-                                            <option value="Algeria">Algeria</option>
-                                            <option value="American Samoa">American Samoa</option>
-                                            <option value="Andorra">Andorra</option>
-                                            <option value="Angola">Angola</option>
-                                            <option value="Anguilla">Anguilla</option>
-                                            <option value="Antarctica">Antarctica</option>
-                                            <option value="Antigua and Barbuda">Antigua and Barbuda</option>
-                                            <option value="Argentina">Argentina</option>
-                                            <option value="Armenia">Armenia</option>
-                                            <option value="Aruba">Aruba</option>
-                                            <option value="Australia">Australia</option>
-                                            <option value="Austria">Austria</option>
-                                            <option value="Azerbaijan">Azerbaijan</option>
-                                            <option value="Bahamas">Bahamas</option>
-                                            <option value="Bahrain">Bahrain</option>
-                                            <option value="Bangladesh">Bangladesh</option>
-                                            <option value="Barbados">Barbados</option>
-                                            <option value="Belarus">Belarus</option>
-                                            <option value="Belgium">Belgium</option>
-                                            <option value="Belize">Belize</option>
-                                            <option value="Benin">Benin</option>
-                                            <option value="Bermuda">Bermuda</option>
-                                            <option value="Bhutan">Bhutan</option>
-                                            <option value="Bolivia">Bolivia</option>
-                                            <option value="Bonaire, Sint Eustatius and Saba">Bonaire, Sint Eustatius
-                                                and Saba</option>
-                                            <option value="Bosnia and Herzegovina">Bosnia and Herzegovina</option>
-                                            <option value="Botswana">Botswana</option>
-                                            <option value="Bouvet Island">Bouvet Island</option>
-                                            <option value="Brazil">Brazil</option>
-                                            <option value="British Indian Ocean Territory">British Indian Ocean
-                                                Territory</option>
-                                            <option value="Brunei Darussalam">Brunei Darussalam</option>
-                                            <option value="Bulgaria">Bulgaria</option>
-                                            <option value="Burkina Faso">Burkina Faso</option>
-                                            <option value="Burundi">Burundi</option>
-                                            <option value="Cambodia">Cambodia</option>
-                                            <option value="Cameroon">Cameroon</option>
-                                            <option value="Canada">Canada</option>
-                                            <option value="Cape Verde">Cape Verde</option>
-                                            <option value="Cayman Islands">Cayman Islands</option>
-                                            <option value="Central African Republic">Central African Republic
-                                            </option>
-                                            <option value="Chad">Chad</option>
-                                            <option value="Chile">Chile</option>
-                                            <option value="China">China</option>
-                                            <option value="Christmas Island">Christmas Island</option>
-                                            <option value="Cocos (Keeling) Islands">Cocos (Keeling) Islands</option>
-                                            <option value="Colombia">Colombia</option>
-                                            <option value="Comoros">Comoros</option>
-                                            <option value="Congo">Congo</option>
-                                            <option value="Congo, Democratic Republic of the Congo">Congo,
-                                                Democratic Republic of the Congo</option>
-                                            <option value="Cook Islands">Cook Islands</option>
-                                            <option value="Costa Rica">Costa Rica</option>
-                                            <option value="Cote D'Ivoire">Cote D'Ivoire</option>
-                                            <option value="Croatia">Croatia</option>
-                                            <option value="Cuba">Cuba</option>
-                                            <option value="Curacao">Curacao</option>
-                                            <option value="Cyprus">Cyprus</option>
-                                            <option value="Czech Republic">Czech Republic</option>
-                                            <option value="Denmark">Denmark</option>
-                                            <option value="Djibouti">Djibouti</option>
-                                            <option value="Dominica">Dominica</option>
-                                            <option value="Dominican Republic">Dominican Republic</option>
-                                            <option value="Ecuador">Ecuador</option>
-                                            <option value="Egypt">Egypt</option>
-                                            <option value="El Salvador">El Salvador</option>
-                                            <option value="Equatorial Guinea">Equatorial Guinea</option>
-                                            <option value="Eritrea">Eritrea</option>
-                                            <option value="Estonia">Estonia</option>
-                                            <option value="Ethiopia">Ethiopia</option>
-                                            <option value="Falkland Islands (Malvinas)">Falkland Islands (Malvinas)
-                                            </option>
-                                            <option value="Faroe Islands">Faroe Islands</option>
-                                            <option value="Fiji">Fiji</option>
-                                            <option value="Finland">Finland</option>
-                                            <option value="France">France</option>
-                                            <option value="French Guiana">French Guiana</option>
-                                            <option value="French Polynesia">French Polynesia</option>
-                                            <option value="French Southern Territories">French Southern Territories
-                                            </option>
-                                            <option value="Gabon">Gabon</option>
-                                            <option value="Gambia">Gambia</option>
-                                            <option value="Georgia">Georgia</option>
-                                            <option value="Germany">Germany</option>
-                                            <option value="Ghana">Ghana</option>
-                                            <option value="Gibraltar">Gibraltar</option>
-                                            <option value="Greece">Greece</option>
-                                            <option value="Greenland">Greenland</option>
-                                            <option value="Grenada">Grenada</option>
-                                            <option value="Guadeloupe">Guadeloupe</option>
-                                            <option value="Guam">Guam</option>
-                                            <option value="Guatemala">Guatemala</option>
-                                            <option value="Guernsey">Guernsey</option>
-                                            <option value="Guinea">Guinea</option>
-                                            <option value="Guinea-Bissau">Guinea-Bissau</option>
-                                            <option value="Guyana">Guyana</option>
-                                            <option value="Haiti">Haiti</option>
-                                            <option value="Heard Island and Mcdonald Islands">Heard Island and
-                                                Mcdonald Islands</option>
-                                            <option value="Holy See (Vatican City State)">Holy See (Vatican City
-                                                State)</option>
-                                            <option value="Honduras">Honduras</option>
-                                            <option value="Hong Kong">Hong Kong</option>
-                                            <option value="Hungary">Hungary</option>
-                                            <option value="Iceland">Iceland</option>
-                                            <option value="India">India</option>
-                                            <option value="Indonesia">Indonesia</option>
-                                            <option value="Iran, Islamic Republic of">Iran, Islamic Republic of
-                                            </option>
-                                            <option value="Iraq">Iraq</option>
-                                            <option value="Ireland">Ireland</option>
-                                            <option value="Isle of Man">Isle of Man</option>
-                                            <option value="Israel">Israel</option>
-                                            <option value="Italy">Italy</option>
-                                            <option value="Jamaica">Jamaica</option>
-                                            <option value="Japan">Japan</option>
-                                            <option value="Jersey">Jersey</option>
-                                            <option value="Jordan">Jordan</option>
-                                            <option value="Kazakhstan">Kazakhstan</option>
-                                            <option value="Kenya">Kenya</option>
-                                            <option value="Kiribati">Kiribati</option>
-                                            <option value="Korea, Democratic People's Republic of">Korea, Democratic
-                                                People's Republic of</option>
-                                            <option value="Korea, Republic of">Korea, Republic of</option>
-                                            <option value="Kosovo">Kosovo</option>
-                                            <option value="Kuwait">Kuwait</option>
-                                            <option value="Kyrgyzstan">Kyrgyzstan</option>
-                                            <option value="Lao People's Democratic Republic">Lao People's Democratic
-                                                Republic</option>
-                                            <option value="Latvia">Latvia</option>
-                                            <option value="Lebanon">Lebanon</option>
-                                            <option value="Lesotho">Lesotho</option>
-                                            <option value="Liberia">Liberia</option>
-                                            <option value="Libyan Arab Jamahiriya">Libyan Arab Jamahiriya</option>
-                                            <option value="Liechtenstein">Liechtenstein</option>
-                                            <option value="Lithuania">Lithuania</option>
-                                            <option value="Luxembourg">Luxembourg</option>
-                                            <option value="Macao">Macao</option>
-                                            <option value="Macedonia, the Former Yugoslav Republic of">Macedonia,
-                                                the Former Yugoslav Republic of</option>
-                                            <option value="Madagascar">Madagascar</option>
-                                            <option value="Malawi">Malawi</option>
-                                            <option value="Malaysia">Malaysia</option>
-                                            <option value="Maldives">Maldives</option>
-                                            <option value="Mali">Mali</option>
-                                            <option value="Malta">Malta</option>
-                                            <option value="Marshall Islands">Marshall Islands</option>
-                                            <option value="Martinique">Martinique</option>
-                                            <option value="Mauritania">Mauritania</option>
-                                            <option value="Mauritius">Mauritius</option>
-                                            <option value="Mayotte">Mayotte</option>
-                                            <option value="Mexico">Mexico</option>
-                                            <option value="Micronesia, Federated States of">Micronesia, Federated
-                                                States of</option>
-                                            <option value="Moldova, Republic of">Moldova, Republic of</option>
-                                            <option value="Monaco">Monaco</option>
-                                            <option value="Mongolia">Mongolia</option>
-                                            <option value="Montenegro">Montenegro</option>
-                                            <option value="Montserrat">Montserrat</option>
-                                            <option value="Morocco">Morocco</option>
-                                            <option value="Mozambique">Mozambique</option>
-                                            <option value="Myanmar">Myanmar</option>
-                                            <option value="Namibia">Namibia</option>
-                                            <option value="Nauru">Nauru</option>
-                                            <option value="Nepal">Nepal</option>
-                                            <option value="Netherlands">Netherlands</option>
-                                            <option value="Netherlands Antilles">Netherlands Antilles</option>
-                                            <option value="New Caledonia">New Caledonia</option>
-                                            <option value="New Zealand">New Zealand</option>
-                                            <option value="Nicaragua">Nicaragua</option>
-                                            <option value="Niger">Niger</option>
-                                            <option value="Nigeria">Nigeria</option>
-                                            <option value="Niue">Niue</option>
-                                            <option value="Norfolk Island">Norfolk Island</option>
-                                            <option value="Northern Mariana Islands">Northern Mariana Islands
-                                            </option>
-                                            <option value="Norway">Norway</option>
-                                            <option value="Oman">Oman</option>
-                                            <option value="Pakistan">Pakistan</option>
-                                            <option value="Palau">Palau</option>
-                                            <option value="Palestinian Territory, Occupied">Palestinian Territory,
-                                                Occupied</option>
-                                            <option value="Panama">Panama</option>
-                                            <option value="Papua New Guinea">Papua New Guinea</option>
-                                            <option value="Paraguay">Paraguay</option>
-                                            <option value="Peru">Peru</option>
-                                            <option value="Philippines">Philippines</option>
-                                            <option value="Pitcairn">Pitcairn</option>
-                                            <option value="Poland">Poland</option>
-                                            <option value="Portugal">Portugal</option>
-                                            <option value="Puerto Rico">Puerto Rico</option>
-                                            <option value="Qatar">Qatar</option>
-                                            <option value="Reunion">Reunion</option>
-                                            <option value="Romania">Romania</option>
-                                            <option value="Russian Federation">Russian Federation</option>
-                                            <option value="Rwanda">Rwanda</option>
-                                            <option value="Saint Barthelemy">Saint Barthelemy</option>
-                                            <option value="Saint Helena">Saint Helena</option>
-                                            <option value="Saint Kitts and Nevis">Saint Kitts and Nevis</option>
-                                            <option value="Saint Lucia">Saint Lucia</option>
-                                            <option value="Saint Martin">Saint Martin</option>
-                                            <option value="Saint Pierre and Miquelon">Saint Pierre and Miquelon
-                                            </option>
-                                            <option value="Saint Vincent and the Grenadines">Saint Vincent and the
-                                                Grenadines</option>
-                                            <option value="Samoa">Samoa</option>
-                                            <option value="San Marino">San Marino</option>
-                                            <option value="Sao Tome and Principe">Sao Tome and Principe</option>
-                                            <option value="Saudi Arabia">Saudi Arabia</option>
-                                            <option value="Senegal">Senegal</option>
-                                            <option value="Serbia">Serbia</option>
-                                            <option value="Serbia and Montenegro">Serbia and Montenegro</option>
-                                            <option value="Seychelles">Seychelles</option>
-                                            <option value="Sierra Leone">Sierra Leone</option>
-                                            <option value="Singapore">Singapore</option>
-                                            <option value="Sint Maarten">Sint Maarten</option>
-                                            <option value="Slovakia">Slovakia</option>
-                                            <option value="Slovenia">Slovenia</option>
-                                            <option value="Solomon Islands">Solomon Islands</option>
-                                            <option value="Somalia">Somalia</option>
-                                            <option value="South Africa">South Africa</option>
-                                            <option value="South Georgia and the South Sandwich Islands">South
-                                                Georgia and the South Sandwich Islands</option>
-                                            <option value="South Sudan">South Sudan</option>
-                                            <option value="Spain">Spain</option>
-                                            <option value="Sri Lanka">Sri Lanka</option>
-                                            <option value="Sudan">Sudan</option>
-                                            <option value="Suriname">Suriname</option>
-                                            <option value="Svalbard and Jan Mayen">Svalbard and Jan Mayen</option>
-                                            <option value="Swaziland">Swaziland</option>
-                                            <option value="Sweden">Sweden</option>
-                                            <option value="Switzerland">Switzerland</option>
-                                            <option value="Syrian Arab Republic">Syrian Arab Republic</option>
-                                            <option value="Taiwan, Province of China">Taiwan, Province of China
-                                            </option>
-                                            <option value="Tajikistan">Tajikistan</option>
-                                            <option value="Tanzania, United Republic of">Tanzania, United Republic
-                                                of</option>
-                                            <option value="Thailand">Thailand</option>
-                                            <option value="Timor-Leste">Timor-Leste</option>
-                                            <option value="Togo">Togo</option>
-                                            <option value="Tokelau">Tokelau</option>
-                                            <option value="Tonga">Tonga</option>
-                                            <option value="Trinidad and Tobago">Trinidad and Tobago</option>
-                                            <option value="Tunisia">Tunisia</option>
-                                            <option value="Turkey">Turkey</option>
-                                            <option value="Turkmenistan">Turkmenistan</option>
-                                            <option value="Turks and Caicos Islands">Turks and Caicos Islands
-                                            </option>
-                                            <option value="Tuvalu">Tuvalu</option>
-                                            <option value="Uganda">Uganda</option>
-                                            <option value="Ukraine">Ukraine</option>
-                                            <option value="United Arab Emirates">United Arab Emirates</option>
-                                            <option value="United Kingdom">United Kingdom</option>
-                                            <option value="United States">United States</option>
-                                            <option value="United States Minor Outlying Islands">United States Minor
-                                                Outlying Islands</option>
-                                            <option value="Uruguay">Uruguay</option>
-                                            <option value="Uzbekistan">Uzbekistan</option>
-                                            <option value="Vanuatu">Vanuatu</option>
-                                            <option value="Venezuela">Venezuela</option>
-                                            <option value="Viet Nam">Viet Nam</option>
-                                            <option value="Virgin Islands, British">Virgin Islands, British</option>
-                                            <option value="Virgin Islands, U.s.">Virgin Islands, U.s.</option>
-                                            <option value="Wallis and Futuna">Wallis and Futuna</option>
-                                            <option value="Western Sahara">Western Sahara</option>
-                                            <option value="Yemen">Yemen</option>
-                                            <option value="Zambia">Zambia</option>
-                                            <option value="Zimbabwe">Zimbabwe</option>
-                                        </select>
-                                    </div>
 
+                            <div class="form-item is-required">
+                                <span class="form-text">Today, I am adding a new</span>
+                                <div class="radio-wrapper">
+                                    <label class="radio-container">
+                                        <input type="radio" id="coffeeType" name="coffeeType" value="single origin"
+                                            data-group="0" required>
+                                        <span class="radio-text">Single Origin</span>
+                                    </label>
+                                    <label class="radio-container">
+                                        <input type="radio" id="coffeeType" name="coffeeType" value="blend"
+                                            data-group="0" required>
+                                        <span class="radio-text">Blend</span>
+                                    </label>
                                 </div>
                             </div>
-                            <div class="form-row">
-                                <div class="form-item is-required">
-                                    <label for="roastDate">It was roasted on</label>
-                                    <input type="date" id="roastDate" name="roastDate" min="2020-01-01" max="2100-01-01"
-                                        data-group="0" required>
-                                </div>
-                                <div class="form-item is-required">
-                                    <label for="roastLevel">with a roast level of</label>
-                                    <input type="text" id="roastLevel" name="roastLevel" data-group="0"
-                                        placeholder="roast level" size="16" required>
-                                </div>
+                            <span class="form-text">coffee.</span>
+                            <div class="form-item is-required">
+                                <label for="coffeeName">It’s called</label>
+                                <input type="text" id="coffeeName" name="coffeeName" data-group="0"
+                                    placeholder="coffee name" size="16" required>
                             </div>
-                            <div class="form-row">
-                                <div class="form-item">
-                                    <label for="coffeeWeight">The net weight of this coffee is</label>
-                                    <input type="number" id="coffeeWeight" name="coffeeWeight" min="0"
-                                        onkeyup="if(value<0) value=0;" data-group="0">
-                                    <span class="form-text">grams.</span>
-                                </div>
-                                <div class="form-item">
-                                    <label for="coffeePrice">
-                                        It cost</label>
-                                    <input type="number" id="coffeePrice" name="coffeePrice" min="0"
-                                        onkeyup="if(value<0) value=0;" data-group="0">
-                                    <span class="form-text">dollars.</span>
-                                </div>
+
+
+                            <div class="form-item is-required">
+                                <label for="roasterName">It was roasted by</label>
+                                <input type="text" id="roasterName" name="roasterName" data-group="0"
+                                    placeholder="roaster name" size="16" required>
                             </div>
-                            <div class="form-row">
-                                <div class="form-item tag-container is-required">
-                                    <label for="coffeeFlavour"">This coffee will taste like</label>
+                            <div class="form-item is-required">
+                                <label for="roasterCountry">from</label>
+                                <div class="custom-select">
+                                    <select id="roasterCountry" name="roasterCountry" data-group="0" required>
+                                        <option value="" label="Select a country" selected="selected">Select a
+                                            country</option>
+                                        <option value="Afghanistan">Afghanistan</option>
+                                        <option value="Aland Islands">Aland Islands</option>
+                                        <option value="Albania">Albania</option>
+                                        <option value="Algeria">Algeria</option>
+                                        <option value="American Samoa">American Samoa</option>
+                                        <option value="Andorra">Andorra</option>
+                                        <option value="Angola">Angola</option>
+                                        <option value="Anguilla">Anguilla</option>
+                                        <option value="Antarctica">Antarctica</option>
+                                        <option value="Antigua and Barbuda">Antigua and Barbuda</option>
+                                        <option value="Argentina">Argentina</option>
+                                        <option value="Armenia">Armenia</option>
+                                        <option value="Aruba">Aruba</option>
+                                        <option value="Australia">Australia</option>
+                                        <option value="Austria">Austria</option>
+                                        <option value="Azerbaijan">Azerbaijan</option>
+                                        <option value="Bahamas">Bahamas</option>
+                                        <option value="Bahrain">Bahrain</option>
+                                        <option value="Bangladesh">Bangladesh</option>
+                                        <option value="Barbados">Barbados</option>
+                                        <option value="Belarus">Belarus</option>
+                                        <option value="Belgium">Belgium</option>
+                                        <option value="Belize">Belize</option>
+                                        <option value="Benin">Benin</option>
+                                        <option value="Bermuda">Bermuda</option>
+                                        <option value="Bhutan">Bhutan</option>
+                                        <option value="Bolivia">Bolivia</option>
+                                        <option value="Bonaire, Sint Eustatius and Saba">Bonaire, Sint Eustatius
+                                            and Saba</option>
+                                        <option value="Bosnia and Herzegovina">Bosnia and Herzegovina</option>
+                                        <option value="Botswana">Botswana</option>
+                                        <option value="Bouvet Island">Bouvet Island</option>
+                                        <option value="Brazil">Brazil</option>
+                                        <option value="British Indian Ocean Territory">British Indian Ocean
+                                            Territory</option>
+                                        <option value="Brunei Darussalam">Brunei Darussalam</option>
+                                        <option value="Bulgaria">Bulgaria</option>
+                                        <option value="Burkina Faso">Burkina Faso</option>
+                                        <option value="Burundi">Burundi</option>
+                                        <option value="Cambodia">Cambodia</option>
+                                        <option value="Cameroon">Cameroon</option>
+                                        <option value="Canada">Canada</option>
+                                        <option value="Cape Verde">Cape Verde</option>
+                                        <option value="Cayman Islands">Cayman Islands</option>
+                                        <option value="Central African Republic">Central African Republic
+                                        </option>
+                                        <option value="Chad">Chad</option>
+                                        <option value="Chile">Chile</option>
+                                        <option value="China">China</option>
+                                        <option value="Christmas Island">Christmas Island</option>
+                                        <option value="Cocos (Keeling) Islands">Cocos (Keeling) Islands</option>
+                                        <option value="Colombia">Colombia</option>
+                                        <option value="Comoros">Comoros</option>
+                                        <option value="Congo">Congo</option>
+                                        <option value="Congo, Democratic Republic of the Congo">Congo,
+                                            Democratic Republic of the Congo</option>
+                                        <option value="Cook Islands">Cook Islands</option>
+                                        <option value="Costa Rica">Costa Rica</option>
+                                        <option value="Cote D'Ivoire">Cote D'Ivoire</option>
+                                        <option value="Croatia">Croatia</option>
+                                        <option value="Cuba">Cuba</option>
+                                        <option value="Curacao">Curacao</option>
+                                        <option value="Cyprus">Cyprus</option>
+                                        <option value="Czech Republic">Czech Republic</option>
+                                        <option value="Denmark">Denmark</option>
+                                        <option value="Djibouti">Djibouti</option>
+                                        <option value="Dominica">Dominica</option>
+                                        <option value="Dominican Republic">Dominican Republic</option>
+                                        <option value="Ecuador">Ecuador</option>
+                                        <option value="Egypt">Egypt</option>
+                                        <option value="El Salvador">El Salvador</option>
+                                        <option value="Equatorial Guinea">Equatorial Guinea</option>
+                                        <option value="Eritrea">Eritrea</option>
+                                        <option value="Estonia">Estonia</option>
+                                        <option value="Ethiopia">Ethiopia</option>
+                                        <option value="Falkland Islands (Malvinas)">Falkland Islands (Malvinas)
+                                        </option>
+                                        <option value="Faroe Islands">Faroe Islands</option>
+                                        <option value="Fiji">Fiji</option>
+                                        <option value="Finland">Finland</option>
+                                        <option value="France">France</option>
+                                        <option value="French Guiana">French Guiana</option>
+                                        <option value="French Polynesia">French Polynesia</option>
+                                        <option value="French Southern Territories">French Southern Territories
+                                        </option>
+                                        <option value="Gabon">Gabon</option>
+                                        <option value="Gambia">Gambia</option>
+                                        <option value="Georgia">Georgia</option>
+                                        <option value="Germany">Germany</option>
+                                        <option value="Ghana">Ghana</option>
+                                        <option value="Gibraltar">Gibraltar</option>
+                                        <option value="Greece">Greece</option>
+                                        <option value="Greenland">Greenland</option>
+                                        <option value="Grenada">Grenada</option>
+                                        <option value="Guadeloupe">Guadeloupe</option>
+                                        <option value="Guam">Guam</option>
+                                        <option value="Guatemala">Guatemala</option>
+                                        <option value="Guernsey">Guernsey</option>
+                                        <option value="Guinea">Guinea</option>
+                                        <option value="Guinea-Bissau">Guinea-Bissau</option>
+                                        <option value="Guyana">Guyana</option>
+                                        <option value="Haiti">Haiti</option>
+                                        <option value="Heard Island and Mcdonald Islands">Heard Island and
+                                            Mcdonald Islands</option>
+                                        <option value="Holy See (Vatican City State)">Holy See (Vatican City
+                                            State)</option>
+                                        <option value="Honduras">Honduras</option>
+                                        <option value="Hong Kong">Hong Kong</option>
+                                        <option value="Hungary">Hungary</option>
+                                        <option value="Iceland">Iceland</option>
+                                        <option value="India">India</option>
+                                        <option value="Indonesia">Indonesia</option>
+                                        <option value="Iran, Islamic Republic of">Iran, Islamic Republic of
+                                        </option>
+                                        <option value="Iraq">Iraq</option>
+                                        <option value="Ireland">Ireland</option>
+                                        <option value="Isle of Man">Isle of Man</option>
+                                        <option value="Israel">Israel</option>
+                                        <option value="Italy">Italy</option>
+                                        <option value="Jamaica">Jamaica</option>
+                                        <option value="Japan">Japan</option>
+                                        <option value="Jersey">Jersey</option>
+                                        <option value="Jordan">Jordan</option>
+                                        <option value="Kazakhstan">Kazakhstan</option>
+                                        <option value="Kenya">Kenya</option>
+                                        <option value="Kiribati">Kiribati</option>
+                                        <option value="Korea, Democratic People's Republic of">Korea, Democratic
+                                            People's Republic of</option>
+                                        <option value="Korea, Republic of">Korea, Republic of</option>
+                                        <option value="Kosovo">Kosovo</option>
+                                        <option value="Kuwait">Kuwait</option>
+                                        <option value="Kyrgyzstan">Kyrgyzstan</option>
+                                        <option value="Lao People's Democratic Republic">Lao People's Democratic
+                                            Republic</option>
+                                        <option value="Latvia">Latvia</option>
+                                        <option value="Lebanon">Lebanon</option>
+                                        <option value="Lesotho">Lesotho</option>
+                                        <option value="Liberia">Liberia</option>
+                                        <option value="Libyan Arab Jamahiriya">Libyan Arab Jamahiriya</option>
+                                        <option value="Liechtenstein">Liechtenstein</option>
+                                        <option value="Lithuania">Lithuania</option>
+                                        <option value="Luxembourg">Luxembourg</option>
+                                        <option value="Macao">Macao</option>
+                                        <option value="Macedonia, the Former Yugoslav Republic of">Macedonia,
+                                            the Former Yugoslav Republic of</option>
+                                        <option value="Madagascar">Madagascar</option>
+                                        <option value="Malawi">Malawi</option>
+                                        <option value="Malaysia">Malaysia</option>
+                                        <option value="Maldives">Maldives</option>
+                                        <option value="Mali">Mali</option>
+                                        <option value="Malta">Malta</option>
+                                        <option value="Marshall Islands">Marshall Islands</option>
+                                        <option value="Martinique">Martinique</option>
+                                        <option value="Mauritania">Mauritania</option>
+                                        <option value="Mauritius">Mauritius</option>
+                                        <option value="Mayotte">Mayotte</option>
+                                        <option value="Mexico">Mexico</option>
+                                        <option value="Micronesia, Federated States of">Micronesia, Federated
+                                            States of</option>
+                                        <option value="Moldova, Republic of">Moldova, Republic of</option>
+                                        <option value="Monaco">Monaco</option>
+                                        <option value="Mongolia">Mongolia</option>
+                                        <option value="Montenegro">Montenegro</option>
+                                        <option value="Montserrat">Montserrat</option>
+                                        <option value="Morocco">Morocco</option>
+                                        <option value="Mozambique">Mozambique</option>
+                                        <option value="Myanmar">Myanmar</option>
+                                        <option value="Namibia">Namibia</option>
+                                        <option value="Nauru">Nauru</option>
+                                        <option value="Nepal">Nepal</option>
+                                        <option value="Netherlands">Netherlands</option>
+                                        <option value="Netherlands Antilles">Netherlands Antilles</option>
+                                        <option value="New Caledonia">New Caledonia</option>
+                                        <option value="New Zealand">New Zealand</option>
+                                        <option value="Nicaragua">Nicaragua</option>
+                                        <option value="Niger">Niger</option>
+                                        <option value="Nigeria">Nigeria</option>
+                                        <option value="Niue">Niue</option>
+                                        <option value="Norfolk Island">Norfolk Island</option>
+                                        <option value="Northern Mariana Islands">Northern Mariana Islands
+                                        </option>
+                                        <option value="Norway">Norway</option>
+                                        <option value="Oman">Oman</option>
+                                        <option value="Pakistan">Pakistan</option>
+                                        <option value="Palau">Palau</option>
+                                        <option value="Palestinian Territory, Occupied">Palestinian Territory,
+                                            Occupied</option>
+                                        <option value="Panama">Panama</option>
+                                        <option value="Papua New Guinea">Papua New Guinea</option>
+                                        <option value="Paraguay">Paraguay</option>
+                                        <option value="Peru">Peru</option>
+                                        <option value="Philippines">Philippines</option>
+                                        <option value="Pitcairn">Pitcairn</option>
+                                        <option value="Poland">Poland</option>
+                                        <option value="Portugal">Portugal</option>
+                                        <option value="Puerto Rico">Puerto Rico</option>
+                                        <option value="Qatar">Qatar</option>
+                                        <option value="Reunion">Reunion</option>
+                                        <option value="Romania">Romania</option>
+                                        <option value="Russian Federation">Russian Federation</option>
+                                        <option value="Rwanda">Rwanda</option>
+                                        <option value="Saint Barthelemy">Saint Barthelemy</option>
+                                        <option value="Saint Helena">Saint Helena</option>
+                                        <option value="Saint Kitts and Nevis">Saint Kitts and Nevis</option>
+                                        <option value="Saint Lucia">Saint Lucia</option>
+                                        <option value="Saint Martin">Saint Martin</option>
+                                        <option value="Saint Pierre and Miquelon">Saint Pierre and Miquelon
+                                        </option>
+                                        <option value="Saint Vincent and the Grenadines">Saint Vincent and the
+                                            Grenadines</option>
+                                        <option value="Samoa">Samoa</option>
+                                        <option value="San Marino">San Marino</option>
+                                        <option value="Sao Tome and Principe">Sao Tome and Principe</option>
+                                        <option value="Saudi Arabia">Saudi Arabia</option>
+                                        <option value="Senegal">Senegal</option>
+                                        <option value="Serbia">Serbia</option>
+                                        <option value="Serbia and Montenegro">Serbia and Montenegro</option>
+                                        <option value="Seychelles">Seychelles</option>
+                                        <option value="Sierra Leone">Sierra Leone</option>
+                                        <option value="Singapore">Singapore</option>
+                                        <option value="Sint Maarten">Sint Maarten</option>
+                                        <option value="Slovakia">Slovakia</option>
+                                        <option value="Slovenia">Slovenia</option>
+                                        <option value="Solomon Islands">Solomon Islands</option>
+                                        <option value="Somalia">Somalia</option>
+                                        <option value="South Africa">South Africa</option>
+                                        <option value="South Georgia and the South Sandwich Islands">South
+                                            Georgia and the South Sandwich Islands</option>
+                                        <option value="South Sudan">South Sudan</option>
+                                        <option value="Spain">Spain</option>
+                                        <option value="Sri Lanka">Sri Lanka</option>
+                                        <option value="Sudan">Sudan</option>
+                                        <option value="Suriname">Suriname</option>
+                                        <option value="Svalbard and Jan Mayen">Svalbard and Jan Mayen</option>
+                                        <option value="Swaziland">Swaziland</option>
+                                        <option value="Sweden">Sweden</option>
+                                        <option value="Switzerland">Switzerland</option>
+                                        <option value="Syrian Arab Republic">Syrian Arab Republic</option>
+                                        <option value="Taiwan, Province of China">Taiwan, Province of China
+                                        </option>
+                                        <option value="Tajikistan">Tajikistan</option>
+                                        <option value="Tanzania, United Republic of">Tanzania, United Republic
+                                            of</option>
+                                        <option value="Thailand">Thailand</option>
+                                        <option value="Timor-Leste">Timor-Leste</option>
+                                        <option value="Togo">Togo</option>
+                                        <option value="Tokelau">Tokelau</option>
+                                        <option value="Tonga">Tonga</option>
+                                        <option value="Trinidad and Tobago">Trinidad and Tobago</option>
+                                        <option value="Tunisia">Tunisia</option>
+                                        <option value="Turkey">Turkey</option>
+                                        <option value="Turkmenistan">Turkmenistan</option>
+                                        <option value="Turks and Caicos Islands">Turks and Caicos Islands
+                                        </option>
+                                        <option value="Tuvalu">Tuvalu</option>
+                                        <option value="Uganda">Uganda</option>
+                                        <option value="Ukraine">Ukraine</option>
+                                        <option value="United Arab Emirates">United Arab Emirates</option>
+                                        <option value="United Kingdom">United Kingdom</option>
+                                        <option value="United States">United States</option>
+                                        <option value="United States Minor Outlying Islands">United States Minor
+                                            Outlying Islands</option>
+                                        <option value="Uruguay">Uruguay</option>
+                                        <option value="Uzbekistan">Uzbekistan</option>
+                                        <option value="Vanuatu">Vanuatu</option>
+                                        <option value="Venezuela">Venezuela</option>
+                                        <option value="Viet Nam">Viet Nam</option>
+                                        <option value="Virgin Islands, British">Virgin Islands, British</option>
+                                        <option value="Virgin Islands, U.s.">Virgin Islands, U.s.</option>
+                                        <option value="Wallis and Futuna">Wallis and Futuna</option>
+                                        <option value="Western Sahara">Western Sahara</option>
+                                        <option value="Yemen">Yemen</option>
+                                        <option value="Zambia">Zambia</option>
+                                        <option value="Zimbabwe">Zimbabwe</option>
+                                    </select>
+                                </div>
+
+                            </div>
+
+
+                            <div class="form-item is-required">
+                                <label for="roastDate">It was roasted on</label>
+                                <input type="date" id="roastDate" name="roastDate" min="2020-01-01" max="2100-01-01"
+                                    data-group="0" required>
+                            </div>
+                            <div class="form-item is-required">
+                                <label for="roastLevel">with a roast level of</label>
+                                <input type="text" id="roastLevel" name="roastLevel" data-group="0"
+                                    placeholder="roast level" size="16" required>
+                            </div>
+
+
+                            <div class="form-item">
+                                <label for="coffeeWeight">The weight of this coffee is</label>
+                                <input type="number" id="coffeeWeight" name="coffeeWeight" min="0"
+                                    onkeyup="if(value<0) value=0;" data-group="0">
+                                <span class="form-text">grams.</span>
+                            </div>
+                            <div class="form-item">
+                                <label for="coffeePrice">
+                                    It cost</label>
+                                <input type="number" id="coffeePrice" name="coffeePrice" min="0"
+                                    onkeyup="if(value<0) value=0;" data-group="0">
+                                <span class="form-text">dollars.</span>
+                            </div>
+
+
+                            <div class="form-item tag-container is-required">
+                                <label for="coffeeFlavour"">It will taste like</label>
                                         <input type=" text" id="coffeeFlavour" name="coffeeFlavour" data-group="0"
-                                        required>
-                                </div>
+                                    required>
                             </div>
                         </div>
                         <div class="progress-container">
@@ -471,110 +472,106 @@
                     </div>
                     <div class="form-page msf-hide">
                         <div class="form-input-container">
-                            <div class="form-row">
-                                <div class="form-item is-required">
-                                    <label for="originCountry">This origin of this coffee is</label>
-                                    <div class="custom-select">
-                                        <select id="originCountry" name="originCountry" data-group="1" required>
-                                            <option value="" label="Select a country:" selected="selected">Select a
-                                                country:</option>
-                                            <option value="angola">Angola</option>
-                                            <option value="bolivia">Bolivia</option>
-                                            <option value="brazil">Brazil</option>
-                                            <option value="burundi">Burundi</option>
-                                            <option value="cameroon">Cameroon</option>
-                                            <option value="central African Republic">Central African Republic
-                                            </option>
-                                            <option value="china">China</option>
-                                            <option value="colombia">Colombia</option>
-                                            <option value="costa Rica">Costa Rica</option>
-                                            <option value="cuba">Cuba</option>
-                                            <option value="dominican Republic">Dominican Republic</option>
-                                            <option value="ecuador">Ecuador</option>
-                                            <option value="el Salvador">El Salvador</option>
-                                            <option value="ethiopia">Ethiopia</option>
-                                            <option value="gabon">Gabon</option>
-                                            <option value="ghana">Ghana</option>
-                                            <option value="guatemala">Guatemala</option>
-                                            <option value="guinea">Guinea</option>
-                                            <option value="haiti">Haiti</option>
-                                            <option value="honduras">Honduras</option>
-                                            <option value="india">India</option>
-                                            <option value="indonesia">Indonesia</option>
-                                            <option value="ivory Coast">Ivory Coast</option>
-                                            <option value="jamaica">Jamaica</option>
-                                            <option value="kenya">Kenya</option>
-                                            <option value="laos">Laos</option>
-                                            <option value="liberia">Liberia</option>
-                                            <option value="madagascar">Madagascar</option>
-                                            <option value="malawi">Malawi</option>
-                                            <option value="mexico">Mexico</option>
-                                            <option value="nicaragua">Nicaragua</option>
-                                            <option value="nigeria">Nigeria</option>
-                                            <option value="papua New Guinea">Papua New Guinea</option>
-                                            <option value="panama">Panama</option>
-                                            <option value="paraguay">Paraguay</option>
-                                            <option value="peru">Peru</option>
-                                            <option value="philippines">Philippines</option>
-                                            <option value="rwanda">Rwanda</option>
-                                            <option value="sierra Leone">Sierra Leone</option>
-                                            <option value="tanzania">Tanzania</option>
-                                            <option value="thailand">Thailand</option>
-                                            <option value="togo">Togo</option>
-                                            <option value="uganda">Uganda</option>
-                                            <option value="venezuela">Venezuela</option>
-                                            <option value="vietnam">Vietnam</option>
-                                            <option value="yemen">Yemen</option>
-                                            <option value="zambia">Zambia</option>
-                                            <option value="zimbabwe">Zimbabwe</option>
-                                        </select>
-                                    </div>
+
+                            <div class="form-item is-required">
+                                <label for="originCountry">This origin of this coffee is</label>
+                                <div class="custom-select">
+                                    <select id="originCountry" name="originCountry" data-group="1" required>
+                                        <option value="" label="Select a country:" selected="selected">Select a
+                                            country:</option>
+                                        <option value="angola">Angola</option>
+                                        <option value="bolivia">Bolivia</option>
+                                        <option value="brazil">Brazil</option>
+                                        <option value="burundi">Burundi</option>
+                                        <option value="cameroon">Cameroon</option>
+                                        <option value="central African Republic">Central African Republic
+                                        </option>
+                                        <option value="china">China</option>
+                                        <option value="colombia">Colombia</option>
+                                        <option value="costa Rica">Costa Rica</option>
+                                        <option value="cuba">Cuba</option>
+                                        <option value="dominican Republic">Dominican Republic</option>
+                                        <option value="ecuador">Ecuador</option>
+                                        <option value="el Salvador">El Salvador</option>
+                                        <option value="ethiopia">Ethiopia</option>
+                                        <option value="gabon">Gabon</option>
+                                        <option value="ghana">Ghana</option>
+                                        <option value="guatemala">Guatemala</option>
+                                        <option value="guinea">Guinea</option>
+                                        <option value="haiti">Haiti</option>
+                                        <option value="honduras">Honduras</option>
+                                        <option value="india">India</option>
+                                        <option value="indonesia">Indonesia</option>
+                                        <option value="ivory Coast">Ivory Coast</option>
+                                        <option value="jamaica">Jamaica</option>
+                                        <option value="kenya">Kenya</option>
+                                        <option value="laos">Laos</option>
+                                        <option value="liberia">Liberia</option>
+                                        <option value="madagascar">Madagascar</option>
+                                        <option value="malawi">Malawi</option>
+                                        <option value="mexico">Mexico</option>
+                                        <option value="nicaragua">Nicaragua</option>
+                                        <option value="nigeria">Nigeria</option>
+                                        <option value="papua New Guinea">Papua New Guinea</option>
+                                        <option value="panama">Panama</option>
+                                        <option value="paraguay">Paraguay</option>
+                                        <option value="peru">Peru</option>
+                                        <option value="philippines">Philippines</option>
+                                        <option value="rwanda">Rwanda</option>
+                                        <option value="sierra Leone">Sierra Leone</option>
+                                        <option value="tanzania">Tanzania</option>
+                                        <option value="thailand">Thailand</option>
+                                        <option value="togo">Togo</option>
+                                        <option value="uganda">Uganda</option>
+                                        <option value="venezuela">Venezuela</option>
+                                        <option value="vietnam">Vietnam</option>
+                                        <option value="yemen">Yemen</option>
+                                        <option value="zambia">Zambia</option>
+                                        <option value="zimbabwe">Zimbabwe</option>
+                                    </select>
                                 </div>
                             </div>
-                            <div class="form-row">
-                                <div class="form-item">
-                                    <label for="originRegion">Region</label>
-                                    <input type="text" id="originRegion" name="originRegion" data-group="1"
-                                        placeholder="region name" size="14">
-                                </div>
-                                <div class="form-item">
-                                    <label for="originFarm">Farm</label>
-                                    <input type="text" id="originFarm" name="originFarm" data-group="1"
-                                        placeholder="farm name" size="14">
-                                </div>
-                                <div class="form-item">
-                                    <label for="producerName">It was produced by</label>
-                                    <input type="text" id="producerName" name="producerName" data-group="1"
-                                        placeholder="producer name" size="18">
-                                </div>
+
+                            <div class="form-item">
+                                <label for="originRegion">Region</label>
+                                <input type="text" id="originRegion" name="originRegion" data-group="1"
+                                    placeholder="region name" size="14">
                             </div>
-                            <div class="form-row">
-                                <div class="form-item is-required">
-                                    <label for="processingMethod">This coffee was processed with</label>
-                                    <input type="text" id="processingMethod" name="processingMethod"
-                                        placeholder="process name" size="24" data-group="1" required>
-                                </div>
-                                <div class="form-item">
-                                    <label for="varietal">and the varietal is</label>
-                                    <input type="text" id="varietal" name="varietal" placeholder="coffee varietal"
-                                        size="18" data-group="1">
-                                </div>
+                            <div class="form-item">
+                                <label for="originFarm">Farm</label>
+                                <input type="text" id="originFarm" name="originFarm" data-group="1"
+                                    placeholder="farm name" size="14">
                             </div>
-                            <div class="form-row">
-                                <div class="form-item">
-                                    <label for="elevation">It was grown at an altitude of</label>
-                                    <input type="number" id="elevation" name="elevation" data-group="1" min="0"
-                                        onkeyup="if(value<0) value=0;">
-                                    <span class="form-text">meters above sea level.</span>
-                                </div>
+                            <div class="form-item">
+                                <label for="producerName">It was produced by</label>
+                                <input type="text" id="producerName" name="producerName" data-group="1"
+                                    placeholder="producer name" size="18">
                             </div>
-                            <div class="form-row">
-                                <div class="form-item is-required">
-                                    <label for="coffeeImage">Here is a photo of this lovely coffee.</label>
-                                    <input type="file" accept="image/*" id="coffeeImage" name="coffeeImage"
-                                        data-group="1" required />
-                                </div>
+
+                            <div class="form-item is-required">
+                                <label for="processingMethod">This coffee was processed with</label>
+                                <input type="text" id="processingMethod" name="processingMethod"
+                                    placeholder="process name" size="24" data-group="1" required>
                             </div>
+                            <div class="form-item">
+                                <label for="varietal">and the varietal is</label>
+                                <input type="text" id="varietal" name="varietal" placeholder="coffee varietal" size="18"
+                                    data-group="1">
+                            </div>
+
+                            <div class="form-item">
+                                <label for="elevation">It was grown at an altitude of</label>
+                                <input type="number" id="elevation" name="elevation" data-group="1" min="0"
+                                    onkeyup="if(value<0) value=0;">
+                                <span class="form-text">M. S. A. L.</span>
+                            </div>
+
+                            <div class="form-item is-required">
+                                <label for="coffeeImage">Here is a photo of this lovely coffee.</label>
+                                <input type="file" accept="image/*" id="coffeeImage" name="coffeeImage" data-group="1"
+                                    required />
+                            </div>
+
                         </div>
                         <div class="progress-container">
                             <div class="progress-text">
@@ -619,29 +616,29 @@
             <div class="dialog-content" role="dialog">
                 <div class="modal-heading">
                     <h1>New Gadget.</h1>
-                    <input type="button" class="fill-in black-fill white-border" name="close" value="Close"
+                    <input type="button" class="fill-in black-fill white-border" name="close"
                         data-a11y-dialog-hide="add-gadget-dialog" aria-label="Close dialog">
                 </div>
                 <form action="#" id="gadget-form">
                     <div class="form-page msf-hide">
                         <div class="form-input-container">
-                            <div class="form-row">
-                                <div class="form-item is-required">
-                                    <span class="form-text">Today, I am adding a new</span>
-                                    <div class="radio-wrapper">
-                                        <label class="radio-container">
-                                            <input type="radio" id="gadgetType" name="gadgetType" value="Grinder"
-                                                data-group="0" required>
-                                            <span class="radio-text">Grinder</span>
-                                        </label>
-                                        <label class="radio-container">
-                                            <input type="radio" id="gadgetType" name="gadgetType" value="Dripper"
-                                                data-group="0" required>
-                                            <span class="radio-text">Dripper</span>
-                                        </label>
-                                    </div>
+
+                            <div class="form-item is-required">
+                                <span class="form-text">Today, I am adding a new</span>
+                                <div class="radio-wrapper">
+                                    <label class="radio-container">
+                                        <input type="radio" id="gadgetType" name="gadgetType" value="Grinder"
+                                            data-group="0" required>
+                                        <span class="radio-text">Grinder</span>
+                                    </label>
+                                    <label class="radio-container">
+                                        <input type="radio" id="gadgetType" name="gadgetType" value="Dripper"
+                                            data-group="0" required>
+                                        <span class="radio-text">Dripper</span>
+                                    </label>
                                 </div>
                             </div>
+
                         </div>
                         <div class="progress-container">
                             <div class="progress-text">
@@ -656,32 +653,27 @@
                     </div>
                     <div class="form-page msf-hide">
                         <div class="form-input-container">
-                            <div class="form-row">
-                                <div class="form-item is-required">
-                                    <label for="grinderName">This grinder is called</label>
-                                    <input type="text" id="grinderName" name="grinderName" placeholder="grinder name"
-                                        size="16" data-group="1" required>
-                                </div>
-                                <div class="form-item">
-                                    <label for="grinderBrand">and it is from</label>
-                                    <input type="text" id="grinderBrand" name="grinderBrand" placeholder="brand name"
-                                        size="16">
-                                </div>
+
+                            <div class="form-item is-required">
+                                <label for="grinderName">This grinder is called</label>
+                                <input type="text" id="grinderName" name="grinderName" placeholder="grinder name"
+                                    size="16" data-group="1" required>
                             </div>
-                            <div class="form-row">
-                                <div class="form-item">
-                                    <label for="burrType">The burr of this grinder is</label>
-                                    <input type="text" id="burrType" name="burrType" placeholder="burr type" size="16">
-                                </div>
-                                <span class="form-text">and here is the photo of it.</span>
+                            <div class="form-item">
+                                <label for="grinderBrand">and it is from</label>
+                                <input type="text" id="grinderBrand" name="grinderBrand" placeholder="brand name"
+                                    size="16">
                             </div>
-                            <div class="form-row">
-                                <div class="form-item is-required">
-                                    <label for="grinderImage"></label>
-                                    <input type="file" accept="image/*" id="grinderImage" name="grinderImage"
-                                        data-group="1" required />
-                                </div>
+                            <div class="form-item">
+                                <label for="burrType">The burr of this grinder is</label>
+                                <input type="text" id="burrType" name="burrType" placeholder="burr type" size="16">
                             </div>
+                            <div class="form-item is-required">
+                                <label for="grinderImage">and here is the photo of it</label>
+                                <input type="file" accept="image/*" id="grinderImage" name="grinderImage" data-group="1"
+                                    required />
+                            </div>
+
                         </div>
                         <div class="progress-container">
                             <div class="progress-text">
@@ -698,31 +690,25 @@
                     </div>
                     <div class="form-page msf-hide">
                         <div class="form-input-container">
-                            <div class="form-row">
-                                <div class="form-item is-required">
-                                    <label for="dripperName">This dripper is called</label>
-                                    <input type="text" id="dripperName" name="dripperName" placeholder="dripper name"
-                                        size="16" data-group="2" required>
-                                </div>
-                                <div class="form-item">
-                                    <label for="dripperBrand">and it is from</label>
-                                    <input type="text" id="dripperBrand" name="dripperBrand" placeholder="brand name"
-                                        size="16">
-                                </div>
+                            <div class="form-item is-required">
+                                <label for="dripperName">This dripper is called</label>
+                                <input type="text" id="dripperName" name="dripperName" placeholder="dripper name"
+                                    size="16" data-group="2" required>
                             </div>
-                            <div class="form-row">
-                                <div class="form-item">
-                                    <label for="dripperMaterial">It is made from</label>
-                                    <input type="text" id="dripperMaterial" name="dripperMaterial"
-                                        placeholder="material" size="16">
-                                </div>
+                            <div class="form-item">
+                                <label for="dripperBrand">and it is from</label>
+                                <input type="text" id="dripperBrand" name="dripperBrand" placeholder="brand name"
+                                    size="16">
                             </div>
-                            <div class="form-row">
-                                <div class="form-item is-required">
-                                    <label for="dripperImage">and here is the photo of it</label>
-                                    <input type="file" accept="image/*" id="dripperImage" name="dripperImage"
-                                        data-group="2" required />
-                                </div>
+                            <div class="form-item">
+                                <label for="dripperMaterial">It is made from</label>
+                                <input type="text" id="dripperMaterial" name="dripperMaterial"
+                                    placeholder="dripper material" size="16">
+                            </div>
+                            <div class="form-item is-required">
+                                <label for="dripperImage">and here is the photo of it</label>
+                                <input type="file" accept="image/*" id="dripperImage" name="dripperImage" data-group="2"
+                                    required />
                             </div>
                         </div>
                         <div class="progress-container">
@@ -750,7 +736,7 @@
                 New</button>
         </div>
         <div class="content">
-            <div class="list-th  col-grid">
+            <div class="list-th  col-grid desktop-version">
                 <!-- there link is used to sort the brew list, but i don't have enough time to develop for now -->
                 <a href="#brew-list">Date</a>
                 <a href="#brew-list">Coffee</a>
@@ -759,308 +745,10 @@
                 <a href="#brew-list">Origin</a>
                 <a href="#brew-list">Rating</a>
             </div>
+            <div class="list-th mobile-version">
+                <h2>Brew Journal</h2>
+            </div>
             <div class="accordion-container" style="visibility: hidden;">
-                <article class="ac brew-item">
-                    <h2 class="ac-header">
-                        <button type="button" class="ac-trigger">
-                            <div class="brew-basic-info-wrapper col-grid">
-                                <p>25/04/2023</p>
-                                <p>Moon Geisha</p>
-                                <p>Jibbithelittles</p>
-                                <p>Natural</p>
-                                <p>Colombia</p>
-                                <p>5.0</p>
-                                <div class="down-arrow arrow"></div>
-                            </div>
-                        </button>
-                    </h2>
-                    <div class="ac-panel">
-                        <div class="brew-detail-info-wrapper col-grid">
-                            <figure class="grid-item">
-                                <img src="src/images/hero-image.png" alt="">
-                            </figure>
-                            <div class="grid-item">
-                                <h3>Preparation.</h3>
-                                <div class="info-row">
-                                    <span class="info-item-label">Dripper:</span>
-                                    <span class="info-item-value">Origami</span>
-                                </div>
-                                <div class="info-row">
-                                    <span class="info-item-label">Grinder:</span>
-                                    <span class="info-item-value">Conmandante C40</span>
-                                </div>
-                                <div class="info-row">
-                                    <span class="info-item-label">Grinder Setting:</span>
-                                    <span class="info-item-value">24</span>
-                                </div>
-                                <div class="info-row">
-                                    <span class="info-item-label">Coffee Amount:</span>
-                                    <span class="info-item-value">15 grams</span>
-                                </div>
-                                <div class="info-row">
-                                    <span class="info-item-label">Recipe Link:</span>
-                                    <span class="info-item-value">None</span>
-                                </div>
-                            </div>
-                            <div class="grid-item">
-                                <h3>Brewing.</h3>
-                                <div class="info-row">
-                                    <span class="info-item-label">Water Temperature:</span>
-                                    <span class="info-item-value">92°C</span>
-                                </div>
-                                <div class="info-row">
-                                    <span class="info-item-label">Blooming Time:</span>
-                                    <span class="info-item-value">30’’</span>
-                                </div>
-                                <div class="info-row">
-                                    <span class="info-item-label">Total Brew Time:</span>
-                                    <span class="info-item-value">1’45’’</span>
-                                </div>
-                                <div class="info-row">
-                                    <span class="info-item-label">Water Amount:</span>
-                                    <span class="info-item-value">225 grams</span>
-                                </div>
-                                <div class="info-row">
-                                    <span class="info-item-label">Brew Ratio:</span>
-                                    <span class="info-item-value">1:15</span>
-                                </div>
-                            </div>
-                            <div class="grid-item">
-                                <h3>Tasting.</h3>
-                                <div class="info-col">
-                                    <div class="info-row">
-                                        <span class="info-item-label">Coffee Age:</span>
-                                        <span class="info-item-value">6 Days</span>
-                                    </div>
-                                    <div class="info-row">
-                                        <span class="info-item-label">Beverage Amount:</span>
-                                        <span class="info-item-value">190 grams</span>
-                                    </div>
-                                    <div class="info-row special-row">
-                                        <span class="info-item-label">Tasting Notes:</span>
-                                        <span class="chips info-item-value">Mango</span>
-                                        <span class="chips info-item-value">Kiwi</span>
-                                        <span class="chips info-item-value">Strawberry</span>
-                                        <span class="chips info-item-value">Mango</span>
-                                        <span class="chips info-item-value">Kiwi</span>
-                                        <span class="chips info-item-value">Strawberry</span>
-                                    </div>
-                                </div>
-                                <div class="info-col">
-                                    <div class="info-row special-row">
-                                        <span class="info-item-label">Note:</span>
-                                        <span class="info-item-value text-area">Lorem ipsum dolor sit amet, consectetur
-                                            adipiscing elit</span>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="grid-item">
-                                <button class="black-fill white-border fill-in">Delete</button>
-                            </div>
-                        </div>
-                    </div>
-                </article>
-                <article class="ac brew-item">
-                    <h2 class="ac-header">
-                        <button type="button" class="ac-trigger">
-                            <div class="brew-basic-info-wrapper col-grid">
-                                <p>25/04/2023</p>
-                                <p>Moon Geisha</p>
-                                <p>Jibbithelittles</p>
-                                <p>Natural</p>
-                                <p>Colombia</p>
-                                <p>5.0</p>
-                                <div class="down-arrow arrow"></div>
-                            </div>
-                        </button>
-                    </h2>
-                    <div class="ac-panel">
-                        <div class="brew-detail-info-wrapper col-grid">
-                            <figure class="grid-item">
-                                <img src="src/images/hero-image.png" alt="">
-                            </figure>
-                            <div class="grid-item">
-                                <h3>Preparation.</h3>
-                                <div class="info-row">
-                                    <span class="info-item-label">Dripper:</span>
-                                    <span class="info-item-value">Origami</span>
-                                </div>
-                                <div class="info-row">
-                                    <span class="info-item-label">Grinder:</span>
-                                    <span class="info-item-value">Conmandante C40</span>
-                                </div>
-                                <div class="info-row">
-                                    <span class="info-item-label">Grinder Setting:</span>
-                                    <span class="info-item-value">24</span>
-                                </div>
-                                <div class="info-row">
-                                    <span class="info-item-label">Coffee Amount:</span>
-                                    <span class="info-item-value">15 grams</span>
-                                </div>
-                                <div class="info-row">
-                                    <span class="info-item-label">Recipe Link:</span>
-                                    <span class="info-item-value">None</span>
-                                </div>
-                            </div>
-                            <div class="grid-item">
-                                <h3>Brewing.</h3>
-                                <div class="info-row">
-                                    <span class="info-item-label">Water Temperature:</span>
-                                    <span class="info-item-value">92°C</span>
-                                </div>
-                                <div class="info-row">
-                                    <span class="info-item-label">Blooming Time:</span>
-                                    <span class="info-item-value">30’’</span>
-                                </div>
-                                <div class="info-row">
-                                    <span class="info-item-label">Total Brew Time:</span>
-                                    <span class="info-item-value">1’45’’</span>
-                                </div>
-                                <div class="info-row">
-                                    <span class="info-item-label">Water Amount:</span>
-                                    <span class="info-item-value">225 grams</span>
-                                </div>
-                                <div class="info-row">
-                                    <span class="info-item-label">Brew Ratio:</span>
-                                    <span class="info-item-value">1:15</span>
-                                </div>
-                            </div>
-                            <div class="grid-item">
-                                <h3>Tasting.</h3>
-                                <div class="info-col">
-                                    <div class="info-row">
-                                        <span class="info-item-label">Coffee Age:</span>
-                                        <span class="info-item-value">6 Days</span>
-                                    </div>
-                                    <div class="info-row">
-                                        <span class="info-item-label">Beverage Amount:</span>
-                                        <span class="info-item-value">190 grams</span>
-                                    </div>
-                                    <div class="info-row special-row">
-                                        <span class="info-item-label">Tasting Notes:</span>
-                                        <span class="chips info-item-value">Mango</span>
-                                        <span class="chips info-item-value">Kiwi</span>
-                                        <span class="chips info-item-value">Strawberry</span>
-                                        <span class="chips info-item-value">Mango</span>
-                                        <span class="chips info-item-value">Kiwi</span>
-                                        <span class="chips info-item-value">Strawberry</span>
-                                    </div>
-                                </div>
-                                <div class="info-col">
-                                    <div class="info-row special-row">
-                                        <span class="info-item-label">Note:</span>
-                                        <span class="info-item-value text-area">Lorem ipsum dolor sit amet, consectetur
-                                            adipiscing elit</span>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="grid-item">
-                                <button class="black-fill white-border fill-in">Delete</button>
-                            </div>
-                        </div>
-                    </div>
-                </article>
-                <article class="ac brew-item">
-                    <h2 class="ac-header">
-                        <button type="button" class="ac-trigger">
-                            <div class="brew-basic-info-wrapper col-grid">
-                                <p>25/04/2023</p>
-                                <p>Moon Geisha</p>
-                                <p>Jibbithelittles</p>
-                                <p>Natural</p>
-                                <p>Colombia</p>
-                                <p>5.0</p>
-                                <div class="down-arrow arrow"></div>
-                            </div>
-                        </button>
-                    </h2>
-                    <div class="ac-panel">
-                        <div class="brew-detail-info-wrapper col-grid">
-                            <figure class="grid-item">
-                                <img src="src/images/hero-image.png" alt="">
-                            </figure>
-                            <div class="grid-item">
-                                <h3>Preparation.</h3>
-                                <div class="info-row">
-                                    <span class="info-item-label">Dripper:</span>
-                                    <span class="info-item-value">Origami</span>
-                                </div>
-                                <div class="info-row">
-                                    <span class="info-item-label">Grinder:</span>
-                                    <span class="info-item-value">Conmandante C40</span>
-                                </div>
-                                <div class="info-row">
-                                    <span class="info-item-label">Grinder Setting:</span>
-                                    <span class="info-item-value">24</span>
-                                </div>
-                                <div class="info-row">
-                                    <span class="info-item-label">Coffee Amount:</span>
-                                    <span class="info-item-value">15 grams</span>
-                                </div>
-                                <div class="info-row">
-                                    <span class="info-item-label">Recipe Link:</span>
-                                    <span class="info-item-value">None</span>
-                                </div>
-                            </div>
-                            <div class="grid-item">
-                                <h3>Brewing.</h3>
-                                <div class="info-row">
-                                    <span class="info-item-label">Water Temperature:</span>
-                                    <span class="info-item-value">92°C</span>
-                                </div>
-                                <div class="info-row">
-                                    <span class="info-item-label">Blooming Time:</span>
-                                    <span class="info-item-value">30’’</span>
-                                </div>
-                                <div class="info-row">
-                                    <span class="info-item-label">Total Brew Time:</span>
-                                    <span class="info-item-value">1’45’’</span>
-                                </div>
-                                <div class="info-row">
-                                    <span class="info-item-label">Water Amount:</span>
-                                    <span class="info-item-value">225 grams</span>
-                                </div>
-                                <div class="info-row">
-                                    <span class="info-item-label">Brew Ratio:</span>
-                                    <span class="info-item-value">1:15</span>
-                                </div>
-                            </div>
-                            <div class="grid-item">
-                                <h3>Tasting.</h3>
-                                <div class="info-col">
-                                    <div class="info-row">
-                                        <span class="info-item-label">Coffee Age:</span>
-                                        <span class="info-item-value">6 Days</span>
-                                    </div>
-                                    <div class="info-row">
-                                        <span class="info-item-label">Beverage Amount:</span>
-                                        <span class="info-item-value">190 grams</span>
-                                    </div>
-                                    <div class="info-row special-row">
-                                        <span class="info-item-label">Tasting Notes:</span>
-                                        <span class="chips info-item-value">Mango</span>
-                                        <span class="chips info-item-value">Kiwi</span>
-                                        <span class="chips info-item-value">Strawberry</span>
-                                        <span class="chips info-item-value">Mango</span>
-                                        <span class="chips info-item-value">Kiwi</span>
-                                        <span class="chips info-item-value">Strawberry</span>
-                                    </div>
-                                </div>
-                                <div class="info-col">
-                                    <div class="info-row special-row">
-                                        <span class="info-item-label">Note:</span>
-                                        <span class="info-item-value text-area">Lorem ipsum dolor sit amet, consectetur
-                                            adipiscing elit</span>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="grid-item">
-                                <button class="black-fill white-border fill-in">Delete</button>
-                            </div>
-                        </div>
-                    </div>
-                </article>
-
             </div>
         </div>
         <div id="add-brew-dialog" class="dialog-container" aria-hidden="true" role="alertdialog">
@@ -1070,57 +758,57 @@
             <div class="dialog-content" role="dialog">
                 <div class="modal-heading">
                     <h1>New Brew.</h1>
-                    <input type="button" class="fill-in black-fill white-border" name="close" value="Close"
+                    <input type="button" class="fill-in black-fill white-border" name="close"
                         data-a11y-dialog-hide="add-brew-dialog" aria-label="Close dialog">
                 </div>
                 <form action="#" id="brew-form">
                     <div class="form-page msf-hide">
                         <div class="form-input-container">
-                            <div class="form-row">
-                                <div class="form-item is-required">
-                                    <label class="brewCoffee">Today, I am going to brew</label>
-                                    <div class="custom-select">
-                                        <select id="brewCoffee" name="brewCoffee" data-group="0" required>
-                                            <option value="" label="Select a coffee" selected="selected">Select a
-                                                coffee</option>
-                                        </select>
-                                    </div>
-                                </div>
-                                <div class="form-item is-required">
-                                    <label for="brewDripper">with my</label>
-                                    <div class="custom-select">
-                                        <select id="brewDripper" name="brewDripper" data-group="0" required>
-                                            <option value="" label="Select a dripper" selected="selected">Select a
-                                                dripper</option>
-                                        </select>
-                                    </div>
-                                </div>
-                                <span class="form-text">dripper.</span>
-                            </div>
-                            <div class="form-row">
-                                <div class="form-item is-required">
-                                    <label for="brewGrinder">I am using</label>
-                                    <div class="custom-select">
-                                        <select id="brewGrinder" name="brewGrinder" data-group="0" required>
-                                            <option value="" label="Select a grinder" selected="selected">Select a
-                                                grinder</option>
-                                        </select>
-                                    </div>
-                                </div>
-                                <div class="form-item">
-                                    <label for="grinderSetting">and set it at</label>
-                                    <input type="text" id="grinderSetting" name="grinderSetting" data-group="0"
-                                        placeholder="grinder setting" size="20">
-                                    <span class="form-text">to grind the coffee.</span>
+
+                            <div class="form-item is-required">
+                                <label class="brewCoffee">Today, I am going to brew</label>
+                                <div class="custom-select">
+                                    <select id="brewCoffee" name="brewCoffee" data-group="0" required>
+                                        <option value="" label="Select a coffee" selected="selected">Select a
+                                            coffee</option>
+                                    </select>
                                 </div>
                             </div>
-                            <div class="form-row">
-                                <div class="form-item">
-                                    <label for="recipeLink">Today’s brew inspiration comes from</label>
-                                    <input type="text" id="recipeLink" name="recipeLink"
-                                        placeholder="recipe link (if any)" size="48">
+                            <div class="form-item is-required">
+                                <label for="brewDripper">with my</label>
+                                <div class="custom-select">
+                                    <select id="brewDripper" name="brewDripper" data-group="0" required>
+                                        <option value="" label="Select a dripper" selected="selected">Select a
+                                            dripper</option>
+                                    </select>
                                 </div>
                             </div>
+                            <span class="form-text">dripper.</span>
+
+
+                            <div class="form-item is-required">
+                                <label for="brewGrinder">I am using</label>
+                                <div class="custom-select">
+                                    <select id="brewGrinder" name="brewGrinder" data-group="0" required>
+                                        <option value="" label="Select a grinder" selected="selected">Select a
+                                            grinder</option>
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="form-item">
+                                <label for="grinderSetting">and set it at</label>
+                                <input type="text" id="grinderSetting" name="grinderSetting" data-group="0"
+                                    placeholder="grinder setting" size="20">
+                                <span class="form-text">to grind the coffee.</span>
+                            </div>
+
+
+                            <div class="form-item">
+                                <label for="recipeLink">Today’s brew inspiration comes from</label>
+                                <input type="text" id="recipeLink" name="recipeLink" placeholder="recipe link (if any)"
+                                    size="16">
+                            </div>
+
                         </div>
                         <div class="progress-container">
                             <div class="progress-text">
@@ -1135,55 +823,56 @@
                     </div>
                     <div class="form-page msf-hide">
                         <div class="form-input-container">
-                            <div class="form-row">
-                                <div class="form-item is-required">
-                                    <label for="brewTemperature">I will set the water temperature at</label>
-                                    <input type="number" id="brewTemperature" name="brewTemperature" min="0" max="100"
-                                        onkeyup="if(value<0) value=0; else if(value>100) value=100;" data-group="1"
-                                        required>
 
-                                </div>
+                            <div class="form-item is-required">
+                                <label for="brewTemperature">I will set the water temperature at</label>
+                                <input type="number" id="brewTemperature" name="brewTemperature" min="0" max="100"
+                                    onkeyup="if(value<0) value=0; else if(value>100) value=100;" data-group="1"
+                                    required>
                                 <span class="form-text">°C.</span>
-                                <div class="form-item is-required">
-                                    <label for="waterAmount">I will use</label>
-                                    <input type="number" id="waterAmount" name="waterAmount" min="0"
-                                        onkeyup="if(value<0) value=0;" data-group="1" required>
+                            </div>
 
-                                </div>
+                            <div class="form-item is-required">
+                                <label for="waterAmount">I will use</label>
+                                <input type="number" id="waterAmount" name="waterAmount" min="0"
+                                    onkeyup="if(value<0) value=0;" data-group="1" required>
                                 <span class="form-text">grams water</span>
                             </div>
-                            <div class="form-row">
-                                <div class="form-item is-required">
-                                    <label for="coffeeAmount">to brew</label>
-                                    <input type="number" id="coffeeAmount" name="coffeeAmount" min="0"
-                                        onkeyup="if(value<0) value=0;" data-group="1" required>
-                                </div>
+
+
+
+                            <div class="form-item is-required">
+                                <label for="coffeeAmount">to brew</label>
+                                <input type="number" id="coffeeAmount" name="coffeeAmount" min="0"
+                                    onkeyup="if(value<0) value=0;" data-group="1" required>
                                 <span class="form-text">grams coffee.</span>
-                                <div class="form-item is-required">
-                                    <label for="bloomTime">I will bloom for</label>
-                                    <input type="number" id="bloomTime" name="bloomTime" min="0"
-                                        onkeyup="if(value<0) value=0;" data-group="1" required>
-
-                                </div>
-                                <span class="form-text">seconds. The brewing</span>
                             </div>
-                            <div class="form-row">
-                                <div class="form-item is-required">
-                                    <label for="brewMinute">will yield at</label>
-                                    <input type="number" id="brewMinute" name="brewMinute" min="0"
-                                        onkeyup="if(value<0) value=0;" data-group="1" placeholder="min" required>
-                                    <span class="form-text">:</span>
-                                    <input type="number" id="brewSecond" name="brewSecond" min="0"
-                                        onkeyup="if(value<0) value=0;" data-group="1" placeholder="sec" required>
-                                </div>
-                                <div class="form-item">
-                                    <label for="beverageAmount">The total beverage weight is</label>
-                                    <input type="number" id="beverageAmount" name="beverageAmount" min="0"
-                                        onkeyup="if(value<0) value=0;" data-group="1">
 
-                                </div>
+                            <div class="form-item is-required">
+                                <label for="bloomTime">I will bloom for</label>
+                                <input type="number" id="bloomTime" name="bloomTime" min="0"
+                                    onkeyup="if(value<0) value=0;" data-group="1" required>
+                                <span class="form-text">seconds.</span>
+                            </div>
+
+
+
+                            <div class="form-item is-required">
+                                <label for="brewMinute">The brewing will yield at</label>
+                                <input type="number" id="brewMinute" name="brewMinute" min="0"
+                                    onkeyup="if(value<0) value=0;" data-group="1" placeholder="min" required>
+                                <span class="form-text" style="margin: 0 1rem">:</span>
+                                <input type="number" id="brewSecond" name="brewSecond" min="0"
+                                    onkeyup="if(value<0) value=0;" data-group="1" placeholder="sec" required>
+                            </div>
+                            <div class="form-item">
+                                <label for="beverageAmount">The total beverage weight is</label>
+                                <input type="number" id="beverageAmount" name="beverageAmount" min="0"
+                                    onkeyup="if(value<0) value=0;" data-group="1">
                                 <span class="form-text">grams.</span>
                             </div>
+
+
                         </div>
                         <div class="progress-container">
                             <div class="progress-text">
@@ -1198,53 +887,64 @@
                     </div>
                     <div class="form-page msf-hide">
                         <div class="form-input-container">
-                            <div class="form-row">
-                                <div class="form-item tag-container is-required">
-                                    <label for="tastingNote">This coffee tastes like</label>
-                                        <input type="text" id="tastingNote" name="tastingNote" data-group="2"
-                                        required>
+
+                            <div class="form-item tag-container is-required">
+                                <label for="tastingNote">This coffee tastes like</label>
+                                <input type="text" id="tastingNote" name="tastingNote" data-group="2" required>
+                            </div>
+
+
+                            <div class="form-item is-required">
+                                <label for="rating">I will give this cup a rating of</label>
+                                <div class="heart-rating">
+                                    <input id="rating1" type="radio" name="rating" value="1" data-group="2" required>
+                                    <label for="rating1"><svg class="unfill-heart" width="28" height="26"
+                                            viewBox="0 0 28 26" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                            <path
+                                                d="M14.3327 24.705C14.1429 24.8732 13.8572 24.8727 13.6681 24.7037L12.0665 23.2736C5.19984 17.1657 0.666504 13.1373 0.666504 8.19346C0.666504 4.16512 3.2265 1 7.33317 1C10.3906 1 12.2254 3.51773 13.6297 5.22638C13.8227 5.4613 14.1769 5.4613 14.37 5.22638C15.7743 3.51773 17.609 1 20.6665 1C24.7732 1 27.3332 4.16512 27.3332 8.19346C27.3332 13.1373 22.7998 17.1657 15.9332 23.2866L14.3327 24.705Z"
+                                                stroke="white" />
+                                        </svg>
+                                    </label>
+                                    <input id="rating2" type="radio" name="rating" value="2" data-group="2" required>
+                                    <label for="rating2"><svg class="unfill-heart" width="28" height="26"
+                                            viewBox="0 0 28 26" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                            <path
+                                                d="M14.3327 24.705C14.1429 24.8732 13.8572 24.8727 13.6681 24.7037L12.0665 23.2736C5.19984 17.1657 0.666504 13.1373 0.666504 8.19346C0.666504 4.16512 3.2265 1 7.33317 1C10.3906 1 12.2254 3.51773 13.6297 5.22638C13.8227 5.4613 14.1769 5.4613 14.37 5.22638C15.7743 3.51773 17.609 1 20.6665 1C24.7732 1 27.3332 4.16512 27.3332 8.19346C27.3332 13.1373 22.7998 17.1657 15.9332 23.2866L14.3327 24.705Z"
+                                                stroke="white" />
+                                        </svg>
+                                    </label>
+                                    <input id="rating3" type="radio" name="rating" value="3" data-group="2" required>
+                                    <label for="rating3"><svg class="unfill-heart" width="28" height="26"
+                                            viewBox="0 0 28 26" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                            <path
+                                                d="M14.3327 24.705C14.1429 24.8732 13.8572 24.8727 13.6681 24.7037L12.0665 23.2736C5.19984 17.1657 0.666504 13.1373 0.666504 8.19346C0.666504 4.16512 3.2265 1 7.33317 1C10.3906 1 12.2254 3.51773 13.6297 5.22638C13.8227 5.4613 14.1769 5.4613 14.37 5.22638C15.7743 3.51773 17.609 1 20.6665 1C24.7732 1 27.3332 4.16512 27.3332 8.19346C27.3332 13.1373 22.7998 17.1657 15.9332 23.2866L14.3327 24.705Z"
+                                                stroke="white" />
+                                        </svg>
+                                    </label>
+                                    <input id="rating4" type="radio" name="rating" value="4" data-group="2" required>
+                                    <label for="rating4"><svg class="unfill-heart" width="28" height="26"
+                                            viewBox="0 0 28 26" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                            <path
+                                                d="M14.3327 24.705C14.1429 24.8732 13.8572 24.8727 13.6681 24.7037L12.0665 23.2736C5.19984 17.1657 0.666504 13.1373 0.666504 8.19346C0.666504 4.16512 3.2265 1 7.33317 1C10.3906 1 12.2254 3.51773 13.6297 5.22638C13.8227 5.4613 14.1769 5.4613 14.37 5.22638C15.7743 3.51773 17.609 1 20.6665 1C24.7732 1 27.3332 4.16512 27.3332 8.19346C27.3332 13.1373 22.7998 17.1657 15.9332 23.2866L14.3327 24.705Z"
+                                                stroke="white" />
+                                        </svg>
+                                    </label>
+                                    <input id="rating5" type="radio" name="rating" value="5" data-group="2" required>
+                                    <label for="rating5"><svg class="unfill-heart" width="28" height="26"
+                                            viewBox="0 0 28 26" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                            <path
+                                                d="M14.3327 24.705C14.1429 24.8732 13.8572 24.8727 13.6681 24.7037L12.0665 23.2736C5.19984 17.1657 0.666504 13.1373 0.666504 8.19346C0.666504 4.16512 3.2265 1 7.33317 1C10.3906 1 12.2254 3.51773 13.6297 5.22638C13.8227 5.4613 14.1769 5.4613 14.37 5.22638C15.7743 3.51773 17.609 1 20.6665 1C24.7732 1 27.3332 4.16512 27.3332 8.19346C27.3332 13.1373 22.7998 17.1657 15.9332 23.2866L14.3327 24.705Z"
+                                                stroke="white" />
+                                        </svg>
+                                    </label>
                                 </div>
                             </div>
-                            <div class="form-row">
-                                <div class="form-item is-required">
-                                    <label for="rating">I will give this cup a rating of</label>
-                                    <div class="heart-rating">
-                                        <input id="rating1" type="radio" name="rating" value="1" data-group="2" required>
-                                        <label for="rating1"><svg class="unfill-heart" width="28" height="26" viewBox="0 0 28 26" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                            <path d="M14.3327 24.705C14.1429 24.8732 13.8572 24.8727 13.6681 24.7037L12.0665 23.2736C5.19984 17.1657 0.666504 13.1373 0.666504 8.19346C0.666504 4.16512 3.2265 1 7.33317 1C10.3906 1 12.2254 3.51773 13.6297 5.22638C13.8227 5.4613 14.1769 5.4613 14.37 5.22638C15.7743 3.51773 17.609 1 20.6665 1C24.7732 1 27.3332 4.16512 27.3332 8.19346C27.3332 13.1373 22.7998 17.1657 15.9332 23.2866L14.3327 24.705Z" stroke="white"/>
-                                            </svg>
-                                            </label>
-                                        <input id="rating2" type="radio" name="rating" value="2" data-group="2" required>
-                                        <label for="rating2"><svg class="unfill-heart" width="28" height="26" viewBox="0 0 28 26" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                            <path d="M14.3327 24.705C14.1429 24.8732 13.8572 24.8727 13.6681 24.7037L12.0665 23.2736C5.19984 17.1657 0.666504 13.1373 0.666504 8.19346C0.666504 4.16512 3.2265 1 7.33317 1C10.3906 1 12.2254 3.51773 13.6297 5.22638C13.8227 5.4613 14.1769 5.4613 14.37 5.22638C15.7743 3.51773 17.609 1 20.6665 1C24.7732 1 27.3332 4.16512 27.3332 8.19346C27.3332 13.1373 22.7998 17.1657 15.9332 23.2866L14.3327 24.705Z" stroke="white"/>
-                                            </svg>
-                                            </label>
-                                        <input id="rating3" type="radio" name="rating" value="3" data-group="2" required>
-                                        <label for="rating3"><svg class="unfill-heart" width="28" height="26" viewBox="0 0 28 26" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                            <path d="M14.3327 24.705C14.1429 24.8732 13.8572 24.8727 13.6681 24.7037L12.0665 23.2736C5.19984 17.1657 0.666504 13.1373 0.666504 8.19346C0.666504 4.16512 3.2265 1 7.33317 1C10.3906 1 12.2254 3.51773 13.6297 5.22638C13.8227 5.4613 14.1769 5.4613 14.37 5.22638C15.7743 3.51773 17.609 1 20.6665 1C24.7732 1 27.3332 4.16512 27.3332 8.19346C27.3332 13.1373 22.7998 17.1657 15.9332 23.2866L14.3327 24.705Z" stroke="white"/>
-                                            </svg>
-                                            </label>
-                                        <input id="rating4" type="radio" name="rating" value="4" data-group="2" required>
-                                        <label for="rating4"><svg class="unfill-heart" width="28" height="26" viewBox="0 0 28 26" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                            <path d="M14.3327 24.705C14.1429 24.8732 13.8572 24.8727 13.6681 24.7037L12.0665 23.2736C5.19984 17.1657 0.666504 13.1373 0.666504 8.19346C0.666504 4.16512 3.2265 1 7.33317 1C10.3906 1 12.2254 3.51773 13.6297 5.22638C13.8227 5.4613 14.1769 5.4613 14.37 5.22638C15.7743 3.51773 17.609 1 20.6665 1C24.7732 1 27.3332 4.16512 27.3332 8.19346C27.3332 13.1373 22.7998 17.1657 15.9332 23.2866L14.3327 24.705Z" stroke="white"/>
-                                            </svg>
-                                            </label>
-                                        <input id="rating5" type="radio" name="rating" value="5" data-group="2" required>
-                                        <label for="rating5"><svg class="unfill-heart" width="28" height="26" viewBox="0 0 28 26" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                            <path d="M14.3327 24.705C14.1429 24.8732 13.8572 24.8727 13.6681 24.7037L12.0665 23.2736C5.19984 17.1657 0.666504 13.1373 0.666504 8.19346C0.666504 4.16512 3.2265 1 7.33317 1C10.3906 1 12.2254 3.51773 13.6297 5.22638C13.8227 5.4613 14.1769 5.4613 14.37 5.22638C15.7743 3.51773 17.609 1 20.6665 1C24.7732 1 27.3332 4.16512 27.3332 8.19346C27.3332 13.1373 22.7998 17.1657 15.9332 23.2866L14.3327 24.705Z" stroke="white"/>
-                                            </svg>
-                                            </label>
-                                    </div>
-                                </div>
-                                <span class="form-text">, and in my further brewing I think</span>
+                            <div class="form-item">
+                                <label for="note">In my future brewing, I can make it taste better if I can</label>
+                                <textarea id="note" name="note" placeholder="write any note you have here" rows="4"
+                                    cols="64" data-group="2"></textarea>
                             </div>
-                            <div class="form-row">
-                                <div class="form-item">
-                                    <label for="note"> I can make it taste better if I can</label>
-                                    <textarea id="note" name="note" placeholder="write any note you have here" rows="4" cols="64"
-                                        data-group="2"></textarea>
-                                </div>
-                            </div>
+
                         </div>
                         <div class="progress-container">
                             <div class="progress-text">
@@ -1274,12 +974,11 @@
     <script type="module" src="scripts/overlay-modal.js"></script>
     <script type="module" src="scripts/colorthief.js"></script>
     <script type="module" src="scripts/tagify.js"></script>
-    <script src="scripts/mobile-form.js"></script>
     <script src="scripts/custom-cursor.js"></script>
     <script src="scripts/msf-control.js"></script>
     <script src="scripts/navigation.js"></script>
-    <script src="scripts/custom-select.js"></script>
     <script src="script.js"></script>
+    <script src="scripts/custom-select.js"></script>
 </body>
 
 </html>

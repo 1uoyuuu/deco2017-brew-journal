@@ -63,11 +63,12 @@ input[type="button"] {
 }
 
 input[name="close"] {
-    bottom: -50%;
-    right: -4%;
+    background: url("../src/images/close.svg") no-repeat center;
+    background-color: $black;
+    top: -1.5rem;
+    right: -1.5rem;
     position: absolute;
 
-    width: 6rem;
-    height: 6rem;
-    border-radius: 50%;
+    width: 3rem;
+    height: 3rem;
 }
