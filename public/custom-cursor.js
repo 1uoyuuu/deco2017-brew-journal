@@ -2,7 +2,7 @@
 
 var cursor = document.querySelector('.cursor');
 var cursorinner = document.querySelector('.cursor2');
-var a = document.querySelectorAll('nav a');
+var a = document.querySelectorAll('a');
 
 document.addEventListener('mousemove', function (e) {
     var x = e.clientX;

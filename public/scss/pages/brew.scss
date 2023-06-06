@@ -45,6 +45,7 @@
     p {
         grid-column: span 2;
         font-size: 1.5rem;
+        text-transform: capitalize;
         //if it is the last p element, only span 1, leave some room for the arrow
         &:last-of-type {
             grid-column: span 1;
@@ -77,7 +78,7 @@
             align-self: center;
             grid-column: span 2;
             img{
-                border: 2vh solid white;
+                border: 1vh solid white;//the border color will change based on the coffee image
                 object-fit: contain;
             }
         }
@@ -85,13 +86,13 @@
         &:last-child {
             //the last child should be the delete button area, it should only take less total width
             grid-column: span 1;
-            align-self: flex-start;
+            align-self: center;
         }
 
         //tasting section
         &:nth-last-child(2) {
             flex-wrap: wrap;
-            align-content: center;
+            align-content: flex-start;
             justify-content: space-between !important;
             flex-direction: row;
             grid-column: span 5;
@@ -100,14 +101,13 @@
             }
             .info-col {
                 flex-basis: 49%;
-
                 //for the special row, we need some adjustment as well, the label should take 100%
                 //forcing the tags/chips to go to next line
                 .special-row {
                     display: flex;
                     flex-wrap: wrap;
                     justify-content: flex-start;
-                    gap: 8px;//gap between each tag/chip
+                    gap: 4px;//gap between each tag/chip
                     
 
                     &>*:first-child {
@@ -120,6 +120,12 @@
                         padding: 2%;
                         text-transform: none;
                         font-size: 0.8rem;
+                        min-height: 8ch;
+                        min-width: 20ch;
+                    }
+                    .recipe-link {
+                        text-decoration: underline;
+                        font-size: 0.8rem;
                     }
                 }
             }
@@ -130,7 +136,6 @@
             align-items: center;
             padding: 2%;
         }
-
 
 
 

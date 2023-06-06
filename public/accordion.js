@@ -8,7 +8,16 @@ const config = {
     beforeOpen: (c) => {changeArrow(c)},
     beforeClose: (c) => {changeArrow(c)}
 }
+
+const accordion = document.querySelector(".accordion-container");
+
 new Accordion('.accordion-container', config);
+
+document.addEventListener("DOMContentLoaded", function () {
+    //after content fully loaded, then turn on the carousel visibility
+    //this helps prevent the image flickering bug when refreshing the page
+    accordion.style.visibility = "visible";
+});
 
 
 function changeArrow(element){

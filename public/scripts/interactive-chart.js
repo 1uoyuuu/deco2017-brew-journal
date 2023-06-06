@@ -1,4 +1,10 @@
-import * as echarts from 'echarts';
+import * as echarts from 'echarts/core';
+import { TitleComponent } from 'echarts/components';
+import { SunburstChart } from 'echarts/charts';
+import { SVGRenderer } from 'echarts/renderers';
+
+echarts.use([TitleComponent, SunburstChart, SVGRenderer]);
+
 
 //this interactive chart is from: https://echarts.apache.org/examples/en/editor.html?c=sunburst-drink
 

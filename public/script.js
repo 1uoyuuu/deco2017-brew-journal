@@ -70,20 +70,20 @@ class Grinder {
 }
 
 class Brew {
-    constructor(coffee,image,dripper,grinder,grinderSetting,recipe,waterTemperature,coffeeAmount,waterAmount,timeMinute,timeSecond,bloomTime,beverageAmount,rating,tastingNote,note){
+    constructor(coffee,image,dripper,grinder,grinderSetting,recipe,waterTemperature,coffeeAmount,waterAmount,timeMinute,timeSecond,bloomTime,beverageAmount,tastingNote, rating, note){
         this.id = Date.now();
         this.date = new Date().toLocaleDateString(); //generate today's date with the dd/mm/yyyy format
         this.coffee = coffee; //store the coffee Object
         this.image = image;
         this.dripper = dripper.name; //only retrieve the dripper name
         this.grinder = grinder.name; //same for grinder
-        this.grinderSetting = grinderSetting; //string
+        this.grinderSetting = grinderSetting=== "" ? "Not Set" : grinderSetting; //string
         this.recipe = recipe; //string(url)
         this.waterTemperature = waterTemperature;
         this.coffeeAmount = Number(coffeeAmount);
         this.waterAmount = Number(waterAmount);
-        this.ratio = waterAmount/coffeeAmount;
-        this.beverageAmount = beverageAmount;
+        this.ratio = Math.round(waterAmount/coffeeAmount);
+        this.beverageAmount = beverageAmount=== ""  ? "Not Recorded" : `${beverageAmount} Grams`;
         this.timeMinute = timeMinute;
         this.timeSecond = timeSecond;
         this.bloomTime = bloomTime;
@@ -149,7 +149,7 @@ coffeeForm.addEventListener("submit", event => {
         coffeeForm.elements.roastLevel.value.trim(), //required
         //the default will generate yyyy-mm-dd, but we here at australia prefer dd--mm--yyyy
         //this simple one line function will help reverse the date
-        coffeeForm.elements.roastDate.value.split("-").reverse().join("-"), //required
+        coffeeForm.elements.roastDate.value.split("-").reverse().join("/"), //required
         roaster, //reqruied
         coffeeForm.elements.processingMethod.value.trim(), //required
         origin, //reqruied
@@ -240,8 +240,8 @@ brewForm.addEventListener("submit", event => {
     brewArray.push(newBrew);
     localStorage.setItem('brews', JSON.stringify(brewArray));
     //reset the form
-    coffeeForm.reset();
-
+    brewForm.reset();
+    window.location.reload(true);
 });
 
 
@@ -264,7 +264,7 @@ window.addEventListener("beforeunload", function (e) {
 //---------------------- UPDATE CONTENT ----------------------
 updateCoffeeSection();
 updateGadgetSection();
-updateBrewFormSelect();
+updateBrewSection();
 
 //---------------------- DELETE FUNCTION ----------------------
 const deleteBtns = document.querySelectorAll("input[name='delete']");
@@ -317,7 +317,7 @@ deleteBtns.forEach(btn => {
                     //once it finds the corresponding item
                     //use splice to remove the item
                     coffeeArray.splice(index,1);
-                    coffeeArray.splice(index,1);
+                    coffeeImageArray.splice(index,1);
                     //update the local storage
                     localStorage.setItem('coffees', JSON.stringify(coffeeArray));
                     localStorage.setItem('coffeeImages', JSON.stringify(coffeeImageArray));
@@ -327,6 +327,18 @@ deleteBtns.forEach(btn => {
 
                 }
             })
+        };
+        if (brewArray !== null){
+            brewArray.forEach((item,index) => {
+                if(item.id === parseInt(btn.id)){
+                    brewArray.splice(index,1);
+
+                    localStorage.setItem('brews', JSON.stringify(brewArray));
+
+                    window.location.reload();
+                    return
+                }
+            });
         }
     })
 });
@@ -430,6 +442,23 @@ function updateGadgetSection(){
     }
 }
 
+//update the brew section(including rendering item, generating custom-select values)
+function updateBrewSection(){
+    updateBrewFormSelect();//this will generate the dropdown options for brew form, it should be generated first
+    const brewAccordion = document.querySelector(".accordion-container");
+
+    //clear the innerHTML first to prevent overlapping information
+    brewAccordion.innerHTML = "";
+
+    let brews = JSON.parse(localStorage.getItem('brews'));
+
+    if(brews !== null) {
+        for(let i = 0; i < brews.length; i++){
+            let accordionItem = createBrewItem(brews[i]);
+            brewAccordion.appendChild(accordionItem);
+        }
+    }
+}
 //----------------------------------------- WRITING HTML CONTENT ----------------------------------------
 function createNewGadget(gadget,index) {
     //create a new li element
@@ -438,7 +467,6 @@ function createNewGadget(gadget,index) {
     const div = document.createElement("div");
     div.className = "carousel-item";
     if (gadget.type === "Dripper") {
-        console.log("running here");
         div.innerHTML = `<div class="flex-row">
                         <p>${gadget.material}</p>
                         <p>Dripper</p>
@@ -466,7 +494,7 @@ function createNewGadget(gadget,index) {
     li.appendChild(div);
     return li;
 }
-
+//this function will create the thumbnail information for each coffee item in the coffee list
 function createCoffeeListItem(coffee) {
     const li = document.createElement("li");
     li.innerHTML = `
@@ -610,10 +638,137 @@ function createSelectOption(arr,selectContainer) {
     }
 }
 
-
 //this function will generate content for the brew section accordion element
 function createBrewItem(brew){
+    //conatiner for the entire accordion
+    const article = document.createElement("article");
+    article.className = ("ac brew-item");
 
+    //accordion header
+    const h2 = document.createElement("h2");
+    h2.classList.add("ac-header");
+    h2.innerHTML = `<button type="button" class="ac-trigger">
+    <div class="brew-basic-info-wrapper col-grid">
+        <p>${brew.date}</p>
+        <p>${brew.coffee.name}</p>
+        <p>${brew.coffee.roaster.name}</p>
+        <p>${brew.coffee.process}</p>
+        <p>${brew.coffee.origin.country}</p>
+        <p>${brew.rating}</p>
+        <div class="down-arrow arrow"></div>
+    </div>
+    </button>`;
+    article.appendChild(h2);
+
+    // accordion panel    
+    const panel = document.createElement("div");
+    panel.classList.add("ac-panel");
+
+    //before adding html content, we need to format the chips just like in the coffee description
+
+    let tempDiv = document.createElement("div");
+
+    let tastingDiv = document.createElement("div");
+    tastingDiv.className = "info-row special-row";
+
+    let titileSpan = document.createElement("span");
+    titileSpan.className = "info-item-label";
+    titileSpan.innerHTML = "Tasting Notes:"
+    tastingDiv.appendChild(titileSpan);
+
+    for (let i = 0; i < brew.tastingNote.length; i++) {
+        let tag = document.createElement("span");
+        tag.className = "chips info-item-value";
+        tag.innerHTML = brew.tastingNote[i];
+        tastingDiv.appendChild(tag);
+    };
+    tempDiv.appendChild(tastingDiv);
+
+    //calculate the coffee age
+    var date1 = parseDate(brew.coffee.roastDate);
+    var date2 = parseDate(brew.date);
+    let coffeeAge = getDaysDiff(date2,date1);
+
+    //create the text prompt if input is not empty for the recipe link
+    let recipeLink = brew.recipe === "" ? "None" : "Click here";
+    panel.innerHTML = `<div class="brew-detail-info-wrapper col-grid">
+                            <figure class="grid-item">
+                                <img class="color-thief-images" src="${coffeeImageArray[brew.image]}" alt="a photo of brewing coffee ${brew.coffee.name}">
+                            </figure>
+                            <div class="grid-item">
+                                <h3>Preparation.</h3>
+                                <div class="info-row">
+                                    <span class="info-item-label">Dripper:</span>
+                                    <span class="info-item-value">${brew.dripper}</span>
+                                </div>
+                                <div class="info-row">
+                                    <span class="info-item-label">Grinder:</span>
+                                    <span class="info-item-value">${brew.grinder}</span>
+                                </div>
+                                <div class="info-row">
+                                    <span class="info-item-label">Grinder Setting:</span>
+                                    <span class="info-item-value">${brew.grinderSetting}</span>
+                                </div>
+                                <div class="info-row">
+                                    <span class="info-item-label">Coffee Amount:</span>
+                                    <span class="info-item-value">${brew.coffeeAmount} grams</span>
+                                </div>
+                                <div class="info-row">
+                                        <span class="info-item-label">Coffee Age:</span>
+                                        <span class="info-item-value">${coffeeAge} Days</span>
+                                    </div>
+                                
+                            </div>
+                            <div class="grid-item">
+                                <h3>Brewing.</h3>
+                                <div class="info-row">
+                                    <span class="info-item-label">Water Temperature:</span>
+                                    <span class="info-item-value">${brew.waterTemperature}°C</span>
+                                </div>
+                                <div class="info-row">
+                                    <span class="info-item-label">Blooming Time:</span>
+                                    <span class="info-item-value">${brew.bloomTime}’’</span>
+                                </div>
+                                <div class="info-row">
+                                    <span class="info-item-label">Total Brew Time:</span>
+                                    <span class="info-item-value">${brew.timeMinute}’${brew.timeSecond}’’</span>
+                                </div>
+                                <div class="info-row">
+                                    <span class="info-item-label">Water Amount:</span>
+                                    <span class="info-item-value">${brew.waterAmount} grams</span>
+                                </div>
+                                <div class="info-row">
+                                    <span class="info-item-label">Brew Ratio:</span>
+                                    <span class="info-item-value">1 : ${brew.ratio}</span>
+                                </div>
+                            </div>
+                            <div class="grid-item">
+                                <h3>Tasting.</h3>
+                                <div class="info-col">
+                                    <div class="info-row">
+                                        <span class="info-item-label">Beverage Amount:</span>
+                                        <span class="info-item-value">${brew.beverageAmount}</span>
+                                    </div>
+                                    ${tempDiv.innerHTML}
+                                </div>
+                                <div class="info-col">
+                                    <div class="info-row special-row">
+                                        <span class="info-item-label">Recipe Link:</span>
+                                        <a class="info-item-value recipe-link" href="${brew.recipe}" target="_blank">${recipeLink}</a>
+                                    </div>
+                                    <div class="info-row special-row">
+                                        <span class="info-item-label">Note:</span>
+                                        <span class="info-item-value text-area">${brew.note}</span>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="grid-item">
+                                <input id="${brew.id}" name="delete" value="Delete" type="button" class="black-fill white-border fill-in"/>
+                            </div>
+                        </div>`;
+    article.appendChild(panel);
+
+    return article;
 }
 
 
@@ -626,3 +781,12 @@ function getBase64(file, callback) {
     reader.readAsDataURL(file);
 }
 
+function getDaysDiff(date1,date2) {
+    return Math.ceil((date1 - date2) / (1000 * 60 * 60 * 24));
+}
+//parse a "dd/mm/yyyy" string to a Date object
+function parseDate(str) {
+    let date = str.split("/");//split the string into an array
+    //notice here the month needs to be subtracting one, or it will give the next month
+    return new Date(date[2],date[1]-1,date[0]);
+}
