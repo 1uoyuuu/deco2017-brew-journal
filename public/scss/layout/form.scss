@@ -98,6 +98,19 @@ form {
 
     }
 
+    // responsive breakpoint
+    @media screen and (max-width: 480px) {
+        //.form-page styling
+        & {
+            justify-content: center !important;
+
+            .form-input-container {
+                .form-row {
+                    margin: 0 auto !important;
+                }
+            }
+        }
+    }
 
 }
 
@@ -368,9 +381,6 @@ input[type=date] {
     flex-direction: column;
     align-items: flex-start !important;
 }
-
-
-
 //styling the star rating
 /* We use display: flex to create a row of stars, otherwise, the stars will appear vertically and inline (if that's what you want by all means go ahead) */
 .heart-rating {
@@ -410,9 +420,6 @@ input[type=date] {
     }
 }
 
-
-
-
 //remove the default autofill background
 /* Change Autocomplete styles in Chrome*/
 //Code reference from: https://css-tricks.com/snippets/css/change-autocomplete-styles-webkit-browsers/
@@ -424,3 +431,4 @@ input:-webkit-autofill:focus {
     -webkit-box-shadow: 0 0 0px 1000px $black inset; //change the background color
     transition: background-color 5000s ease-in-out 0s;
 }
+

@@ -91,7 +91,54 @@
     // to avoid overlapping border, I removed the right border of the first section 
     section:first-child {
         border-right: none;
+    }
+}
+
+//------------------------------------------- RESPONSIVE BREAKPOINT -------------------------------------------
+@media screen and (max-width: 480px) {
+    #overview {
+        .grid-container {
+
+            .content {
+                flex-direction: column-reverse;
+                //the interactive chart
+
+                section {
+                    //reset the side border
+                    border-left: 1px solid white;
+                    border-right: 1px solid white !important;
 
 
+                    h2 {
+                        text-align: center;
+                        font-size: 2rem;
+                    }
+                    &:first-child {
+                        flex-basis: 60%;
+    
+                        #flavour-chart {
+                            padding: 2%;
+    
+                            text {
+                                font-size: 8px !important;
+                            }
+                        }
+                    }
+                    //statistics
+                    &:last-child {
+                        flex-basis: 40%;
+
+                        .stat-item {
+                            .stat-number {
+                                font-size: 3rem;
+                            }
+                        }
+
+
+    
+                    }
+                }
+            }
+        }
     }
 }

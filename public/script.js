@@ -363,9 +363,9 @@ function updateCoffeeSection() {
         coffees.forEach((coffee,index) => {
             let item = createCoffeeListItem(coffee);
             let description = createCoffeeDescription(coffee,index);
-            //prepend the item as the first entry for both coffeeList and coffeeInfo
-            coffeeList.prepend(item);
-            coffeeInfo.prepend(description);
+
+            coffeeList.appendChild(item);
+            coffeeInfo.appendChild(description);
         });
     };
     toggleDisplay();

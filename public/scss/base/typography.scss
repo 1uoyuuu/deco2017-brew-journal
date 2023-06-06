@@ -27,6 +27,41 @@ p {
     font-size: 1rem;
 }
 
+// ----------------------------- Responsive Breakpoint -----------------------------
+
+@media screen and (max-width: 480px) {
+    //setting up rem size, from 16px to 10px
+    html{
+        font-size: 10px;
+
+        h1 {
+            font-size: 5rem;
+        }
+        h2 {
+            font-size: 2rem;
+            font-weight: 600;
+        }
+    }
+}
+
+@media screen and (min-width: 481px) and (max-width: 768px){
+
+    html {
+        font-size: 12px;
+    }
+    
+}
+
+@media  (min-width: 769px) and (max-width: 1024px){
+
+    html {
+        font-size: 14px;
+    }
+    
+}
+
+
+
 // ------------------overview page------------------
 .stat-item{
     p {

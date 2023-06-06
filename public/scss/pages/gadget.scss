@@ -102,3 +102,16 @@
         }
     }
 }
+
+
+
+//------------------------------------------- RESPONSIVE BREAKPOINT -------------------------------------------
+@media screen and (max-width: 480px) {
+    #gadget .grid-container {
+
+        height: 80vh;
+        p {
+            font-size: 2rem;
+        }
+    }
+}
