@@ -15,6 +15,9 @@ body {
 //it is used when the container background color is too light to use white text
 //please see colorthief.js for a more clear explanation
 .black-contrast {
+    color: $black !important;
+    border-color: $black !important;
+
     * {
         color: $black !important;
         border-color: $black !important;

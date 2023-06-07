@@ -115,6 +115,7 @@ let coffeeImageArray = localStorage.getItem('coffeeImages') ? JSON.parse(localSt
 let grinderImageArray = localStorage.getItem('grinderImages') ? JSON.parse(localStorage.getItem('grinderImages')) : [];
 let dripperImageArray = localStorage.getItem('dripperImages') ? JSON.parse(localStorage.getItem('dripperImages')) : [];
 
+
 //----------------------------------------- UPDATE LOCAL STORAGE VALUES ----------------------------------------
 //sending data to the localstorage after submitting the form
 coffeeForm.addEventListener("submit", event => {
@@ -265,6 +266,7 @@ window.addEventListener("beforeunload", function (e) {
 updateCoffeeSection();
 updateGadgetSection();
 updateBrewSection();
+updateStatistics();
 
 //---------------------- DELETE FUNCTION ----------------------
 const deleteBtns = document.querySelectorAll("input[name='delete']");
@@ -343,6 +345,35 @@ deleteBtns.forEach(btn => {
     })
 });
 
+
+function updateStatistics() {
+    const statNumbers = document.querySelectorAll(".stat-number");
+    let coffeeStat = coffeeArray.length;
+    let gadgetStat = dripperArray.length + grinderArray.length;
+    let brewStat = brewArray.length;
+    let originCountry = [];
+    let roasterCountry = [];
+    let moneyStat = 0;
+    coffeeArray.forEach(item => {
+        if(!originCountry.includes(item.origin.country)) {originCountry.push(item.origin.country);}
+        if(!roasterCountry.includes(item.roaster.country)){roasterCountry.push(item.roaster.country);}
+        moneyStat += Number(item.price);
+    });
+    let originStat = originCountry.length;
+    let roasterStat = roasterCountry.length;
+
+    statNumbers.forEach((stat,index) => {
+        stat.innerHTML = "0"; //initialise all the item with number 0
+        //assign values to different statistics
+        if(index === 0) stat.innerHTML = coffeeStat;
+        else if (index === 1) stat.innerHTML = roasterStat;
+        else if (index === 2) stat.innerHTML = originStat;
+        else if (index === 3) stat.innerHTML = brewStat;
+        else if (index === 4) stat.innerHTML = `$${moneyStat}`;
+
+    });
+
+}
 //update the html content based on the local storage 
 function updateCoffeeSection() {
     const coffeeList = document.querySelector("#coffee-list > ul");
@@ -364,8 +395,8 @@ function updateCoffeeSection() {
             let item = createCoffeeListItem(coffee);
             let description = createCoffeeDescription(coffee,index);
 
-            coffeeList.appendChild(item);
-            coffeeInfo.appendChild(description);
+            coffeeList.prepend(item);
+            coffeeInfo.prepend(description);
         });
     };
     toggleDisplay();

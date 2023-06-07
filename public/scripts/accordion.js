@@ -2,8 +2,8 @@ import Accordion from 'accordion-js';
 import 'accordion-js/dist/accordion.min.css';
 
 const config = {
-    duration: 400,
-    showMultiple: true,
+    duration: 300,
+    showMultiple: false,
     collapse: true,
     beforeOpen: (c) => {changeArrow(c)},
     beforeClose: (c) => {changeArrow(c)}

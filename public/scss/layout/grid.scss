@@ -38,6 +38,11 @@
 }
 
 
+//basic layout margin for each section
+#coffee, #gadget, #brew {
+    margin-top: 25vh;
+}
+
 //------------------------------------------- RESPONSIVE BREAKPOINT -------------------------------------------
 @media screen and (max-width: 480px) {
     .grid-container {

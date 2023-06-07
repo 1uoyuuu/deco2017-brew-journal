@@ -1,4 +1,5 @@
 let menu = document.getElementById("menu");
+menu.style.cursor = "pointer";
 const overlay = document.querySelector(".overlay");
 menu.addEventListener("click", ()=> {
     
@@ -15,6 +16,7 @@ let overlayOptions = document.querySelectorAll("#overlay-menu a");
 overlayOptions.forEach(btn => {
     btn.addEventListener("click", ()=>{
         overlay.classList.remove("open");
+        menu.innerHTML = "MENU";
     });
 });
 

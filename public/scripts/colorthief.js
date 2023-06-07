@@ -50,7 +50,11 @@ imageBackground.forEach(img => {
         let contrastFlag = (red * 0.299) + (green * 0.587) + (blue * 0.114) > 186 ? true : false;
         //if the contrast > 186, it should use dark color, else light white color
         if(contrastFlag){
-            container.classList.add("black-contrast");
+            columnOne.classList.add("black-contrast");
+            columnTwo.classList.add("black-contrast");
+        } else {
+            columnOne.classList.remove("black-contrast");
+            columnTwo.classList.remove("black-contrast");
         }
     } else {
         image.addEventListener('load', function () {
