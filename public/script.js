@@ -426,11 +426,9 @@ function toggleDisplay() {
             //hide all the coffee-info-items 
             coffeeInfos.forEach(item => item.classList.add("is-hidden"));
             //only display the item that is being clicked
-            console.log(i);
             //only display the item that is being clicked
             coffeeInfos.forEach((item, index) => {
                 if (index === i) {
-                    console.log("running: " + i);
                     item.style.display = "flex";
                     window.setTimeout(function () {
                         item.style.opacity = 1;

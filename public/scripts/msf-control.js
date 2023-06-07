@@ -163,7 +163,6 @@ function setupMSF(form) {
         //if so, enable the submit button
         inputsAll.forEach(input => {
             input.addEventListener("change", e => {
-                console.log(e.currentTarget.value);
                 //first parameter determines whether all the reqruied input on current page is filled in
                 //however we need to make sure we only unlock the submit button when it is not the first page
                 if (validateInputs(inputsRequired, msfIndex) && msfIndex !== 0) {
