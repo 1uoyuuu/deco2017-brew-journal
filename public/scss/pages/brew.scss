@@ -240,6 +240,13 @@
                     width: 100%;
                     
                 }
+                .form-item:last-child {
+                    height: 20vh;
+                    textarea {
+                        margin-top: 2rem;
+                        flex-grow: 1;
+                    }
+                }
             }
         }
     }
@@ -319,7 +326,7 @@
                             font-size: 1.5rem;
                         }
                         .text-area {
-                            min-width: 0;
+                            min-width: 100%;
                         }
                     }
                     
