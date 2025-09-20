@@ -123,9 +123,9 @@ let coffee1, coffee2, coffee3, dripperOrigami, dripperV60, dripperOrea, grinderC
 function getImageUrls() {
     console.log('Getting image URLs...');
     
-    // Get all hidden images and match by filename pattern
-    const allImages = document.querySelectorAll('img[style*="display: none"]');
-    console.log('All hidden images found:', allImages.length);
+    // Get all images and match by filename pattern (more robust selector)
+    const allImages = document.querySelectorAll('img');
+    console.log('All images found:', allImages.length);
     
     // Create a map of filename patterns to actual URLs
     const imageMap = {};
