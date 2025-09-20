@@ -119,11 +119,11 @@ let dripperImageArray = [];
 // Image URLs will be set after DOM is loaded
 let coffee1, coffee2, coffee3, dripperOrigami, dripperV60, dripperOrea, grinderC40, grinderEK43, grinderKinu;
 
-// Function to get bundled image URLs from the hidden images in the DOM
+// Function to get bundled image URLs - ONLY use served images, no fallbacks
 function getImageUrls() {
     console.log('Getting image URLs...');
     
-    // Try to find images in the DOM first
+    // Find images in the DOM
     const allImages = document.querySelectorAll('img');
     console.log('All images found:', allImages.length);
     
@@ -149,19 +149,19 @@ function getImageUrls() {
     
     console.log('Image map from DOM:', imageMap);
     
-    // If we found bundled images, use them; otherwise use the known bundled paths
-    // These are the actual bundled filenames from the build output (without ./ prefix like the logo)
-    coffee1 = imageMap.coffee1 || 'coffee-1.2e7158f3.jpg';
-    coffee2 = imageMap.coffee2 || 'coffee-2.d8b7dfe9.jpg';
-    coffee3 = imageMap.coffee3 || 'coffee-3.8e203236.jpg';
-    dripperOrigami = imageMap.dripperOrigami || 'dripper-origami.5278ba29.jpg';
-    dripperV60 = imageMap.dripperV60 || 'dripper-v60.08c85aae.jpg';
-    dripperOrea = imageMap.dripperOrea || 'dripper-orea.73b1e245.jpg';
-    grinderC40 = imageMap.grinderC40 || 'grinder-c40.6c18daf9.jpg';
-    grinderEK43 = imageMap.grinderEK43 || 'grinder-ek43.7793ff83.jpg';
-    grinderKinu = imageMap.grinderKinu || 'grinder-kinu.fc2baefe.jpg';
+    // ONLY use the bundled URLs found in DOM - NO FALLBACKS
+    // If not found, the images will be undefined and won't be used
+    coffee1 = imageMap.coffee1;
+    coffee2 = imageMap.coffee2;
+    coffee3 = imageMap.coffee3;
+    dripperOrigami = imageMap.dripperOrigami;
+    dripperV60 = imageMap.dripperV60;
+    dripperOrea = imageMap.dripperOrea;
+    grinderC40 = imageMap.grinderC40;
+    grinderEK43 = imageMap.grinderEK43;
+    grinderKinu = imageMap.grinderKinu;
     
-    console.log('Final image URLs:', {
+    console.log('Final image URLs (ONLY served images):', {
         coffee1, coffee2, coffee3, 
         dripperOrigami, dripperV60, dripperOrea,
         grinderC40, grinderEK43, grinderKinu
