@@ -145,15 +145,15 @@ function getImageUrls() {
     console.log('Image map:', imageMap);
     
     // Assign the bundled URLs or fallback to original paths
-    coffee1 = imageMap.coffee1 || 'src/testing_images/coffee-1.jpg';
-    coffee2 = imageMap.coffee2 || 'src/testing_images/coffee-2.jpg';
-    coffee3 = imageMap.coffee3 || 'src/testing_images/coffee-3.jpg';
-    dripperOrigami = imageMap.dripperOrigami || 'src/testing_images/dripper-origami.jpg';
-    dripperV60 = imageMap.dripperV60 || 'src/testing_images/dripper-v60.jpg';
-    dripperOrea = imageMap.dripperOrea || 'src/testing_images/dripper-orea.jpg';
-    grinderC40 = imageMap.grinderC40 || 'src/testing_images/grinder-c40.jpg';
-    grinderEK43 = imageMap.grinderEK43 || 'src/testing_images/grinder-ek43.jpg';
-    grinderKinu = imageMap.grinderKinu || 'src/testing_images/grinder-kinu.jpg';
+        coffee1 = imageMap.coffee1 || 'src/images/coffee-1.jpg';
+        coffee2 = imageMap.coffee2 || 'src/images/coffee-2.jpg';
+        coffee3 = imageMap.coffee3 || 'src/images/coffee-3.jpg';
+        dripperOrigami = imageMap.dripperOrigami || 'src/images/dripper-origami.jpg';
+        dripperV60 = imageMap.dripperV60 || 'src/images/dripper-v60.jpg';
+        dripperOrea = imageMap.dripperOrea || 'src/images/dripper-orea.jpg';
+        grinderC40 = imageMap.grinderC40 || 'src/images/grinder-c40.jpg';
+        grinderEK43 = imageMap.grinderEK43 || 'src/images/grinder-ek43.jpg';
+        grinderKinu = imageMap.grinderKinu || 'src/images/grinder-kinu.jpg';
 }
 
 //----------------------------------------- INITIALIZE DEFAULT SAMPLE DATA ----------------------------------------
