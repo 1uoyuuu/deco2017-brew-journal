@@ -115,247 +115,7 @@ let coffeeImageArray = [];
 let grinderImageArray = [];
 let dripperImageArray = [];
 
-//----------------------------------------- TESTING IMAGES ----------------------------------------
-// Image URLs will be set after DOM is loaded
-let coffee1, coffee2, coffee3, dripperOrigami, dripperV60, dripperOrea, grinderC40, grinderEK43, grinderKinu;
 
-// Function to get bundled image URLs - ONLY use served images, no fallbacks
-function getImageUrls() {
-    console.log('Getting image URLs...');
-    
-    // Find images in the DOM
-    const allImages = document.querySelectorAll('img');
-    console.log('All images found:', allImages.length);
-    
-    // Debug: log all image sources to see what we're working with
-    allImages.forEach((img, index) => {
-        console.log(`Image ${index}:`, img.src);
-    });
-    
-    // Create a map of filename patterns to actual URLs
-    const imageMap = {};
-    allImages.forEach(img => {
-        const src = img.src;
-        if (src.includes('coffee-1')) imageMap.coffee1 = src;
-        if (src.includes('coffee-2')) imageMap.coffee2 = src;
-        if (src.includes('coffee-3')) imageMap.coffee3 = src;
-        if (src.includes('dripper-origami')) imageMap.dripperOrigami = src;
-        if (src.includes('dripper-v60')) imageMap.dripperV60 = src;
-        if (src.includes('dripper-orea')) imageMap.dripperOrea = src;
-        if (src.includes('grinder-c40')) imageMap.grinderC40 = src;
-        if (src.includes('grinder-ek43')) imageMap.grinderEK43 = src;
-        if (src.includes('grinder-kinu')) imageMap.grinderKinu = src;
-    });
-    
-    console.log('Image map from DOM:', imageMap);
-    
-    // ONLY use the bundled URLs found in DOM - NO FALLBACKS
-    // If not found, the images will be undefined and won't be used
-    coffee1 = imageMap.coffee1;
-    coffee2 = imageMap.coffee2;
-    coffee3 = imageMap.coffee3;
-    dripperOrigami = imageMap.dripperOrigami;
-    dripperV60 = imageMap.dripperV60;
-    dripperOrea = imageMap.dripperOrea;
-    grinderC40 = imageMap.grinderC40;
-    grinderEK43 = imageMap.grinderEK43;
-    grinderKinu = imageMap.grinderKinu;
-    
-    console.log('Final image URLs (ONLY served images):', {
-        coffee1, coffee2, coffee3, 
-        dripperOrigami, dripperV60, dripperOrea,
-        grinderC40, grinderEK43, grinderKinu
-    });
-}
-
-//----------------------------------------- INITIALIZE DEFAULT SAMPLE DATA ----------------------------------------
-function initializeDefaultData() {
-    // Check if sample data has already been initialized
-    const sampleDataInitialized = localStorage.getItem('sampleDataInitialized');
-    if (sampleDataInitialized === 'true') {
-        // Load existing data from localStorage
-        coffeeArray = localStorage.getItem('coffees') ? JSON.parse(localStorage.getItem('coffees')) : [];
-        dripperArray = localStorage.getItem('drippers') ? JSON.parse(localStorage.getItem('drippers')) : [];
-        grinderArray = localStorage.getItem('grinders') ? JSON.parse(localStorage.getItem('grinders')) : [];
-        brewArray = localStorage.getItem('brews') ? JSON.parse(localStorage.getItem('brews')) : [];
-        coffeeImageArray = localStorage.getItem('coffeeImages') ? JSON.parse(localStorage.getItem('coffeeImages')) : [];
-        grinderImageArray = localStorage.getItem('grinderImages') ? JSON.parse(localStorage.getItem('grinderImages')) : [];
-        dripperImageArray = localStorage.getItem('dripperImages') ? JSON.parse(localStorage.getItem('dripperImages')) : [];
-        
-        // Don't return early - continue to update global arrays at the end
-    } else {
-    
-    // Load existing data from localStorage first
-    coffeeArray = localStorage.getItem('coffees') ? JSON.parse(localStorage.getItem('coffees')) : [];
-    dripperArray = localStorage.getItem('drippers') ? JSON.parse(localStorage.getItem('drippers')) : [];
-    grinderArray = localStorage.getItem('grinders') ? JSON.parse(localStorage.getItem('grinders')) : [];
-    brewArray = localStorage.getItem('brews') ? JSON.parse(localStorage.getItem('brews')) : [];
-    coffeeImageArray = localStorage.getItem('coffeeImages') ? JSON.parse(localStorage.getItem('coffeeImages')) : [];
-    grinderImageArray = localStorage.getItem('grinderImages') ? JSON.parse(localStorage.getItem('grinderImages')) : [];
-    dripperImageArray = localStorage.getItem('dripperImages') ? JSON.parse(localStorage.getItem('dripperImages')) : [];
-    
-    // Ensure flavour data is properly formatted as arrays
-    coffeeArray.forEach(coffee => {
-        if (typeof coffee.flavour === 'string') {
-            coffee.flavour = coffee.flavour.split(',').map(f => f.trim());
-        }
-    });
-    
-    // Only add default data if arrays are empty (first time user)
-    if (coffeeArray.length === 0) {
-        // Add sample coffee data from README
-        const sampleCoffees = [
-            {
-                id: Date.now() + 1,
-                name: "Fruity Bomb",
-                type: "Single Origin",
-                process: "Carbonic Maceration",
-                price: 30,
-                weight: 250,
-                flavour: ["Strawberry", "Cream", "Mango"],
-                roastLevel: "Extra Light",
-                roastDate: "2024-01-15",
-                roaster: { name: "Standout", country: "Sweden" },
-                origin: { country: "Colombia", region: "Cauca", farm: "El Paraiso", producer: "", elevation: 0, varietal: "Castillo" }
-            },
-            {
-                id: Date.now() + 2,
-                name: "Gundam Blend",
-                type: "Blend",
-                process: "Natural",
-                price: 22,
-                weight: 250,
-                flavour: ["Apricot", "Rasberry jam", "French earl gray"],
-                roastLevel: "Medium",
-                roastDate: "2024-01-20",
-                roaster: { name: "Sleepy Bloc", country: "Australia" },
-                origin: { country: "Brazil", region: "", farm: "Sitio Melado", producer: "Señor Fonseca", elevation: 0, varietal: "Mundo Novo" }
-            },
-            {
-                id: Date.now() + 3,
-                name: "Daye Bensa",
-                type: "Single Origin",
-                process: "Natural Anaerobic",
-                price: 25,
-                weight: 75,
-                flavour: ["Mango", "Kiwi", "Strawberry", "Floral"],
-                roastLevel: "Light",
-                roastDate: "2024-01-25",
-                roaster: { name: "Jibbi Little", country: "Australia" },
-                origin: { country: "Ethiopia", region: "Sidamo", farm: "", producer: "", elevation: 0, varietal: "Heirloom" }
-            }
-        ];
-        
-        coffeeArray = sampleCoffees;
-        localStorage.setItem('coffees', JSON.stringify(coffeeArray));
-        
-        // Add real testing images for sample coffees
-        const sampleCoffeeImages = [
-            coffee1,
-            coffee2,
-            coffee3
-        ];
-        
-        coffeeImageArray = sampleCoffeeImages;
-        localStorage.setItem('coffeeImages', JSON.stringify(coffeeImageArray));
-        
-        console.log('Coffee images initialized:', sampleCoffeeImages);
-        console.log('Individual image values:', { coffee1, coffee2, coffee3 });
-    }
-    
-    if (dripperArray.length === 0) {
-        // Add sample dripper data from README
-        const sampleDrippers = [
-            {
-                id: Date.now() + 10,
-                type: "Dripper",
-                name: "Origami",
-                material: "Ceramic",
-                brand: "Fellow"
-            },
-            {
-                id: Date.now() + 11,
-                type: "Dripper", 
-                name: "V60",
-                material: "Metal",
-                brand: "Hario"
-            },
-            {
-                id: Date.now() + 12,
-                type: "Dripper",
-                name: "Orea V3",
-                material: "Plastic", 
-                brand: "Orea"
-            }
-        ];
-        
-        dripperArray = sampleDrippers;
-        localStorage.setItem('drippers', JSON.stringify(dripperArray));
-        
-        // Add real testing images for sample drippers
-        const sampleDripperImages = [
-            dripperOrigami,
-            dripperV60,
-            dripperOrea
-        ];
-        
-        dripperImageArray = sampleDripperImages;
-        localStorage.setItem('dripperImages', JSON.stringify(dripperImageArray));
-    }
-    
-    if (grinderArray.length === 0) {
-        // Add sample grinder data from README
-        const sampleGrinders = [
-            {
-                id: Date.now() + 20,
-                type: "Grinder",
-                name: "C40",
-                burr: "Conical",
-                brand: "Comandante"
-            },
-            {
-                id: Date.now() + 21,
-                type: "Grinder",
-                name: "EK43",
-                burr: "Flat",
-                brand: "Mahlkonic"
-            },
-            {
-                id: Date.now() + 22,
-                type: "Grinder",
-                name: "MK47",
-                burr: "Conical",
-                brand: "Kinu"
-            }
-        ];
-        
-        grinderArray = sampleGrinders;
-        localStorage.setItem('grinders', JSON.stringify(grinderArray));
-        
-        // Add real testing images for sample grinders
-        const sampleGrinderImages = [
-            grinderC40,
-            grinderEK43,
-            grinderKinu
-        ];
-        
-        grinderImageArray = sampleGrinderImages;
-        localStorage.setItem('grinderImages', JSON.stringify(grinderImageArray));
-    }
-    
-        // Mark that sample data has been initialized
-        localStorage.setItem('sampleDataInitialized', 'true');
-    }
-    
-    // Update global arrays with the latest data from localStorage (for both cases)
-    coffeeArray = JSON.parse(localStorage.getItem('coffees')) || [];
-    dripperArray = JSON.parse(localStorage.getItem('drippers')) || [];
-    grinderArray = JSON.parse(localStorage.getItem('grinders')) || [];
-    coffeeImageArray = JSON.parse(localStorage.getItem('coffeeImages')) || [];
-    dripperImageArray = JSON.parse(localStorage.getItem('dripperImages')) || [];
-    grinderImageArray = JSON.parse(localStorage.getItem('grinderImages')) || [];
-    
-}
 
 // Function to apply color thief effects to dynamically added images
 function applyColorThiefEffects() {
@@ -488,11 +248,14 @@ function reinitializeCarousel() {
 // Wait for DOM to be loaded, then initialize
 document.addEventListener('DOMContentLoaded', function() {
     
-    // Get the bundled image URLs
-    getImageUrls();
-    
-    // Initialize default data
-    initializeDefaultData();
+    // Load data from localStorage
+    coffeeArray = JSON.parse(localStorage.getItem('coffees')) || [];
+    dripperArray = JSON.parse(localStorage.getItem('drippers')) || [];
+    grinderArray = JSON.parse(localStorage.getItem('grinders')) || [];
+    brewArray = JSON.parse(localStorage.getItem('brews')) || [];
+    coffeeImageArray = JSON.parse(localStorage.getItem('coffeeImages')) || [];
+    grinderImageArray = JSON.parse(localStorage.getItem('grinderImages')) || [];
+    dripperImageArray = JSON.parse(localStorage.getItem('dripperImages')) || [];
     
     // Update the UI after initialization
     updateCoffeeSection();
@@ -525,8 +288,15 @@ if (document.readyState === 'loading') {
     // DOM is still loading, wait for DOMContentLoaded
 } else {
     // DOM is already loaded
-    getImageUrls();
-    initializeDefaultData();
+    // Load data from localStorage
+    coffeeArray = JSON.parse(localStorage.getItem('coffees')) || [];
+    dripperArray = JSON.parse(localStorage.getItem('drippers')) || [];
+    grinderArray = JSON.parse(localStorage.getItem('grinders')) || [];
+    brewArray = JSON.parse(localStorage.getItem('brews')) || [];
+    coffeeImageArray = JSON.parse(localStorage.getItem('coffeeImages')) || [];
+    grinderImageArray = JSON.parse(localStorage.getItem('grinderImages')) || [];
+    dripperImageArray = JSON.parse(localStorage.getItem('dripperImages')) || [];
+    
     updateCoffeeSection();
     updateGadgetSection();
     updateBrewSection();
@@ -552,17 +322,7 @@ if (document.readyState === 'loading') {
     }, 100);
 }
 
-// Debug function to clear localStorage and refresh (for testing)
-window.clearAndRefresh = function() {
-    localStorage.clear();
-    location.reload();
-}
-
-// Function to reset sample data initialization (for testing)
-window.resetSampleData = function() {
-    localStorage.removeItem('sampleDataInitialized');
-    location.reload();
-};
+;
 
 // Function to test brew form dropdowns
 window.testBrewDropdowns = function() {
