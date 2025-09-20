@@ -123,7 +123,7 @@ let coffee1, coffee2, coffee3, dripperOrigami, dripperV60, dripperOrea, grinderC
 function getImageUrls() {
     console.log('Getting image URLs...');
     
-    // Get all images and match by filename pattern (more robust selector)
+    // Try to find images in the DOM first
     const allImages = document.querySelectorAll('img');
     console.log('All images found:', allImages.length);
     
@@ -142,18 +142,25 @@ function getImageUrls() {
         if (src.includes('grinder-kinu')) imageMap.grinderKinu = src;
     });
     
-    console.log('Image map:', imageMap);
+    console.log('Image map from DOM:', imageMap);
     
     // Assign the bundled URLs or fallback to original paths
-        coffee1 = imageMap.coffee1 || 'src/images/coffee-1.jpg';
-        coffee2 = imageMap.coffee2 || 'src/images/coffee-2.jpg';
-        coffee3 = imageMap.coffee3 || 'src/images/coffee-3.jpg';
-        dripperOrigami = imageMap.dripperOrigami || 'src/images/dripper-origami.jpg';
-        dripperV60 = imageMap.dripperV60 || 'src/images/dripper-v60.jpg';
-        dripperOrea = imageMap.dripperOrea || 'src/images/dripper-orea.jpg';
-        grinderC40 = imageMap.grinderC40 || 'src/images/grinder-c40.jpg';
-        grinderEK43 = imageMap.grinderEK43 || 'src/images/grinder-ek43.jpg';
-        grinderKinu = imageMap.grinderKinu || 'src/images/grinder-kinu.jpg';
+    // Use relative paths that work in both dev and production
+    coffee1 = imageMap.coffee1 || './src/images/coffee-1.jpg';
+    coffee2 = imageMap.coffee2 || './src/images/coffee-2.jpg';
+    coffee3 = imageMap.coffee3 || './src/images/coffee-3.jpg';
+    dripperOrigami = imageMap.dripperOrigami || './src/images/dripper-origami.jpg';
+    dripperV60 = imageMap.dripperV60 || './src/images/dripper-v60.jpg';
+    dripperOrea = imageMap.dripperOrea || './src/images/dripper-orea.jpg';
+    grinderC40 = imageMap.grinderC40 || './src/images/grinder-c40.jpg';
+    grinderEK43 = imageMap.grinderEK43 || './src/images/grinder-ek43.jpg';
+    grinderKinu = imageMap.grinderKinu || './src/images/grinder-kinu.jpg';
+    
+    console.log('Final image URLs:', {
+        coffee1, coffee2, coffee3, 
+        dripperOrigami, dripperV60, dripperOrea,
+        grinderC40, grinderEK43, grinderKinu
+    });
 }
 
 //----------------------------------------- INITIALIZE DEFAULT SAMPLE DATA ----------------------------------------
