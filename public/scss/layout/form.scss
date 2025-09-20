@@ -164,10 +164,10 @@ form {
 //styling the text input field
 input[type=text],
 textarea {
-    background-color: transparent;
-    border: none;
-    border-bottom: 1px solid $gray;
-    margin: 4px 0;
+    background-color: transparent !important;
+    border: none !important;
+    border-bottom: 1px solid $gray !important;
+    margin: 4px 0 !important;
 
     //make the placeholder text all uppercase without affecting user input
     text-transform: none;
@@ -181,21 +181,21 @@ textarea {
 
     //change the focus state
     &:focus {
-        border-bottom: 1px solid $accent;
+        border-bottom: 1px solid $accent !important;
         transition: 200ms all ease-in-out;
     }
 }
 
 //styling the number input field
 input[type=number] {
-    width: 4rem;
-    margin: 4px 0;
-    border: 1px solid $gray;
-    padding: 4px 8px;
-    background-color: transparent;
+    width: 4rem !important;
+    margin: 4px 0 !important;
+    border: 1px solid $gray !important;
+    padding: 4px 8px !important;
+    background-color: transparent !important;
 
     &:focus {
-        border: 1px solid $accent;
+        border: 1px solid $accent !important;
         transition: 200ms all ease-in-out;
     }
 
@@ -208,20 +208,20 @@ input[type=number] {
 }
 
 input[type=date] {
-    margin: 4px 0;
-    background-color: transparent;
-    border: none;
-    min-width: 8rem;
-    border-bottom: 1px solid gray;
-    text-transform: uppercase;
-    color: white;
+    margin: 4px 0 !important;
+    background-color: transparent !important;
+    border: none !important;
+    min-width: 8rem !important;
+    border-bottom: 1px solid gray !important;
+    text-transform: uppercase !important;
+    color: white !important;
 
     &:invalid::-webkit-datetime-edit {
         color: $gray;
     }
 
     &:focus {
-        border-bottom: 1px solid $accent;
+        border-bottom: 1px solid $accent !important;
         transition: 200ms all ease-in-out;
     }
 
