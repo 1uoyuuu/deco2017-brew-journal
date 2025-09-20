@@ -127,6 +127,11 @@ function getImageUrls() {
     const allImages = document.querySelectorAll('img');
     console.log('All images found:', allImages.length);
     
+    // Debug: log all image sources to see what we're working with
+    allImages.forEach((img, index) => {
+        console.log(`Image ${index}:`, img.src);
+    });
+    
     // Create a map of filename patterns to actual URLs
     const imageMap = {};
     allImages.forEach(img => {
@@ -144,17 +149,17 @@ function getImageUrls() {
     
     console.log('Image map from DOM:', imageMap);
     
-    // Assign the bundled URLs or fallback to original paths
-    // Use relative paths that work in both dev and production
-    coffee1 = imageMap.coffee1 || './src/images/coffee-1.jpg';
-    coffee2 = imageMap.coffee2 || './src/images/coffee-2.jpg';
-    coffee3 = imageMap.coffee3 || './src/images/coffee-3.jpg';
-    dripperOrigami = imageMap.dripperOrigami || './src/images/dripper-origami.jpg';
-    dripperV60 = imageMap.dripperV60 || './src/images/dripper-v60.jpg';
-    dripperOrea = imageMap.dripperOrea || './src/images/dripper-orea.jpg';
-    grinderC40 = imageMap.grinderC40 || './src/images/grinder-c40.jpg';
-    grinderEK43 = imageMap.grinderEK43 || './src/images/grinder-ek43.jpg';
-    grinderKinu = imageMap.grinderKinu || './src/images/grinder-kinu.jpg';
+    // If we found bundled images, use them; otherwise use the known bundled paths
+    // These are the actual bundled filenames from the build output (without ./ prefix like the logo)
+    coffee1 = imageMap.coffee1 || 'coffee-1.2e7158f3.jpg';
+    coffee2 = imageMap.coffee2 || 'coffee-2.d8b7dfe9.jpg';
+    coffee3 = imageMap.coffee3 || 'coffee-3.8e203236.jpg';
+    dripperOrigami = imageMap.dripperOrigami || 'dripper-origami.5278ba29.jpg';
+    dripperV60 = imageMap.dripperV60 || 'dripper-v60.08c85aae.jpg';
+    dripperOrea = imageMap.dripperOrea || 'dripper-orea.73b1e245.jpg';
+    grinderC40 = imageMap.grinderC40 || 'grinder-c40.6c18daf9.jpg';
+    grinderEK43 = imageMap.grinderEK43 || 'grinder-ek43.7793ff83.jpg';
+    grinderKinu = imageMap.grinderKinu || 'grinder-kinu.fc2baefe.jpg';
     
     console.log('Final image URLs:', {
         coffee1, coffee2, coffee3, 
