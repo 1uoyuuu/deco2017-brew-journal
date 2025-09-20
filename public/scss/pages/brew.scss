@@ -63,6 +63,7 @@
         margin: 0;
     }
 }
+
 //item expanded content
 .brew-detail-info-wrapper {
     padding: 4% 2%;
@@ -333,6 +334,11 @@
                 }
             }
         }
+    }
+    
+    // Specific h3 styling for brewing section
+    .brew-detail-info-wrapper .grid-item h3 {
+        font-size: 1.2rem;
     }
     
 }

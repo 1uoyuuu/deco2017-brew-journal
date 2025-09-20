@@ -1,6 +1,22 @@
+// Brew Journal - Database Only Version (Simplified)
+// This version uses Supabase as the primary data storage
+
+// Import database service
+import { DatabaseService } from './database-service.js';
+
+// Helper function to convert image file to base64
+function convertImageToBase64(file) {
+    return new Promise((resolve, reject) => {
+        const reader = new FileReader();
+        reader.onload = () => resolve(reader.result);
+        reader.onerror = error => reject(error);
+        reader.readAsDataURL(file);
+    });
+}
+
 // define the class Coffee to better organise the data (I'm more used to work with OOP)
 class Coffee {
-    constructor(name, type, roastLevel, roastDate, roaster, process, origin, weight, price, flavour) {
+    constructor(name, type, roastLevel, roastDate, roaster, process, origin, weight, price, flavour, imageUrl = null) {
         //attributes of basic information
         this.id = Date.now();
         this.name = name; //String
@@ -9,6 +25,7 @@ class Coffee {
         this.price = price; //Number
         this.weight = weight; //Number
         this.flavour = flavour; //String
+        this.image_url = imageUrl; //String - image URL
         //attributes related to roaster
         this.roastLevel = roastLevel; //String
         this.roastDate = roastDate; //String(date)
@@ -17,6 +34,7 @@ class Coffee {
         this.origin = origin; //Object Origin
     }
 }
+
 // define class Origin and class Roaster to store relevant information
 class Roaster {
     constructor(name, country) {
@@ -24,6 +42,7 @@ class Roaster {
         this.country = country; //String
     }
 }
+
 class Origin {
     constructor(country, region, farm, producer, elevation, varietal) {
         this.country = country; //String
@@ -34,88 +53,192 @@ class Origin {
         this.varietal = varietal; //String
     }
 }
+
 class Dripper {
-    constructor(name, material, brand) {
+    constructor(name, material, brand, imageUrl = null) {
         this.id = Date.now();
         this.name = name;
         this.material = material;
         this.brand = brand;
-    }
-    toJSON() {
-		return {
-			type: "Dripper",
-			name: this.name,
-			material: this.material,
-            brand: this.brand,
-            id: this.id
-		};
+        this.image_url = imageUrl;
     }
 }
+
 class Grinder {
-    constructor(name, burr, brand) {
+    constructor(name, burrType, brand, imageUrl = null) {
         this.id = Date.now();
         this.name = name;
-        this.burr = burr;
+        this.burrType = burrType;
         this.brand = brand;
-    }
-    toJSON() {
-		return {
-			type: "Grinder",
-			name: this.name,
-			burr: this.burr,
-            brand: this.brand,
-            id: this.id
-		};
+        this.image_url = imageUrl;
     }
 }
 
 class Brew {
-    constructor(coffee,image,dripper,grinder,grinderSetting,recipe,waterTemperature,coffeeAmount,waterAmount,timeMinute,timeSecond,bloomTime,beverageAmount,tastingNote, rating, note){
+    constructor(coffee, dripper, grinder, notes, rating) {
         this.id = Date.now();
-        this.date = new Date().toLocaleDateString(); //generate today's date with the dd/mm/yyyy format
-        this.coffee = coffee; //store the coffee Object
-        this.image = image;
-        this.dripper = dripper.name; //only retrieve the dripper name
-        this.grinder = grinder.name; //same for grinder
-        this.grinderSetting = grinderSetting=== "" ? "Not Set" : grinderSetting; //string
-        this.recipe = recipe; //string(url)
-        this.waterTemperature = waterTemperature;
-        this.coffeeAmount = Number(coffeeAmount);
-        this.waterAmount = Number(waterAmount);
-        this.ratio = Math.round(waterAmount/coffeeAmount);
-        this.beverageAmount = beverageAmount=== ""  ? "Not Recorded" : `${beverageAmount} Grams`;
-        this.timeMinute = timeMinute;
-        this.timeSecond = timeSecond;
-        this.bloomTime = bloomTime;
-        this.rating = rating;
-        this.tastingNote = tastingNote;
-        this.note = note;
-
+        this.coffee = coffee; //Object Coffee
+        this.dripper = dripper; //Object Dripper
+        this.grinder = grinder; //Object Grinder
+        this.notes = notes; //String
+        this.rating = rating; //Number
+        this.date = new Date().toISOString().split('T')[0]; //String(date)
     }
 }
 
-const setUnknown = value => value === "" ? "Unknown" : value.trim();
-
-//for number input, if it is optional and user omits it, then set it at 0 by default
-const setZero = value => value === "" ? 0 : value;
-// the first form is adding coffee
-// here I will set up variables for HTML elements with DOM selection
-let coffeeForm = document.getElementById("coffee-form");
-let gadgetForm = document.getElementById("gadget-form");
-let brewForm = document.getElementById("brew-form");
-// setup localstorage to store the all the informations
-// if there is no such element, create a new array
-// there will be three parts of information stored in the local storage
-// they are coffees, gadgets(drippers,grinders), brews
+// Global arrays to store data (loaded from database)
 let coffeeArray = [];
 let dripperArray = [];
 let grinderArray = [];
 let brewArray = [];
-let coffeeImageArray = [];
-let grinderImageArray = [];
-let dripperImageArray = [];
 
+// Data management functions
+async function loadData() {
+    try {
+        console.log('Loading data from Supabase...');
+        coffeeArray = await DatabaseService.getCoffees();
+        dripperArray = await DatabaseService.getDrippers();
+        grinderArray = await DatabaseService.getGrinders();
+        brewArray = await DatabaseService.getBrews();
+        
+        console.log('Data loaded from Supabase:', {
+            coffees: coffeeArray.length,
+            drippers: dripperArray.length,
+            grinders: grinderArray.length,
+            brews: brewArray.length
+        });
+        
+        // Debug: Log first coffee to see data structure
+        if (coffeeArray.length > 0) {
+            console.log('First coffee data structure:', coffeeArray[0]);
+            console.log('Roaster data:', coffeeArray[0].roasters);
+            console.log('Origin data:', coffeeArray[0].origins);
+        }
+    } catch (error) {
+        console.error('Error loading from database:', error);
+        // Initialize empty arrays if database fails
+        coffeeArray = [];
+        dripperArray = [];
+        grinderArray = [];
+        brewArray = [];
+    }
+}
 
+// Coffee management
+async function addCoffee(coffeeData) {
+    try {
+        const newCoffee = await DatabaseService.addCoffee(coffeeData);
+        if (newCoffee) {
+            coffeeArray.unshift(newCoffee);
+            return newCoffee;
+        }
+    } catch (error) {
+        console.error('Error adding coffee to database:', error);
+    }
+    return null;
+}
+
+async function deleteCoffee(id) {
+    try {
+        const success = await DatabaseService.deleteCoffee(id);
+        if (success) {
+            coffeeArray = coffeeArray.filter(coffee => coffee.id !== id);
+            return true;
+        }
+    } catch (error) {
+        console.error('Error deleting coffee from database:', error);
+    }
+    return false;
+}
+
+// Dripper management
+async function addDripper(dripperData) {
+    try {
+        const newDripper = await DatabaseService.addDripper(dripperData);
+        if (newDripper) {
+            dripperArray.unshift(newDripper);
+            return newDripper;
+        }
+    } catch (error) {
+        console.error('Error adding dripper to database:', error);
+    }
+    return null;
+}
+
+async function deleteDripper(id) {
+    try {
+        const success = await DatabaseService.deleteDripper(id);
+        if (success) {
+            dripperArray = dripperArray.filter(dripper => dripper.id !== id);
+            return true;
+        }
+    } catch (error) {
+        console.error('Error deleting dripper from database:', error);
+    }
+    return false;
+}
+
+// Grinder management
+async function addGrinder(grinderData) {
+    try {
+        const newGrinder = await DatabaseService.addGrinder(grinderData);
+        if (newGrinder) {
+            grinderArray.unshift(newGrinder);
+            return newGrinder;
+        }
+    } catch (error) {
+        console.error('Error adding grinder to database:', error);
+    }
+    return null;
+}
+
+async function deleteGrinder(id) {
+    try {
+        const success = await DatabaseService.deleteGrinder(id);
+        if (success) {
+            grinderArray = grinderArray.filter(grinder => grinder.id !== id);
+            return true;
+        }
+    } catch (error) {
+        console.error('Error deleting grinder from database:', error);
+    }
+    return false;
+}
+
+// Brew management
+async function addBrew(brewData) {
+    try {
+        const newBrew = await DatabaseService.addBrew(brewData);
+        if (newBrew) {
+            brewArray.unshift(newBrew);
+            return newBrew;
+        }
+    } catch (error) {
+        console.error('Error adding brew to database:', error);
+    }
+    return null;
+}
+
+async function deleteBrew(id) {
+    try {
+        const success = await DatabaseService.deleteBrew(id);
+        if (success) {
+            brewArray = brewArray.filter(brew => brew.id !== id);
+            return true;
+        }
+    } catch (error) {
+        console.error('Error deleting brew from database:', error);
+    }
+    return false;
+}
+
+// Helper function for RGB to hex conversion
+function rgbToHex([r,g,b]) {
+    return '#' + [r, g, b].map(x => {
+        const hex = x.toString(16)
+        return hex.length === 1 ? '0' + hex : hex
+    }).join('');
+}
 
 // Function to apply color thief effects to dynamically added images
 function applyColorThiefEffects() {
@@ -126,47 +249,39 @@ function applyColorThiefEffects() {
         // Apply effects to color-thief-images
         const imageBorder = document.querySelectorAll(".color-thief-images");
         imageBorder.forEach(img => {
-            if (img.complete) {
-                let col = colorThief.getColor(img, 200);
-                img.style.borderColor = rgbToHex(col);
-            } else {
-                img.addEventListener('load', function () {
+            if (img.complete && img.naturalWidth > 0) {
+                try {
                     let col = colorThief.getColor(img, 200);
                     img.style.borderColor = rgbToHex(col);
-                });
-            }
+                } catch (error) {
+                    console.warn('ColorThief error for image:', img.src, error);
+                }
+            } else {
+                img.addEventListener('load', function () {
+                    if (img.naturalWidth > 0) {
+                        try {
+                            let col = colorThief.getColor(img, 200);
+                            img.style.borderColor = rgbToHex(col);
+                        } catch (error) {
+                            console.warn('ColorThief error for image:', img.src, error);
+                        }
+                }
+            });
+        }
         });
         
         // Apply effects to color-thief-images-for-bg
         const imageBackground = document.querySelectorAll(".color-thief-images-for-bg");
         imageBackground.forEach(img => {
-            if (img.complete) {
-                let col = colorThief.getColor(img, 200);
-                const columnOne = img.parentNode.parentNode;
-                const columnTwo = columnOne.nextElementSibling;
-                columnTwo.style.backgroundColor = rgbToHex(col);
-                columnOne.style.backgroundColor = rgbToHex(col);
-                
-                // Apply contrast logic
-                var red = col[0];
-                var green = col[1];
-                var blue = col[2];
-                let contrastFlag = (red * 0.299) + (green * 0.587) + (blue * 0.114) > 186 ? true : false;
-                if(contrastFlag){
-                    columnOne.classList.add("black-contrast");
-                    columnTwo.classList.add("black-contrast");
-                } else {
-                    columnOne.classList.remove("black-contrast");
-                    columnTwo.classList.remove("black-contrast");
-                }
-            } else {
-                img.addEventListener('load', function () {
+            if (img.complete && img.naturalWidth > 0) {
+                try {
                     let col = colorThief.getColor(img, 200);
                     const columnOne = img.parentNode.parentNode;
                     const columnTwo = columnOne.nextElementSibling;
                     columnTwo.style.backgroundColor = rgbToHex(col);
                     columnOne.style.backgroundColor = rgbToHex(col);
                     
+                    // Apply contrast logic
                     var red = col[0];
                     var green = col[1];
                     var blue = col[2];
@@ -178,26 +293,44 @@ function applyColorThiefEffects() {
                         columnOne.classList.remove("black-contrast");
                         columnTwo.classList.remove("black-contrast");
                     }
-                });
-            }
+                } catch (error) {
+                    console.warn('ColorThief error for background image:', img.src, error);
+                }
+            } else {
+                img.addEventListener('load', function () {
+                    if (img.naturalWidth > 0) {
+                        try {
+                            let col = colorThief.getColor(img, 200);
+                            const columnOne = img.parentNode.parentNode;
+                            const columnTwo = columnOne.nextElementSibling;
+                            columnTwo.style.backgroundColor = rgbToHex(col);
+                            columnOne.style.backgroundColor = rgbToHex(col);
+                            
+                            var red = col[0];
+                            var green = col[1];
+                            var blue = col[2];
+                            let contrastFlag = (red * 0.299) + (green * 0.587) + (blue * 0.114) > 186 ? true : false;
+                            if(contrastFlag){
+                                columnOne.classList.add("black-contrast");
+                                columnTwo.classList.add("black-contrast");
+                            } else {
+                                columnOne.classList.remove("black-contrast");
+                                columnTwo.classList.remove("black-contrast");
+                            }
+                        } catch (error) {
+                            console.warn('ColorThief error for background image:', img.src, error);
+                        }
+                }
+            });
+        }
         });
     });
 }
-
-// Helper function for RGB to hex conversion
-function rgbToHex([r,g,b]) {
-    return '#' + [r, g, b].map(x => {
-        const hex = x.toString(16)
-        return hex.length === 1 ? '0' + hex : hex
-    }).join('');
-}
-
 
 // Function to re-initialize the carousel after adding new content
 function reinitializeCarousel() {
     const carousel = document.querySelector(".glide");
     const carouselList = document.querySelector("#gadget-carousel");
-    
     
     if (carousel && carouselList) {
         // Keep carousel hidden during initialization
@@ -245,70 +378,66 @@ function reinitializeCarousel() {
     }
 }
 
-// Wait for DOM to be loaded, then initialize
-document.addEventListener('DOMContentLoaded', function() {
-    
-    // Load data from localStorage
-    coffeeArray = JSON.parse(localStorage.getItem('coffees')) || [];
-    dripperArray = JSON.parse(localStorage.getItem('drippers')) || [];
-    grinderArray = JSON.parse(localStorage.getItem('grinders')) || [];
-    brewArray = JSON.parse(localStorage.getItem('brews')) || [];
-    coffeeImageArray = JSON.parse(localStorage.getItem('coffeeImages')) || [];
-    grinderImageArray = JSON.parse(localStorage.getItem('grinderImages')) || [];
-    dripperImageArray = JSON.parse(localStorage.getItem('dripperImages')) || [];
-    
-    // Update the UI after initialization
-    updateCoffeeSection();
-    updateGadgetSection();
-    updateBrewSection();
-    updateStatistics();
-    
-    // Also update brew form selects in case dialog is already open
-    updateBrewFormSelect();
-    
-    // Apply color thief effects and re-initialize carousel after UI updates
-    setTimeout(() => {
-        applyColorThiefEffects();
-        // Only initialize carousel if there's content
-        const carouselList = document.querySelector("#gadget-carousel");
-        if (carouselList && carouselList.children.length > 0) {
-            reinitializeCarousel();
-        } else {
-            // Hide carousel when empty
-            const carousel = document.querySelector(".glide");
-            if (carousel) {
-                carousel.style.visibility = "hidden";
-            }
-        }
-    }, 200);
-});
+function updateCoffeeSection() {
+    const coffeeList = document.querySelector("#coffee-list > ul");
+    const coffeeInfo = document.querySelector("#coffee-info");
+    //reset the content in the coffeeList
+    //this will prevent the repetition of writing content into html
+    //as we go through all the index of the localstorage obejct everytime we call it
+    coffeeList.innerHTML = "";
+    coffeeInfo.innerHTML = `<p id="hint-text">Here's a list of all the coffee you have added so far. Click on any of them
+    to reminisce about
+    your favourite cup.</p>`;
 
-// Also try immediate execution as fallback
-if (document.readyState === 'loading') {
-    // DOM is still loading, wait for DOMContentLoaded
-} else {
-    // DOM is already loaded
-    // Load data from localStorage
-    coffeeArray = JSON.parse(localStorage.getItem('coffees')) || [];
-    dripperArray = JSON.parse(localStorage.getItem('drippers')) || [];
-    grinderArray = JSON.parse(localStorage.getItem('grinders')) || [];
-    brewArray = JSON.parse(localStorage.getItem('brews')) || [];
-    coffeeImageArray = JSON.parse(localStorage.getItem('coffeeImages')) || [];
-    grinderImageArray = JSON.parse(localStorage.getItem('grinderImages')) || [];
-    dripperImageArray = JSON.parse(localStorage.getItem('dripperImages')) || [];
-    
-    updateCoffeeSection();
-    updateGadgetSection();
-    updateBrewSection();
-    updateStatistics();
-    
-    // Also update brew form selects in case dialog is already open
-    updateBrewFormSelect();
-    
-    // Apply color thief effects and re-initialize carousel
+    // iterate through all the coffee entries when it's not null
+    if (coffeeArray !== null && coffeeArray.length > 0) {
+        coffeeArray.forEach((coffee,index) => {
+            let item = createCoffeeListItem(coffee);
+            let description = createCoffeeDescription(coffee,index);
+
+            coffeeList.prepend(item);
+            coffeeInfo.prepend(description);
+        });
+    };
+    toggleDisplay();
+
+    // Apply color thief effects to newly added images
     setTimeout(() => {
         applyColorThiefEffects();
-        // Only initialize carousel if there's content
+    }, 50);
+}
+
+function updateGadgetSection(){
+    const coffeeGadget = document.querySelector("#gadget-carousel");
+
+    //delete all the previous content
+    coffeeGadget.innerHTML = "";
+
+    //iterate through the local storage and add gadget into the carousel
+    if (dripperArray !== null && dripperArray.length > 0) {
+        dripperArray.forEach((dripper,index) => {
+            // Add type field for UI compatibility
+            dripper.type = "Dripper";
+            let li = createNewGadget(dripper,index);
+            coffeeGadget.appendChild(li);
+        });
+    };
+    if (grinderArray !== null && grinderArray.length > 0) {
+        grinderArray.forEach((grinder,index) => {
+            // Add type field for UI compatibility
+            grinder.type = "Grinder";
+            let li = createNewGadget(grinder,index);
+            coffeeGadget.appendChild(li);
+        });
+    }
+    
+    // Apply color thief effects to newly added images
+    setTimeout(() => {
+        applyColorThiefEffects();
+    }, 50);
+    
+    // Re-initialize the carousel only if there's content
+    setTimeout(() => {
         const carouselList = document.querySelector("#gadget-carousel");
         if (carouselList && carouselList.children.length > 0) {
             reinitializeCarousel();
@@ -322,343 +451,447 @@ if (document.readyState === 'loading') {
     }, 100);
 }
 
-;
+function updateBrewSection() {
+    console.log('Updating brew section with', brewArray.length, 'brews');
+    
+    const brewAccordion = document.querySelector(".accordion-container");
+    if (!brewAccordion) {
+        console.log('Brew accordion not found');
+        return;
+    }
 
-// Function to test brew form dropdowns
-window.testBrewDropdowns = function() {
-    console.log('Testing brew dropdowns...');
-    console.log('Current arrays:', {
-        coffeeArray: coffeeArray,
-        dripperArray: dripperArray,
-        grinderArray: grinderArray
+    // Clear existing content
+    brewAccordion.innerHTML = "";
+
+    if (brewArray.length === 0) {
+        brewAccordion.innerHTML = '<p>No brews recorded yet. Start brewing!</p>';
+        return;
+    }
+    
+    // Add each brew to the accordion
+    brewArray.forEach(brew => {
+        const accordionItem = createBrewItem(brew);
+            brewAccordion.appendChild(accordionItem);
     });
-    updateBrewFormSelect();
-};
-
-
-//----------------------------------------- UPDATE LOCAL STORAGE VALUES ----------------------------------------
-//sending data to the localstorage after submitting the form
-coffeeForm.addEventListener("submit", event => {
-    //prevent the defualt action of submitting the form
-    event.preventDefault();
-
-    //validate all the inputs to be valid before submission
-    //as validation already been done once in the msf-control.js, so here just want to make sure the value
-    //satisfy our specific format
-    //retrieve all the input from the coffee form and create a new new coffee object
-
-    //for those user input text, perform a trim() to avoid unnecessary white space
-    let roaster = new Roaster(
-        coffeeForm.elements.roasterName.value.trim(), //required
-        coffeeForm.elements.roasterCountry.value, //required
-    );
-    //if user doesn't fill in optional value, make it as unknown
-    let origin = new Origin(
-        coffeeForm.elements.originCountry.value.trim(), //required
-        setUnknown(coffeeForm.elements.originRegion.value),
-        setUnknown(coffeeForm.elements.originFarm.value),
-        setUnknown(coffeeForm.elements.producerName.value),
-        setZero(coffeeForm.elements.elevation.value),
-        setUnknown(coffeeForm.elements.varietal.value)
-    );
-    //extract the tags from the tagify input and turn into a array of string
-    let flavours = JSON.parse(document.getElementById("coffeeFlavour").value).map(tag => tag.value.trim().toLowerCase());
-
-    let newCoffee = new Coffee(
-        coffeeForm.elements.coffeeName.value.trim(), //required
-        coffeeForm.elements.coffeeType.value, //required
-        coffeeForm.elements.roastLevel.value.trim(), //required
-        //the default will generate yyyy-mm-dd, but we here at australia prefer dd--mm--yyyy
-        //this simple one line function will help reverse the date
-        coffeeForm.elements.roastDate.value.split("-").reverse().join("/"), //required
-        roaster, //reqruied
-        coffeeForm.elements.processingMethod.value.trim(), //required
-        origin, //reqruied
-        setZero(coffeeForm.elements.coffeeWeight.value),
-        setZero(coffeeForm.elements.coffeePrice.value),
-        flavours //array of strings
-    );
-    //store the image inside the local storage
-    getBase64(coffeeForm.elements.coffeeImage.files[0],e=>{
-        coffeeImageArray.push(e);
-        localStorage.setItem('coffeeImages', JSON.stringify(coffeeImageArray));
-    });
-
-
-    //push the new added coffee into localstorage
-    coffeeArray.push(newCoffee);
-    localStorage.setItem('coffees', JSON.stringify(coffeeArray));
-    //reset the form
-    coffeeForm.reset();
-
-    //refresh the webpage when the form is submitted, this will make sure all the images display correctly
-    //without refreshing, there have been several bugs such as the carousel out of height, the image wont show
-    //adding refresh function here prevents all these bugs i encountered
-    window.location.reload();
-
-});
-gadgetForm.addEventListener("submit", event => {
-    event.preventDefault();
-
-    if (gadgetForm.elements.gadgetType.value === "Grinder") {
-        let newGrinder = new Grinder(
-            gadgetForm.elements.grinderName.value,
-            setUnknown(gadgetForm.elements.burrType.value),
-            setUnknown(gadgetForm.elements.grinderBrand.value));
-        getBase64(gadgetForm.elements.grinderImage.files[0],e=>{
-            grinderImageArray.push(e);
-            localStorage.setItem('grinderImages', JSON.stringify(grinderImageArray));
-        });
-        grinderArray.push(newGrinder);
-        localStorage.setItem('grinders', JSON.stringify(grinderArray));
-    } else if (gadgetForm.elements.gadgetType.value === "Dripper") {
-        let newDripper = new Dripper(
-            gadgetForm.elements.dripperName.value,
-            setUnknown(gadgetForm.elements.dripperMaterial.value),
-            setUnknown(gadgetForm.elements.dripperBrand.value),
-            gadgetForm.elements.dripperImage.files[0]);
-
-        getBase64(gadgetForm.elements.dripperImage.files[0],e=>{
-                dripperImageArray.push(e);
-                localStorage.setItem('dripperImages', JSON.stringify(dripperImageArray));
-            });
-        dripperArray.push(newDripper);
-        localStorage.setItem('drippers', JSON.stringify(dripperArray));
+    
+    // Make accordion visible
+    brewAccordion.style.visibility = "visible";
+    
+    // Reinitialize accordion to make arrows work for new entries
+    if (typeof window.initializeAccordion === 'function') {
+        window.initializeAccordion();
     }
-    //same here, after submitting the form successfully, reset the form and refresh the page
-    gadgetForm.reset();
-    window.location.reload();
-});
-brewForm.addEventListener("submit", event => {
-    event.preventDefault();
-    //as the raw input from html form are all string, we need to parse it into number first
-    let coffeeID = Number(brewForm.elements.brewCoffee.value);
-    let dripperID = Number(brewForm.elements.brewDripper.value);
-    let grinderID = Number(brewForm.elements.brewGrinder.value);
-    let coffee = coffeeArray.find(element => element.id === coffeeID);
-    let dripper = dripperArray.find(element => element.id === dripperID);
-    let grinder = grinderArray.find(element => element.id === grinderID);
+}
 
-    let tastingNote = JSON.parse(document.getElementById("tastingNote").value).map(tag => tag.value.trim().toLowerCase());
+// Create brew accordion item - matching original design exactly
+function createBrewItem(brew) {
+    // Container for the entire accordion
+    const article = document.createElement("article");
+    article.className = "ac brew-item";
 
-    let newBrew = new Brew(coffee,
-        coffeeArray.findIndex(e => e.id === coffeeID), // the image index
-        dripper,
-        grinder,
-        brewForm.elements.grinderSetting.value,
-        brewForm.elements.recipeLink.value,
-        brewForm.elements.brewTemperature.value,
-        brewForm.elements.coffeeAmount.value,
-        brewForm.elements.waterAmount.value,
-        brewForm.elements.brewMinute.value,
-        brewForm.elements.brewSecond.value,
-        brewForm.elements.bloomTime.value,
-        brewForm.elements.beverageAmount.value,
-        tastingNote,
-        parseFloat(brewForm.elements.rating.value).toFixed(1),
-        brewForm.elements.note.value
-        );
-    brewArray.push(newBrew);
-    localStorage.setItem('brews', JSON.stringify(brewArray));
-    //reset the form
-    brewForm.reset();
-    window.location.reload(true);
-});
+    // Accordion header
+    const h2 = document.createElement("h2");
+    h2.classList.add("ac-header");
+    h2.innerHTML = `<button type="button" class="ac-trigger">
+        <div class="brew-basic-info-wrapper col-grid">
+            <p>${new Date(brew.created_at).toLocaleDateString()}</p>
+            <p>${brew.coffees?.name || 'N/A'}</p>
+            <p>${brew.coffees?.roasters?.name || 'N/A'}</p>
+            <p>${brew.coffees?.processing_method || 'N/A'}</p>
+            <p>${brew.coffees?.origins?.country || 'N/A'}</p>
+            <p>${brew.rating ? `${brew.rating}.0` : 'N/A'}</p>
+            <div class="down-arrow arrow"></div>
+        </div>
+    </button>`;
+    article.appendChild(h2);
 
+    // Accordion panel    
+    const panel = document.createElement("div");
+    panel.classList.add("ac-panel");
 
-//----------------------------------------- DIALOG EVENT LISTENERS ----------------------------------------
-// Add event listener for when brew form dialog is opened
-document.addEventListener('DOMContentLoaded', function() {
-    // Listen for when the brew dialog is shown
-    const brewDialog = document.getElementById('add-brew-dialog');
-    if (brewDialog) {
-        // Use MutationObserver to detect when dialog becomes visible
-        const observer = new MutationObserver(function(mutations) {
-            mutations.forEach(function(mutation) {
-                if (mutation.type === 'attributes' && mutation.attributeName === 'aria-hidden') {
-                    if (brewDialog.getAttribute('aria-hidden') === 'false') {
-                        console.log('Brew dialog opened - updating dropdowns');
-                        updateBrewFormSelect();
-                    }
-                }
-            });
-        });
-        
-        observer.observe(brewDialog, {
-            attributes: true,
-            attributeFilter: ['aria-hidden']
-        });
-    }
-});
+    // Format tasting notes as chips
+    let tempDiv = document.createElement("div");
+    let tastingDiv = document.createElement("div");
+    tastingDiv.className = "info-row special-row";
 
-//----------------------------------------- RENDER CONTENT ON WEBPAGE ----------------------------------------
+    let titleSpan = document.createElement("span");
+    titleSpan.className = "info-item-label";
+    titleSpan.innerHTML = "Tasting Notes:";
+    tastingDiv.appendChild(titleSpan);
 
-//this two event listener will keep webpage at the same potion after refreshing
-//it is using sessionStorage, solution from: https://stackoverflow.com/questions/17642872/refresh-page-and-keep-scroll-position
-document.addEventListener("DOMContentLoaded", function (event) {
-    var scrollpos = sessionStorage.getItem('scrollpos');
-    if (scrollpos) {
-        window.scrollTo(0, scrollpos);
-        sessionStorage.removeItem('scrollpos');
-    }
-});
-
-window.addEventListener("beforeunload", function (e) {
-    sessionStorage.setItem('scrollpos', window.scrollY);
-});
-
-//---------------------- INITIALIZE AND UPDATE CONTENT ----------------------
-// Sections are now updated after images are loaded in the loadImages().then() block above
-
-//---------------------- DELETE FUNCTION ----------------------
-// Use event delegation to handle dynamically added delete buttons
-document.addEventListener("click", e => {
-    // Check if the clicked element is a delete button
-    if (e.target && e.target.name === 'delete') {
-        const btn = e.target;
-        //traverse all the item array
-        //try to find the item with the same id with the delete button
-        if(dripperArray !== null) {
-            dripperArray.forEach((item,index) => {
-                if(item.id === parseInt(btn.id)){
-                    //once it finds the corresponding item
-                    //use splice to remove the item
-                    dripperArray.splice(index,1);
-                    dripperImageArray.splice(index,1);
-                    //update the local storage
-                    localStorage.setItem('drippers', JSON.stringify(dripperArray));
-                    localStorage.setItem('dripperImages', JSON.stringify(dripperImageArray));
-
-                    // Update UI without reload
-                    updateGadgetSection();
-                    updateStatistics();
-                    //once it finds the item, no need to iterate, just return
-                    return;
-                }
-            });
-        }
-        if(grinderArray !== null) {
-            grinderArray.forEach((item,index) => {
-                //notice here the item.id is a number, where the btn.id is a string
-                //so solution here is either parse the btn.id into a number or use == which will convert the type automatically
-                if(item.id === parseInt(btn.id)){
-                    //once it finds the corresponding item
-                    //use splice to remove the item
-                    grinderArray.splice(index,1);
-                    grinderImageArray.splice(index,1);
-                    //update the local storage
-                    localStorage.setItem('grinders', JSON.stringify(grinderArray));
-                    localStorage.setItem('grinderImages', JSON.stringify(grinderImageArray));
-
-                    // Update UI without reload
-                    updateGadgetSection();
-                    updateStatistics();
-                    return
-
-                }
-            })
-        }
-        if(coffeeArray !== null){
-            coffeeArray.forEach((item,index) => {
-                //notice here the item.id is a number, where the btn.id is a string
-                //so solution here is either parse the btn.id into a number or use == which will convert the type automatically
-                if(item.id === parseInt(btn.id)){
-                    //once it finds the corresponding item
-                    //use splice to remove the item
-                    coffeeArray.splice(index,1);
-                    coffeeImageArray.splice(index,1);
-                    //update the local storage
-                    localStorage.setItem('coffees', JSON.stringify(coffeeArray));
-                    localStorage.setItem('coffeeImages', JSON.stringify(coffeeImageArray));
-
-                    // Update UI without reload
-                    updateCoffeeSection();
-                    updateStatistics();
-                    return
-
-                }
-            })
-        };
-        if (brewArray !== null){
-            brewArray.forEach((item,index) => {
-                if(item.id === parseInt(btn.id)){
-                    brewArray.splice(index,1);
-
-                    localStorage.setItem('brews', JSON.stringify(brewArray));
-
-                    // Update UI without reload
-                    updateBrewSection();
-                    updateStatistics();
-                    return
-                }
-            });
+    if (brew.tasting_notes && brew.tasting_notes.length > 0) {
+        for (let i = 0; i < brew.tasting_notes.length; i++) {
+            let tag = document.createElement("span");
+            tag.className = "chips info-item-value";
+            tag.innerHTML = brew.tasting_notes[i];
+            tastingDiv.appendChild(tag);
         }
     }
-});
+    tempDiv.appendChild(tastingDiv);
 
+    // Use individual fields directly from database
+    const dripper = brew.drippers?.name || 'N/A';
+    const grinder = brew.grinders?.name || 'N/A';
+    const grinderSetting = brew.grinder_setting || 'N/A';
+    const coffeeAmount = brew.coffee_amount ? `${brew.coffee_amount} grams` : 'N/A';
+    const waterTemperature = brew.temperature ? `${brew.temperature}°C` : 'N/A';
+    const bloomTime = brew.bloom_time ? `${brew.bloom_time}''` : 'N/A';
+    const brewTime = brew.brew_time_minutes && brew.brew_time_seconds 
+        ? `${brew.brew_time_minutes}'${brew.brew_time_seconds.toString().padStart(2, '0')}''`
+        : 'N/A';
+    const waterAmount = brew.water_amount ? `${brew.water_amount} grams` : 'N/A';
+    const beverageAmount = brew.beverage_amount ? `${brew.beverage_amount} grams` : 'N/A';
+    const recipeLink = brew.recipe_link || '';
+    const generalNotes = brew.general_notes || 'N/A';
+    
+    // Calculate coffee age (simplified for now)
+    const coffeeAge = 'N/A';
+    
+    // Calculate brew ratio
+    const ratio = (brew.coffee_amount && brew.water_amount) 
+        ? Math.round(brew.water_amount / brew.coffee_amount) 
+        : 'N/A';
+    
+    // Create recipe link
+    const recipeLinkText = recipeLink === '' ? 'None' : 'Click here';
+    const recipeHref = recipeLink === '' ? '#' : recipeLink;
+
+    panel.innerHTML = `<div class="brew-detail-info-wrapper col-grid">
+                            <figure class="grid-item">
+                                <img class="color-thief-images" src="${brew.coffees?.image_data || 'src/images/coffee-placeholder.jpg'}" alt="a photo of brewing coffee ${brew.coffees?.name || 'Unknown'}">
+                            </figure>
+                            <div class="grid-item">
+                                <h3>Preparation.</h3>
+                                <div class="info-row">
+                                    <span class="info-item-label">Dripper:</span>
+                                    <span class="info-item-value">${dripper}</span>
+                    </div>
+                                <div class="info-row">
+                                    <span class="info-item-label">Grinder:</span>
+                                    <span class="info-item-value">${grinder}</span>
+                    </div>
+                                <div class="info-row">
+                                    <span class="info-item-label">Grinder Setting:</span>
+                                    <span class="info-item-value">${grinderSetting}</span>
+                                </div>
+                                <div class="info-row">
+                                    <span class="info-item-label">Coffee Amount:</span>
+                                    <span class="info-item-value">${coffeeAmount}</span>
+                                </div>
+                                <div class="info-row">
+                                        <span class="info-item-label">Coffee Age:</span>
+                                        <span class="info-item-value">${coffeeAge} Days</span>
+                                    </div>
+                                
+                            </div>
+                            <div class="grid-item">
+                                <h3>Brewing.</h3>
+                                <div class="info-row">
+                                    <span class="info-item-label">Water Temperature:</span>
+                                    <span class="info-item-value">${waterTemperature}</span>
+                                </div>
+                                <div class="info-row">
+                                    <span class="info-item-label">Blooming Time:</span>
+                                    <span class="info-item-value">${bloomTime}</span>
+                                </div>
+                                <div class="info-row">
+                                    <span class="info-item-label">Total Brew Time:</span>
+                                    <span class="info-item-value">${brewTime}</span>
+                                </div>
+                                <div class="info-row">
+                                    <span class="info-item-label">Water Amount:</span>
+                                    <span class="info-item-value">${waterAmount}</span>
+                                </div>
+                                <div class="info-row">
+                                    <span class="info-item-label">Brew Ratio:</span>
+                                    <span class="info-item-value">1 : ${ratio}</span>
+                                </div>
+                            </div>
+                            <div class="grid-item">
+                                <h3>Tasting.</h3>
+                                <div class="info-col">
+                                    <div class="info-row">
+                                        <span class="info-item-label">Beverage Amount:</span>
+                                        <span class="info-item-value">${beverageAmount}</span>
+                                    </div>
+                                    ${tempDiv.innerHTML}
+                                </div>
+                                <div class="info-col">
+                                    <div class="info-row special-row">
+                                        <span class="info-item-label">Recipe Link:</span>
+                                        <a class="info-item-value recipe-link" href="${recipeHref}" target="_blank">${recipeLinkText}</a>
+                                    </div>
+                                    <div class="info-row special-row">
+                                        <span class="info-item-label">Note:</span>
+                                        <span class="info-item-value text-area">${generalNotes}</span>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="grid-item">
+                                <input id="${brew.id}" name="delete" value="Delete" type="button" class="black-fill white-border fill-in"/>
+                            </div>
+                        </div>`;
+    article.appendChild(panel);
+
+    return article;
+}
 
 function updateStatistics() {
-    const statNumbers = document.querySelectorAll(".stat-number");
-    let coffeeStat = coffeeArray.length;
-    let gadgetStat = dripperArray.length + grinderArray.length;
-    let brewStat = brewArray.length;
-    let originCountry = [];
-    let roasterCountry = [];
-    let moneyStat = 0;
-    coffeeArray.forEach(item => {
-        if(!originCountry.includes(item.origin.country)) {originCountry.push(item.origin.country);}
-        if(!roasterCountry.includes(item.roaster.country)){roasterCountry.push(item.roaster.country);}
-        moneyStat += Number(item.price);
+    console.log('Updating statistics');
+    
+    // Calculate statistics from the data
+    const coffeeCount = coffeeArray.length;
+    const brewCount = brewArray.length;
+    
+    // Get unique roasters
+    const uniqueRoasters = new Set(coffeeArray.map(coffee => {
+        return coffee.roasters?.name || null;
+    }).filter(Boolean));
+    const roasterCount = uniqueRoasters.size;
+    
+    // Get unique origins
+    const uniqueOrigins = new Set(coffeeArray.map(coffee => {
+        return coffee.origins?.country || null;
+    }).filter(Boolean));
+    const originCount = uniqueOrigins.size;
+    
+    // Calculate total money spent
+    const totalMoney = coffeeArray.reduce((sum, coffee) => sum + (coffee.price || 0), 0);
+    
+    // Update the DOM elements
+    const statCoffees = document.getElementById('stat-coffees');
+    const statRoasters = document.getElementById('stat-roasters');
+    const statOrigins = document.getElementById('stat-origins');
+    const statBrews = document.getElementById('stat-brews');
+    const statMoney = document.getElementById('stat-money');
+    
+    if (statCoffees) statCoffees.textContent = coffeeCount;
+    if (statRoasters) statRoasters.textContent = roasterCount;
+    if (statOrigins) statOrigins.textContent = originCount;
+    if (statBrews) statBrews.textContent = brewCount;
+    if (statMoney) statMoney.textContent = `$${totalMoney}`;
+    
+    console.log('Statistics updated:', {
+        coffees: coffeeCount,
+        roasters: roasterCount,
+        origins: originCount,
+        brews: brewCount,
+        money: totalMoney
     });
-    let originStat = originCountry.length;
-    let roasterStat = roasterCountry.length;
-
-    statNumbers.forEach((stat,index) => {
-        stat.innerHTML = "0"; //initialise all the item with number 0
-        //assign values to different statistics
-        if(index === 0) stat.innerHTML = coffeeStat;
-        else if (index === 1) stat.innerHTML = roasterStat;
-        else if (index === 2) stat.innerHTML = originStat;
-        else if (index === 3) stat.innerHTML = brewStat;
-        else if (index === 4) stat.innerHTML = `$${moneyStat}`;
-
-    });
-
 }
-//update the html content based on the local storage 
-function updateCoffeeSection() {
-    const coffeeList = document.querySelector("#coffee-list > ul");
-    const coffeeInfo = document.querySelector("#coffee-info");
-    //reset the content in the coffeeList
-    //this will prevent the repetition of writing content into html
-    //as we go through all the index of the localstorage obejct everytime we call it
-    coffeeList.innerHTML = "";
-    coffeeInfo.innerHTML = `<p id="hint-text">Here’s a list of all the coffee you have added so far. Click on any of them
-    to reminisce about
-    your favourite cup.</p>`;
 
-    // Retrieve the coffee array from localStorage
-    let coffees = JSON.parse(localStorage.getItem('coffees'));
-
-    // iterate through all the coffee entries when it's not null
-    if (coffees !== null) {
-        coffees.forEach((coffee,index) => {
-            let item = createCoffeeListItem(coffee);
-            let description = createCoffeeDescription(coffee,index);
-
-            coffeeList.prepend(item);
-            coffeeInfo.prepend(description);
+function updateBrewFormSelect() {
+    console.log('Updating brew form selects');
+    
+    // Update coffee dropdown
+    const coffeeSelect = document.getElementById('brewCoffee');
+    if (coffeeSelect) {
+        // Clear existing options except the first one
+        coffeeSelect.innerHTML = '<option value="" label="Select a coffee" selected="selected">Select a coffee</option>';
+        
+        // Add coffee options
+        coffeeArray.forEach(coffee => {
+            const option = document.createElement('option');
+            option.value = coffee.id;
+            option.textContent = coffee.name;
+            coffeeSelect.appendChild(option);
         });
-    };
-    toggleDisplay();
+    }
+    
+    // Update dripper dropdown
+    const dripperSelect = document.getElementById('brewDripper');
+    if (dripperSelect) {
+        // Clear existing options except the first one
+        dripperSelect.innerHTML = '<option value="" label="Select a dripper" selected="selected">Select a dripper</option>';
+        
+        // Add dripper options
+        dripperArray.forEach(dripper => {
+            const option = document.createElement('option');
+            option.value = dripper.id;
+            option.textContent = dripper.name;
+            dripperSelect.appendChild(option);
+        });
+    }
+    
+    // Update grinder dropdown
+    const grinderSelect = document.getElementById('brewGrinder');
+    if (grinderSelect) {
+        // Clear existing options except the first one
+        grinderSelect.innerHTML = '<option value="" label="Select a grinder" selected="selected">Select a grinder</option>';
+        
+        // Add grinder options
+        grinderArray.forEach(grinder => {
+            const option = document.createElement('option');
+            option.value = grinder.id;
+            option.textContent = grinder.name;
+            grinderSelect.appendChild(option);
+        });
+    }
+    
+    // Reinitialize custom selects
+    if (typeof createCustomSelect === 'function') {
+        createCustomSelect();
+    }
+}
 
+// Helper functions from original design
+function createCoffeeListItem(coffee) {
+    const li = document.createElement("li");
+    li.innerHTML = `
+    <a class="coffee-item">
+        <div class="coffee-item-wrap">
+            <h3 class="coffee-item-name">${coffee.name}</h3>
+            <p><span class="coffee-item-date">${coffee.roast_date || 'N/A'}</span>
+                <span class="coffee-item-roaster">${coffee.roasters?.name || 'N/A'}</span>
+            </p>
+        </div>
+        <div class="coffee-item-wrap">
+            <h3 class="coffee-item-origin">${coffee.origins?.country || 'N/A'}</h3>
+            <p><span class="chips">${coffee.roast_level || 'N/A'}</span>
+                <span class="chips">${coffee.processing_method || 'N/A'}</span>
+            </p>
+        </div>
+    </a>`;
+    return li;
+}
 
-    // Apply color thief effects to newly added images
-    setTimeout(() => {
-        applyColorThiefEffects();
-    }, 50);
+function createCoffeeDescription(coffee,index) {
+    //div container for the coffeee description content
+    const div = document.createElement("div");
 
-};
+    //create tags for flavours
+    //it's easier for me to manage the html content here
+    //as one coffee may have multiple tags, so a for loop here will translate all tags into the span
+    let tempDiv = document.createElement("div");
+    let flavourDiv = document.createElement("div");
+    flavourDiv.className = "special-row-2";
+    let titileSpan = document.createElement("span");
+    titileSpan.className = "info-item-label";
+    titileSpan.innerHTML = "Flavours:"
+    flavourDiv.appendChild(titileSpan);
+    console.log('Coffee flavour data:', coffee.flavour, 'Type:', typeof coffee.flavour);
+    
+    // Handle both array and string flavours
+    const flavours = Array.isArray(coffee.flavour) ? coffee.flavour : (coffee.flavour || []);
+    for (let i = 0; i < flavours.length; i++) {
+        let tag = document.createElement("span");
+        tag.className = "chips info-item-value";
+        tag.innerHTML = flavours[i];
+        flavourDiv.appendChild(tag);
+    }
+    tempDiv.appendChild(flavourDiv);
+
+    //adding html content to the div 
+    div.classList.add("coffee-item-info");
+    div.innerHTML = `<div class="info-col">
+                            <div class="info-row">
+                                <span class="info-item-label">Name:</span>
+                                <span class="info-item-value">${coffee.name}</span>
+                            </div>
+                            <div class="info-row">
+                                <span class="info-item-label">Roast Level:</span>
+                                <span class="info-item-value">${coffee.roast_level || 'N/A'}</span>
+                            </div>
+                            <div class="info-row">
+                                <span class="info-item-label">Roaster:</span>
+                                <span class="info-item-value">${coffee.roasters?.name || 'N/A'}</span>
+                            </div>
+                            <div class="info-row image-row">
+                                <img class="color-thief-images-for-bg" src="${coffee.image_data || 'src/images/coffee-placeholder.jpg'}" alt="a photo of ${coffee.name}">
+                            </div>
+                            <div class="info-row">
+                                <span class="info-item-label">Origin Country:</span>
+                                <span class="info-item-value">${coffee.origins?.country || 'N/A'}</span>
+                            </div>
+                            <div class="info-row">
+                                <span class="info-item-label">Farm:</span>
+                                <span class="info-item-value">${coffee.origins?.farm || 'N/A'}</span>
+                            </div>
+                            <div class="info-row">
+                                <span class="info-item-label">Varietal:</span>
+                                <span class="info-item-value">${coffee.origins?.varietal || 'N/A'}</span>
+                            </div>
+                        </div>
+                        <div class="info-col">
+                        <div class="info-row">
+                            <span class="info-item-label">Type:</span>
+                            <span class="info-item-value">${coffee.type || 'N/A'}</span>
+                        </div>
+                        <div class="info-row">
+                            <span class="info-item-label">Roast Date:</span>
+                            <span class="info-item-value">${coffee.roast_date || 'N/A'}</span>
+                        </div>
+                        <div class="info-row">
+                            <span class="info-item-label">Roaster Country:</span>
+                            <span class="info-item-value">${coffee.roasters?.country || 'N/A'}</span>
+                        </div>
+                        <div class="info-row special-row">
+                            <div class="special-row-1">
+                                <span class="info-item-label">Process:</span>
+                                <span class="info-item-value">${coffee.processing_method || 'N/A'}</span>
+                            </div>${tempDiv.innerHTML}
+                            <div class="special-row-3">
+                                <div class="info-item-wrapper">
+                                    <span class="info-item-label">Weight:</span>
+                                    <span class="info-item-value">${coffee.weight || 'N/A'} Grams</span>
+                                </div>
+                                <div class="info-item-wrapper">
+                                    <span class="info-item-label">Price:</span>
+                                    <span class="info-item-value">$${coffee.price || 'N/A'}</span>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="info-row">
+                            <span class="info-item-label">Region:</span>
+                            <span class="info-item-value">${coffee.origins?.region || 'N/A'}</span>
+                        </div>
+                        <div class="info-row">
+                            <span class="info-item-label">Producer:</span>
+                            <span class="info-item-value">${coffee.origins?.producer || 'N/A'}</span>
+                        </div>
+                        <div class="info-row">
+                            <span class="info-item-label">Elevation:</span>
+                            <span class="info-item-value">${coffee.origins?.elevation || 'N/A'} m.a.s.l</span>
+                        </div>
+                    </div>
+                    <input id="${coffee.id}" name="delete" class="coffee-delete black-fill white-border fill-in" type="button" value="Delete" />`
+    return div;
+}
+
+function createNewGadget(gadget,index) {
+    //create a new li element
+    const li = document.createElement("li");
+    li.className = "glide__slide";
+    const div = document.createElement("div");
+    div.className = "carousel-item";
+    if (gadget.type === "Dripper") {
+        div.innerHTML = `<div class="flex-row">
+                        <p>${gadget.material || 'N/A'}</p>
+                        <p>Dripper</p>
+                    </div>
+                    <input id="${gadget.id}" name="delete" class="gadget-delete black-fill white-border fill-in" type="button" value="Delete" />
+                    <img class="color-thief-images" src="${gadget.image_data || 'src/images/dripper-placeholder.jpg'}"
+                        alt="a coffeee dripper ${gadget.name}">
+                    <div class="flex-row">
+                        <p>${gadget.name}</p>
+                        <p>${gadget.brand || 'N/A'}</p>
+                    </div>`
+    } else if (gadget.type === "Grinder") {
+        div.innerHTML = `<div class="flex-row">
+                        <p>${gadget.burr_type || 'N/A'}</p>
+                        <p>Grinder</p>
+                    </div>
+                    <input id="${gadget.id}" name="delete" class="gadget-delete black-fill white-border fill-in" type="button" value="Delete" />
+                    <img class="color-thief-images" src="${gadget.image_data || 'src/images/grinder-placeholder.jpg'}"
+                        alt="a coffeee grinder ${gadget.name}">
+                    <div class="flex-row">
+                        <p>${gadget.name}</p>
+                        <p>${gadget.brand || 'N/A'}</p>
+                    </div>`
+    }
+    li.appendChild(div);
+    return li;
+}
 
 // when user click on each coffee item, a full description will be shown on the left
 // using setTimeout to achieve smooth animation, between display none to block
@@ -702,464 +935,345 @@ function toggleDisplay() {
     }
 }
 
-//update the html content based on the local storage 
-function updateGadgetSection(){
-    const coffeeGadget = document.querySelector("#gadget-carousel");
+// Delete button event listeners
+function setupDeleteListeners() {
+    // Use event delegation for dynamically created delete buttons
+    document.addEventListener('click', async (e) => {
+        if (e.target.name === 'delete') {
+            const id = parseInt(e.target.id);
+            const className = e.target.className;
+            
+            if (className.includes('coffee-delete')) {
+                await deleteCoffeeUI(id);
+            } else if (className.includes('gadget-delete')) {
+                // For gadgets, we need to determine if it's a dripper or grinder
+                // We can check the parent element or use a data attribute
+                const gadgetElement = e.target.closest('.carousel-item');
+                if (gadgetElement) {
+                    const gadgetType = gadgetElement.querySelector('.flex-row p:last-child')?.textContent;
+                    if (gadgetType === 'Dripper') {
+                        await deleteGadget('Dripper', id);
+                    } else if (gadgetType === 'Grinder') {
+                        await deleteGadget('Grinder', id);
+                    }
+                }
+            } else if (className.includes('brew-delete')) {
+                await deleteBrewUI(id);
+            }
+        }
+    });
+}
 
-    //delete all the previous content
-    coffeeGadget.innerHTML = "";
-
-    // Retrieve the coffee array from localStorage
-    let drippers = JSON.parse(localStorage.getItem('drippers'));
-    let grinders = JSON.parse(localStorage.getItem('grinders'));
-    
-    
-    //iterate through the local storage and add gadget into the carousel
-    if (drippers !== null) {
-        drippers.forEach((dripper,index) => {
-            let li = createNewGadget(dripper,index);
-            coffeeGadget.appendChild(li);
-        });
-    };
-    if (grinders !== null) {
-        grinders.forEach((grinder,index) => {
-            let li = createNewGadget(grinder,index);
-            coffeeGadget.appendChild(li);
+// Form submission handlers
+function setupFormHandlers() {
+    // Coffee form submission
+    const coffeeForm = document.getElementById('coffee-form');
+    if (coffeeForm) {
+        coffeeForm.addEventListener('submit', async (e) => {
+            e.preventDefault();
+            await handleCoffeeFormSubmission();
         });
     }
+
+    // Gadget form submission (handles both drippers and grinders)
+    const gadgetForm = document.getElementById('gadget-form');
+    if (gadgetForm) {
+        gadgetForm.addEventListener('submit', async (e) => {
+            e.preventDefault();
+            await handleGadgetFormSubmission();
+        });
+    }
+
+    // Brew form submission
+    const brewForm = document.getElementById('brew-form');
+    if (brewForm) {
+        brewForm.addEventListener('submit', async (e) => {
+            e.preventDefault();
+            await handleBrewFormSubmission();
+        });
+    }
+}
+
+// Coffee form submission handler
+async function handleCoffeeFormSubmission() {
+    try {
+        const formData = new FormData(document.getElementById('coffee-form'));
+        
+        // Get image file and convert to base64
+        const imageFile = formData.get('coffeeImage');
+        let imageData = null;
+        if (imageFile && imageFile.size > 0) {
+            imageData = await convertImageToBase64(imageFile);
+        }
+
+        // Get flavour tags
+        const flavourInput = document.getElementById('coffeeFlavour');
+        const flavours = flavourInput.value ? flavourInput.value.split(',').map(f => f.trim()) : [];
+
+        // Create coffee data object
+        const coffeeData = {
+            name: formData.get('coffeeName'),
+            type: formData.get('coffeeType'),
+            roastLevel: formData.get('roastLevel'),
+            roastDate: formData.get('roastDate'),
+            process: formData.get('processingMethod'),
+            weight: parseInt(formData.get('coffeeWeight')) || 0,
+            price: parseFloat(formData.get('coffeePrice')) || 0,
+            flavour: flavours,
+            image_data: imageData,
+            roaster: {
+                name: formData.get('roasterName'),
+                country: formData.get('roasterCountry')
+            },
+            origin: {
+                country: formData.get('originCountry'),
+                region: formData.get('originRegion'),
+                farm: formData.get('originFarm'),
+                producer: formData.get('producerName'),
+                elevation: parseInt(formData.get('elevation')) || 0,
+                varietal: formData.get('varietal')
+            }
+        };
+
+        // Add coffee to database
+        const newCoffee = await addCoffee(coffeeData);
+        if (newCoffee) {
+            // Update UI
+            updateCoffeeSection();
+            updateStatistics();
+            
+            // Close dialog
+            const dialog = document.getElementById('add-coffee-dialog');
+            if (dialog) {
+                dialog.setAttribute('aria-hidden', 'true');
+            }
+            
+            // Reset form
+            document.getElementById('coffee-form').reset();
+            
+            console.log('Coffee added successfully:', newCoffee);
+        }
+    } catch (error) {
+        console.error('Error submitting coffee form:', error);
+    }
+}
+
+// Gadget form submission handler (handles both drippers and grinders)
+async function handleGadgetFormSubmission() {
+    try {
+        const formData = new FormData(document.getElementById('gadget-form'));
+        const gadgetType = formData.get('gadgetType');
+        
+        if (gadgetType === 'Dripper') {
+            // Handle dripper submission
+            const imageFile = formData.get('dripperImage');
+            let imageData = null;
+            if (imageFile && imageFile.size > 0) {
+                imageData = await convertImageToBase64(imageFile);
+            }
+
+            const dripperData = {
+                name: formData.get('dripperName'),
+                brand: formData.get('dripperBrand'),
+                material: formData.get('dripperMaterial'),
+                image_data: imageData
+            };
+
+            const newDripper = await addDripper(dripperData);
+            if (newDripper) {
+                updateGadgetSection();
+                updateStatistics();
+                
+                const dialog = document.getElementById('add-gadget-dialog');
+                if (dialog) {
+                    dialog.setAttribute('aria-hidden', 'true');
+                }
+                
+                document.getElementById('gadget-form').reset();
+                console.log('Dripper added successfully:', newDripper);
+            }
+            
+        } else if (gadgetType === 'Grinder') {
+            // Handle grinder submission
+            const imageFile = formData.get('grinderImage');
+            let imageData = null;
+            if (imageFile && imageFile.size > 0) {
+                imageData = await convertImageToBase64(imageFile);
+            }
+
+            const grinderData = {
+                name: formData.get('grinderName'),
+                brand: formData.get('grinderBrand'),
+                burrType: formData.get('burrType'),
+                image_data: imageData
+            };
+
+            const newGrinder = await addGrinder(grinderData);
+            if (newGrinder) {
+                updateGadgetSection();
+                updateStatistics();
+                
+                const dialog = document.getElementById('add-gadget-dialog');
+                if (dialog) {
+                    dialog.setAttribute('aria-hidden', 'true');
+                }
+                
+                document.getElementById('gadget-form').reset();
+                console.log('Grinder added successfully:', newGrinder);
+            }
+        }
+    } catch (error) {
+        console.error('Error submitting gadget form:', error);
+    }
+}
+
+// Brew form submission handler
+async function handleBrewFormSubmission() {
+    try {
+        const formData = new FormData(document.getElementById('brew-form'));
+        
+        // Get tasting notes as array
+        const tastingNote = formData.get('tastingNote');
+        const tastingNotes = tastingNote ? tastingNote.split(',').map(note => note.trim()) : [];
+        
+        // Get rating from radio buttons
+        const rating = formData.get('rating') ? parseInt(formData.get('rating')) : null;
+        
+        // Create brew data object with all fields
+        const brewData = {
+            coffee_id: parseInt(formData.get('brewCoffee')),
+            dripper_id: parseInt(formData.get('brewDripper')),
+            grinder_id: parseInt(formData.get('brewGrinder')),
+            grinder_setting: formData.get('grinderSetting') || null,
+            recipe_link: formData.get('recipeLink') || null,
+            temperature: formData.get('brewTemperature') ? parseInt(formData.get('brewTemperature')) : null,
+            water_amount: formData.get('waterAmount') ? parseInt(formData.get('waterAmount')) : null,
+            coffee_amount: formData.get('coffeeAmount') ? parseInt(formData.get('coffeeAmount')) : null,
+            bloom_time: formData.get('bloomTime') ? parseInt(formData.get('bloomTime')) : null,
+            brew_time_minutes: formData.get('brewMinute') ? parseInt(formData.get('brewMinute')) : null,
+            brew_time_seconds: formData.get('brewSecond') ? parseInt(formData.get('brewSecond')) : null,
+            beverage_amount: formData.get('beverageAmount') ? parseInt(formData.get('beverageAmount')) : null,
+            tasting_notes: tastingNotes,
+            rating: rating,
+            general_notes: formData.get('note') || null
+        };
+
+        // Add brew to database
+        const newBrew = await addBrew(brewData);
+        if (newBrew) {
+            // Update UI
+            updateBrewSection();
+            updateStatistics();
+            
+            // Close dialog
+            const dialog = document.getElementById('add-brew-dialog');
+            if (dialog) {
+                dialog.setAttribute('aria-hidden', 'true');
+            }
+            
+            // Reset form
+            document.getElementById('brew-form').reset();
+            
+            console.log('Brew added successfully:', newBrew);
+        }
+    } catch (error) {
+        console.error('Error submitting brew form:', error);
+    }
+}
+
+// Delete functions for UI
+async function deleteCoffeeUI(id) {
+    const success = await deleteCoffee(id);
+    if (success) {
+        updateCoffeeSection();
+        updateStatistics();
+    }
+}
+
+async function deleteGadget(type, id) {
+    let success = false;
+    if (type === 'dripper') {
+        success = await deleteDripper(id);
+    } else if (type === 'grinder') {
+        success = await deleteGrinder(id);
+    }
     
+    if (success) {
+        updateGadgetSection();
+        updateStatistics();
+    }
+}
+
+// Brew delete function
+async function deleteBrewUI(id) {
+    const success = await deleteBrew(id);
+    if (success) {
+        updateBrewSection();
+        updateStatistics();
+    }
+}
+
+// Make functions globally available
+window.deleteCoffee = deleteCoffeeUI;
+window.deleteGadget = deleteGadget;
+window.deleteBrew = deleteBrewUI;
+
+// Initialize the app
+document.addEventListener('DOMContentLoaded', async function() {
+    await loadData();
     
+    // Update the UI after loading data
+    updateCoffeeSection();
+    updateGadgetSection();
+    updateBrewSection();
+    updateStatistics();
+    updateBrewFormSelect();
     
-    // Apply color thief effects to newly added images
+    // Setup form handlers
+    setupFormHandlers();
+    
+    // Setup delete button event listeners
+    setupDeleteListeners();
+    
     setTimeout(() => {
         applyColorThiefEffects();
-    }, 50);
-    
-    // Re-initialize the carousel only if there's content
-    setTimeout(() => {
         const carouselList = document.querySelector("#gadget-carousel");
         if (carouselList && carouselList.children.length > 0) {
             reinitializeCarousel();
         } else {
-            // Hide carousel when empty
             const carousel = document.querySelector(".glide");
             if (carousel) {
                 carousel.style.visibility = "hidden";
             }
         }
-    }, 100);
-}
+    }, 200);
+});
 
-//update the brew section(including rendering item, generating custom-select values)
-function updateBrewSection(){
-    updateBrewFormSelect();//this will generate the dropdown options for brew form, it should be generated first
-    const brewAccordion = document.querySelector(".accordion-container");
-
-    //clear the innerHTML first to prevent overlapping information
-    brewAccordion.innerHTML = "";
-
-    let brews = JSON.parse(localStorage.getItem('brews'));
-
-    if(brews !== null) {
-        for(let i = 0; i < brews.length; i++){
-            let accordionItem = createBrewItem(brews[i]);
-            brewAccordion.appendChild(accordionItem);
-        }
-    }
-    
-    // Reinitialize accordion to make arrows work for new entries
-    if (typeof window.initializeAccordion === 'function') {
-        window.initializeAccordion();
-    }
-}
-//----------------------------------------- WRITING HTML CONTENT ----------------------------------------
-function createNewGadget(gadget,index) {
-    //create a new li element
-    const li = document.createElement("li");
-    li.className = "glide__slide";
-    const div = document.createElement("div");
-    div.className = "carousel-item";
-    if (gadget.type === "Dripper") {
-        div.innerHTML = `<div class="flex-row">
-                        <p>${gadget.material}</p>
-                        <p>Dripper</p>
-                    </div>
-                    <input id="${gadget.id}" name="delete" class="gadget-delete black-fill white-border fill-in" type="button" value="Delete" />
-                    <img class="color-thief-images" src="${dripperImageArray[index]}"
-                        alt="a coffeee dripper ${gadget.name}">
-                    <div class="flex-row">
-                        <p>${gadget.name}</p>
-                        <p>${gadget.brand}</p>
-                    </div>`
-    } else if (gadget.type === "Grinder") {
-        div.innerHTML = `<div class="flex-row">
-                        <p>${gadget.burr}</p>
-                        <p>Grinder</p>
-                    </div>
-                    <input id="${gadget.id}" name="delete" class="gadget-delete black-fill white-border fill-in" type="button" value="Delete" />
-                    <img class="color-thief-images" src="${grinderImageArray[index]}"
-                        alt="a coffeee grinder ${gadget.name}">
-                    <div class="flex-row">
-                        <p>${gadget.name}</p>
-                        <p>${gadget.brand}</p>
-                    </div>`
-    }
-    li.appendChild(div);
-    return li;
-}
-//this function will create the thumbnail information for each coffee item in the coffee list
-function createCoffeeListItem(coffee) {
-    const li = document.createElement("li");
-    li.innerHTML = `
-    <a class="coffee-item">
-        <div class="coffee-item-wrap">
-            <h3 class="coffee-item-name">${coffee.name}</h3>
-            <p><span class="coffee-item-date">${coffee.roastDate}</span>
-                <span class="coffee-item-roaster">${coffee.roaster.name}</span>
-            </p>
-        </div>
-        <div class="coffee-item-wrap">
-            <h3 class="coffee-item-origin">${coffee.origin.country}</h3>
-            <p><span class="chips">${coffee.roastLevel}</span>
-                <span class="chips">${coffee.process}</span>
-            </p>
-        </div>
-    </a>`;
-    return li;
-}
-//add description to the coffee, this will create a div container with all the information about the coffee
-function createCoffeeDescription(coffee,index) {
-    //div container for the coffeee description content
-    const div = document.createElement("div");
-
-    //create tags for flavours
-    //it's easier for me to manage the html content here
-    //as one coffee may have multiple tags, so a for loop here will translate all tags into the span
-    let tempDiv = document.createElement("div");
-    let flavourDiv = document.createElement("div");
-    flavourDiv.className = "special-row-2";
-    let titileSpan = document.createElement("span");
-    titileSpan.className = "info-item-label";
-    titileSpan.innerHTML = "Flavours:"
-    flavourDiv.appendChild(titileSpan);
-    console.log('Coffee flavour data:', coffee.flavour, 'Type:', typeof coffee.flavour);
-    for (let i = 0; i < coffee.flavour.length; i++) {
-        let tag = document.createElement("span");
-        tag.className = "chips info-item-value";
-        tag.innerHTML = coffee.flavour[i];
-        flavourDiv.appendChild(tag);
-    }
-    tempDiv.appendChild(flavourDiv);
-
-    //adding html content to the div 
-    div.classList.add("coffee-item-info");
-    div.innerHTML = `<div class="info-col">
-                            <div class="info-row">
-                                <span class="info-item-label">Name:</span>
-                                <span class="info-item-value">${coffee.name}</span>
-                            </div>
-                            <div class="info-row">
-                                <span class="info-item-label">Roast Level:</span>
-                                <span class="info-item-value">${coffee.roastLevel}</span>
-                            </div>
-                            <div class="info-row">
-                                <span class="info-item-label">Roaster:</span>
-                                <span class="info-item-value">${coffee.roaster.name}</span>
-                            </div>
-                            <div class="info-row image-row">
-                                <img class="color-thief-images-for-bg" src="${coffeeImageArray[index]}" alt="a photo of ${coffee.name}">
-                            </div>
-                            <div class="info-row">
-                                <span class="info-item-label">Origin Country:</span>
-                                <span class="info-item-value">${coffee.origin.country}</span>
-                            </div>
-                            <div class="info-row">
-                                <span class="info-item-label">Farm:</span>
-                                <span class="info-item-value">${coffee.origin.farm}</span>
-                            </div>
-                            <div class="info-row">
-                                <span class="info-item-label">Varietal:</span>
-                                <span class="info-item-value">${coffee.origin.varietal}</span>
-                            </div>
-                        </div>
-                        <div class="info-col">
-                        <div class="info-row">
-                            <span class="info-item-label">Type:</span>
-                            <span class="info-item-value">${coffee.type}</span>
-                        </div>
-                        <div class="info-row">
-                            <span class="info-item-label">Roast Date:</span>
-                            <span class="info-item-value">${coffee.roastDate}</span>
-                        </div>
-                        <div class="info-row">
-                            <span class="info-item-label">Roaster Country:</span>
-                            <span class="info-item-value">${coffee.roaster.country}</span>
-                        </div>
-                        <div class="info-row special-row">
-                            <div class="special-row-1">
-                                <span class="info-item-label">Process:</span>
-                                <span class="info-item-value">${coffee.process}</span>
-                            </div>${tempDiv.innerHTML}
-                            <div class="special-row-3">
-                                <div class="info-item-wrapper">
-                                    <span class="info-item-label">Weight:</span>
-                                    <span class="info-item-value">${coffee.weight} Grams</span>
-                                </div>
-                                <div class="info-item-wrapper">
-                                    <span class="info-item-label">Price:</span>
-                                    <span class="info-item-value">$${coffee.price}</span>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="info-row">
-                            <span class="info-item-label">Region:</span>
-                            <span class="info-item-value">${coffee.origin.region}</span>
-                        </div>
-                        <div class="info-row">
-                            <span class="info-item-label">Producer:</span>
-                            <span class="info-item-value">${coffee.origin.producer}</span>
-                        </div>
-                        <div class="info-row">
-                            <span class="info-item-label">Elevation:</span>
-                            <span class="info-item-value">${coffee.origin.elevation} m.a.s.l</span>
-                        </div>
-                    </div>
-                    <input id="${coffee.id}" name="delete" class="coffee-delete black-fill white-border fill-in" type="button" value="Delete" />`
-    return div;
-}
-
-function updateBrewFormSelect(){
-    const coffeeSelect = document.getElementById("brewCoffee");
-    const dripperSelect = document.getElementById("brewDripper");
-    const grinderSelect = document.getElementById("brewGrinder");
-
-
-    // Clear existing options first (except the first placeholder option)
-    if (coffeeSelect) {
-        coffeeSelect.innerHTML = '<option value="" label="Select a coffee" selected="selected">Select a coffee</option>';
-    }
-    if (dripperSelect) {
-        dripperSelect.innerHTML = '<option value="" label="Select a dripper" selected="selected">Select a dripper</option>';
-    }
-    if (grinderSelect) {
-        grinderSelect.innerHTML = '<option value="" label="Select a grinder" selected="selected">Select a grinder</option>';
-    }
-
-    createSelectOption(coffeeArray,coffeeSelect);
-    createSelectOption(grinderArray,grinderSelect);
-    createSelectOption(dripperArray,dripperSelect);
-
-
-    // Manually update the custom select components for brew form
-    const brewCustomSelects = document.querySelectorAll('#add-brew-dialog .custom-select');
-    brewCustomSelects.forEach(customSelect => {
-        const originalSelect = customSelect.getElementsByTagName("select")[0];
-        const selectSelected = customSelect.querySelector('.select-selected');
-        const selectItems = customSelect.querySelector('.select-items');
+// Also try immediate execution as fallback
+if (document.readyState === 'loading') {
+    // DOM is still loading, wait for DOMContentLoaded
+} else {
+    // DOM is already loaded
+    (async () => {
+        await loadData();
         
-        if (originalSelect && selectSelected && selectItems) {
-            // Update the selected display
-            selectSelected.innerHTML = originalSelect.options[originalSelect.selectedIndex].innerHTML;
-            
-            // Clear existing items
-            selectItems.innerHTML = '';
-            
-            // Add new items (skip index 0 which is the placeholder)
-            for (let j = 1; j < originalSelect.options.length; j++) {
-                const option = originalSelect.options[j];
-                const itemDiv = document.createElement("DIV");
-                itemDiv.innerHTML = option.innerHTML;
-                
-                // Add click event listener
-                itemDiv.addEventListener("click", function (e) {
-                    // Update the original select
-                    originalSelect.selectedIndex = j;
-                    originalSelect.dispatchEvent(new Event('change'));
-                    
-                    // Update the selected display
-                    selectSelected.innerHTML = this.innerHTML;
-                    
-                    // Update visual selection
-                    const sameAsSelected = selectItems.getElementsByClassName("same-as-selected");
-                    for (let k = 0; k < sameAsSelected.length; k++) {
-                        sameAsSelected[k].removeAttribute("class");
-                    }
-                    this.setAttribute("class", "same-as-selected");
-                    
-                    // Close the dropdown
-                    selectItems.classList.add("select-hide");
-                    selectSelected.classList.remove("select-arrow-active");
-                    selectSelected.classList.remove("select-selected-bottom-square");
-                });
-                
-                selectItems.appendChild(itemDiv);
+        updateCoffeeSection();
+        updateGadgetSection();
+        updateBrewSection();
+        updateStatistics();
+        updateBrewFormSelect();
+        
+        setTimeout(() => {
+            applyColorThiefEffects();
+            const carouselList = document.querySelector("#gadget-carousel");
+            if (carouselList && carouselList.children.length > 0) {
+                reinitializeCarousel();
+            } else {
+                const carousel = document.querySelector(".glide");
+                if (carousel) {
+                    carousel.style.visibility = "hidden";
+                }
             }
-        }
-    });
-}
-//this function will generate an array of options based on its source
-//and append all the options into the selectContainer
-function createSelectOption(arr,selectContainer) { 
-    if(arr !== null && arr.length > 0){
-        for(let i = 0; i< arr.length; i++){
-            let option = document.createElement("option");
-            option.innerHTML = arr[i].name;
-            option.value = arr[i].id;
-
-            selectContainer.appendChild(option);
-        }
-    }
-}
-
-//this function will generate content for the brew section accordion element
-function createBrewItem(brew){
-    //conatiner for the entire accordion
-    const article = document.createElement("article");
-    article.className = ("ac brew-item");
-
-    //accordion header
-    const h2 = document.createElement("h2");
-    h2.classList.add("ac-header");
-    h2.innerHTML = `<button type="button" class="ac-trigger">
-    <div class="brew-basic-info-wrapper col-grid">
-        <p>${brew.date}</p>
-        <p>${brew.coffee.name}</p>
-        <p>${brew.coffee.roaster.name}</p>
-        <p>${brew.coffee.process}</p>
-        <p>${brew.coffee.origin.country}</p>
-        <p>${brew.rating}</p>
-        <div class="down-arrow arrow"></div>
-    </div>
-    </button>`;
-    article.appendChild(h2);
-
-    // accordion panel    
-    const panel = document.createElement("div");
-    panel.classList.add("ac-panel");
-
-    //before adding html content, we need to format the chips just like in the coffee description
-
-    let tempDiv = document.createElement("div");
-
-    let tastingDiv = document.createElement("div");
-    tastingDiv.className = "info-row special-row";
-
-    let titileSpan = document.createElement("span");
-    titileSpan.className = "info-item-label";
-    titileSpan.innerHTML = "Tasting Notes:"
-    tastingDiv.appendChild(titileSpan);
-
-    for (let i = 0; i < brew.tastingNote.length; i++) {
-        let tag = document.createElement("span");
-        tag.className = "chips info-item-value";
-        tag.innerHTML = brew.tastingNote[i];
-        tastingDiv.appendChild(tag);
-    };
-    tempDiv.appendChild(tastingDiv);
-
-    //calculate the coffee age
-    var date1 = parseDate(brew.coffee.roastDate);
-    var date2 = parseDate(brew.date);
-    let coffeeAge = getDaysDiff(date2,date1);
-
-    //create the text prompt if input is not empty for the recipe link
-    let recipeLink = brew.recipe === "" ? "None" : "Click here";
-    panel.innerHTML = `<div class="brew-detail-info-wrapper col-grid">
-                            <figure class="grid-item">
-                                <img class="color-thief-images" src="${coffeeImageArray[brew.image]}" alt="a photo of brewing coffee ${brew.coffee.name}">
-                            </figure>
-                            <div class="grid-item">
-                                <h3>Preparation.</h3>
-                                <div class="info-row">
-                                    <span class="info-item-label">Dripper:</span>
-                                    <span class="info-item-value">${brew.dripper}</span>
-                                </div>
-                                <div class="info-row">
-                                    <span class="info-item-label">Grinder:</span>
-                                    <span class="info-item-value">${brew.grinder}</span>
-                                </div>
-                                <div class="info-row">
-                                    <span class="info-item-label">Grinder Setting:</span>
-                                    <span class="info-item-value">${brew.grinderSetting}</span>
-                                </div>
-                                <div class="info-row">
-                                    <span class="info-item-label">Coffee Amount:</span>
-                                    <span class="info-item-value">${brew.coffeeAmount} grams</span>
-                                </div>
-                                <div class="info-row">
-                                        <span class="info-item-label">Coffee Age:</span>
-                                        <span class="info-item-value">${coffeeAge} Days</span>
-                                    </div>
-                                
-                            </div>
-                            <div class="grid-item">
-                                <h3>Brewing.</h3>
-                                <div class="info-row">
-                                    <span class="info-item-label">Water Temperature:</span>
-                                    <span class="info-item-value">${brew.waterTemperature}°C</span>
-                                </div>
-                                <div class="info-row">
-                                    <span class="info-item-label">Blooming Time:</span>
-                                    <span class="info-item-value">${brew.bloomTime}’’</span>
-                                </div>
-                                <div class="info-row">
-                                    <span class="info-item-label">Total Brew Time:</span>
-                                    <span class="info-item-value">${brew.timeMinute}’${brew.timeSecond}’’</span>
-                                </div>
-                                <div class="info-row">
-                                    <span class="info-item-label">Water Amount:</span>
-                                    <span class="info-item-value">${brew.waterAmount} grams</span>
-                                </div>
-                                <div class="info-row">
-                                    <span class="info-item-label">Brew Ratio:</span>
-                                    <span class="info-item-value">1 : ${brew.ratio}</span>
-                                </div>
-                            </div>
-                            <div class="grid-item">
-                                <h3>Tasting.</h3>
-                                <div class="info-col">
-                                    <div class="info-row">
-                                        <span class="info-item-label">Beverage Amount:</span>
-                                        <span class="info-item-value">${brew.beverageAmount}</span>
-                                    </div>
-                                    ${tempDiv.innerHTML}
-                                </div>
-                                <div class="info-col">
-                                    <div class="info-row special-row">
-                                        <span class="info-item-label">Recipe Link:</span>
-                                        <a class="info-item-value recipe-link" href="${brew.recipe}" target="_blank">${recipeLink}</a>
-                                    </div>
-                                    <div class="info-row special-row">
-                                        <span class="info-item-label">Note:</span>
-                                        <span class="info-item-value text-area">${brew.note}</span>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="grid-item">
-                                <input id="${brew.id}" name="delete" value="Delete" type="button" class="black-fill white-border fill-in"/>
-                            </div>
-                        </div>`;
-    article.appendChild(panel);
-
-    return article;
-}
-
-
-//----------------------------------------- HELPER FUNCTIONS ----------------------------------------
-//this function will translate an image file into a based 64 string
-function getBase64(file, callback) {
-
-    const reader = new FileReader();
-    reader.addEventListener('load', () => callback(reader.result));
-    reader.readAsDataURL(file);
-}
-
-function getDaysDiff(date1,date2) {
-    return Math.ceil((date1 - date2) / (1000 * 60 * 60 * 24));
-}
-//parse a "dd/mm/yyyy" string to a Date object
-function parseDate(str) {
-    let date = str.split("/");//split the string into an array
-    //notice here the month needs to be subtracting one, or it will give the next month
-    return new Date(date[2],date[1]-1,date[0]);
+        }, 100);
+    })();
 }

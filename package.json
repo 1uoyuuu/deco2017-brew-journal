@@ -6,7 +6,9 @@
     "build": "parcel build ./public/index.html --dist-dir dist --public-url ./",
     "start": "node server.js",
     "dev": "parcel serve ./public/index.html",
-    "vercel-build": "parcel build ./public/index.html --dist-dir dist --public-url ./"
+    "vercel-build": "parcel build ./public/index.html --dist-dir dist --public-url ./",
+    "populate-images": "node populate-images.js",
+    "populate-sample-data": "node populate-sample-data.js"
   },
   "author": "YU LUO",
   "devDependencies": {
@@ -16,6 +18,7 @@
   },
   "dependencies": {
     "@glidejs/glide": "^3.6.0",
+    "@supabase/supabase-js": "^2.57.4",
     "@yaireo/tagify": "^4.17.8",
     "a11y-dialog": "^7.5.2",
     "accordion-js": "^3.3.4",
