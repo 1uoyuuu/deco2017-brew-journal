@@ -107,13 +107,461 @@ let brewForm = document.getElementById("brew-form");
 // if there is no such element, create a new array
 // there will be three parts of information stored in the local storage
 // they are coffees, gadgets(drippers,grinders), brews
-let coffeeArray = localStorage.getItem('coffees') ? JSON.parse(localStorage.getItem('coffees')) : [];
-let dripperArray = localStorage.getItem('drippers') ? JSON.parse(localStorage.getItem('drippers')) : [];
-let grinderArray = localStorage.getItem('grinders') ? JSON.parse(localStorage.getItem('grinders')) : [];
-let brewArray = localStorage.getItem('brews') ? JSON.parse(localStorage.getItem('brews')) : [];
-let coffeeImageArray = localStorage.getItem('coffeeImages') ? JSON.parse(localStorage.getItem('coffeeImages')) : [];
-let grinderImageArray = localStorage.getItem('grinderImages') ? JSON.parse(localStorage.getItem('grinderImages')) : [];
-let dripperImageArray = localStorage.getItem('dripperImages') ? JSON.parse(localStorage.getItem('dripperImages')) : [];
+let coffeeArray = [];
+let dripperArray = [];
+let grinderArray = [];
+let brewArray = [];
+let coffeeImageArray = [];
+let grinderImageArray = [];
+let dripperImageArray = [];
+
+//----------------------------------------- TESTING IMAGES ----------------------------------------
+// Image URLs will be set after DOM is loaded
+let coffee1, coffee2, coffee3, dripperOrigami, dripperV60, dripperOrea, grinderC40, grinderEK43, grinderKinu;
+
+// Function to get bundled image URLs from the hidden images in the DOM
+function getImageUrls() {
+    console.log('Getting image URLs...');
+    
+    // Get all hidden images and match by filename pattern
+    const allImages = document.querySelectorAll('img[style*="display: none"]');
+    console.log('All hidden images found:', allImages.length);
+    
+    // Create a map of filename patterns to actual URLs
+    const imageMap = {};
+    allImages.forEach(img => {
+        const src = img.src;
+        if (src.includes('coffee-1')) imageMap.coffee1 = src;
+        if (src.includes('coffee-2')) imageMap.coffee2 = src;
+        if (src.includes('coffee-3')) imageMap.coffee3 = src;
+        if (src.includes('dripper-origami')) imageMap.dripperOrigami = src;
+        if (src.includes('dripper-v60')) imageMap.dripperV60 = src;
+        if (src.includes('dripper-orea')) imageMap.dripperOrea = src;
+        if (src.includes('grinder-c40')) imageMap.grinderC40 = src;
+        if (src.includes('grinder-ek43')) imageMap.grinderEK43 = src;
+        if (src.includes('grinder-kinu')) imageMap.grinderKinu = src;
+    });
+    
+    console.log('Image map:', imageMap);
+    
+    // Assign the bundled URLs or fallback to original paths
+    coffee1 = imageMap.coffee1 || 'src/testing_images/coffee-1.jpg';
+    coffee2 = imageMap.coffee2 || 'src/testing_images/coffee-2.jpg';
+    coffee3 = imageMap.coffee3 || 'src/testing_images/coffee-3.jpg';
+    dripperOrigami = imageMap.dripperOrigami || 'src/testing_images/dripper-origami.jpg';
+    dripperV60 = imageMap.dripperV60 || 'src/testing_images/dripper-v60.jpg';
+    dripperOrea = imageMap.dripperOrea || 'src/testing_images/dripper-orea.jpg';
+    grinderC40 = imageMap.grinderC40 || 'src/testing_images/grinder-c40.jpg';
+    grinderEK43 = imageMap.grinderEK43 || 'src/testing_images/grinder-ek43.jpg';
+    grinderKinu = imageMap.grinderKinu || 'src/testing_images/grinder-kinu.jpg';
+}
+
+//----------------------------------------- INITIALIZE DEFAULT SAMPLE DATA ----------------------------------------
+function initializeDefaultData() {
+    // Check if sample data has already been initialized
+    const sampleDataInitialized = localStorage.getItem('sampleDataInitialized');
+    if (sampleDataInitialized === 'true') {
+        // Load existing data from localStorage
+        coffeeArray = localStorage.getItem('coffees') ? JSON.parse(localStorage.getItem('coffees')) : [];
+        dripperArray = localStorage.getItem('drippers') ? JSON.parse(localStorage.getItem('drippers')) : [];
+        grinderArray = localStorage.getItem('grinders') ? JSON.parse(localStorage.getItem('grinders')) : [];
+        brewArray = localStorage.getItem('brews') ? JSON.parse(localStorage.getItem('brews')) : [];
+        coffeeImageArray = localStorage.getItem('coffeeImages') ? JSON.parse(localStorage.getItem('coffeeImages')) : [];
+        grinderImageArray = localStorage.getItem('grinderImages') ? JSON.parse(localStorage.getItem('grinderImages')) : [];
+        dripperImageArray = localStorage.getItem('dripperImages') ? JSON.parse(localStorage.getItem('dripperImages')) : [];
+        
+        // Don't return early - continue to update global arrays at the end
+    } else {
+    
+    // Load existing data from localStorage first
+    coffeeArray = localStorage.getItem('coffees') ? JSON.parse(localStorage.getItem('coffees')) : [];
+    dripperArray = localStorage.getItem('drippers') ? JSON.parse(localStorage.getItem('drippers')) : [];
+    grinderArray = localStorage.getItem('grinders') ? JSON.parse(localStorage.getItem('grinders')) : [];
+    brewArray = localStorage.getItem('brews') ? JSON.parse(localStorage.getItem('brews')) : [];
+    coffeeImageArray = localStorage.getItem('coffeeImages') ? JSON.parse(localStorage.getItem('coffeeImages')) : [];
+    grinderImageArray = localStorage.getItem('grinderImages') ? JSON.parse(localStorage.getItem('grinderImages')) : [];
+    dripperImageArray = localStorage.getItem('dripperImages') ? JSON.parse(localStorage.getItem('dripperImages')) : [];
+    
+    // Ensure flavour data is properly formatted as arrays
+    coffeeArray.forEach(coffee => {
+        if (typeof coffee.flavour === 'string') {
+            coffee.flavour = coffee.flavour.split(',').map(f => f.trim());
+        }
+    });
+    
+    // Only add default data if arrays are empty (first time user)
+    if (coffeeArray.length === 0) {
+        // Add sample coffee data from README
+        const sampleCoffees = [
+            {
+                id: Date.now() + 1,
+                name: "Fruity Bomb",
+                type: "Single Origin",
+                process: "Carbonic Maceration",
+                price: 30,
+                weight: 250,
+                flavour: ["Strawberry", "Cream", "Mango"],
+                roastLevel: "Extra Light",
+                roastDate: "2024-01-15",
+                roaster: { name: "Standout", country: "Sweden" },
+                origin: { country: "Colombia", region: "Cauca", farm: "El Paraiso", producer: "", elevation: 0, varietal: "Castillo" }
+            },
+            {
+                id: Date.now() + 2,
+                name: "Gundam Blend",
+                type: "Blend",
+                process: "Natural",
+                price: 22,
+                weight: 250,
+                flavour: ["Apricot", "Rasberry jam", "French earl gray"],
+                roastLevel: "Medium",
+                roastDate: "2024-01-20",
+                roaster: { name: "Sleepy Bloc", country: "Australia" },
+                origin: { country: "Brazil", region: "", farm: "Sitio Melado", producer: "Señor Fonseca", elevation: 0, varietal: "Mundo Novo" }
+            },
+            {
+                id: Date.now() + 3,
+                name: "Daye Bensa",
+                type: "Single Origin",
+                process: "Natural Anaerobic",
+                price: 25,
+                weight: 75,
+                flavour: ["Mango", "Kiwi", "Strawberry", "Floral"],
+                roastLevel: "Light",
+                roastDate: "2024-01-25",
+                roaster: { name: "Jibbi Little", country: "Australia" },
+                origin: { country: "Ethiopia", region: "Sidamo", farm: "", producer: "", elevation: 0, varietal: "Heirloom" }
+            }
+        ];
+        
+        coffeeArray = sampleCoffees;
+        localStorage.setItem('coffees', JSON.stringify(coffeeArray));
+        
+        // Add real testing images for sample coffees
+        const sampleCoffeeImages = [
+            coffee1,
+            coffee2,
+            coffee3
+        ];
+        
+        coffeeImageArray = sampleCoffeeImages;
+        localStorage.setItem('coffeeImages', JSON.stringify(coffeeImageArray));
+        
+        console.log('Coffee images initialized:', sampleCoffeeImages);
+        console.log('Individual image values:', { coffee1, coffee2, coffee3 });
+    }
+    
+    if (dripperArray.length === 0) {
+        // Add sample dripper data from README
+        const sampleDrippers = [
+            {
+                id: Date.now() + 10,
+                type: "Dripper",
+                name: "Origami",
+                material: "Ceramic",
+                brand: "Fellow"
+            },
+            {
+                id: Date.now() + 11,
+                type: "Dripper", 
+                name: "V60",
+                material: "Metal",
+                brand: "Hario"
+            },
+            {
+                id: Date.now() + 12,
+                type: "Dripper",
+                name: "Orea V3",
+                material: "Plastic", 
+                brand: "Orea"
+            }
+        ];
+        
+        dripperArray = sampleDrippers;
+        localStorage.setItem('drippers', JSON.stringify(dripperArray));
+        
+        // Add real testing images for sample drippers
+        const sampleDripperImages = [
+            dripperOrigami,
+            dripperV60,
+            dripperOrea
+        ];
+        
+        dripperImageArray = sampleDripperImages;
+        localStorage.setItem('dripperImages', JSON.stringify(dripperImageArray));
+    }
+    
+    if (grinderArray.length === 0) {
+        // Add sample grinder data from README
+        const sampleGrinders = [
+            {
+                id: Date.now() + 20,
+                type: "Grinder",
+                name: "C40",
+                burr: "Conical",
+                brand: "Comandante"
+            },
+            {
+                id: Date.now() + 21,
+                type: "Grinder",
+                name: "EK43",
+                burr: "Flat",
+                brand: "Mahlkonic"
+            },
+            {
+                id: Date.now() + 22,
+                type: "Grinder",
+                name: "MK47",
+                burr: "Conical",
+                brand: "Kinu"
+            }
+        ];
+        
+        grinderArray = sampleGrinders;
+        localStorage.setItem('grinders', JSON.stringify(grinderArray));
+        
+        // Add real testing images for sample grinders
+        const sampleGrinderImages = [
+            grinderC40,
+            grinderEK43,
+            grinderKinu
+        ];
+        
+        grinderImageArray = sampleGrinderImages;
+        localStorage.setItem('grinderImages', JSON.stringify(grinderImageArray));
+    }
+    
+        // Mark that sample data has been initialized
+        localStorage.setItem('sampleDataInitialized', 'true');
+    }
+    
+    // Update global arrays with the latest data from localStorage (for both cases)
+    coffeeArray = JSON.parse(localStorage.getItem('coffees')) || [];
+    dripperArray = JSON.parse(localStorage.getItem('drippers')) || [];
+    grinderArray = JSON.parse(localStorage.getItem('grinders')) || [];
+    coffeeImageArray = JSON.parse(localStorage.getItem('coffeeImages')) || [];
+    dripperImageArray = JSON.parse(localStorage.getItem('dripperImages')) || [];
+    grinderImageArray = JSON.parse(localStorage.getItem('grinderImages')) || [];
+    
+}
+
+// Function to apply color thief effects to dynamically added images
+function applyColorThiefEffects() {
+    // Import ColorThief directly
+    import('colorthief/dist/color-thief.mjs').then(ColorThief => {
+        const colorThief = new ColorThief.default();
+        
+        // Apply effects to color-thief-images
+        const imageBorder = document.querySelectorAll(".color-thief-images");
+        imageBorder.forEach(img => {
+            if (img.complete) {
+                let col = colorThief.getColor(img, 200);
+                img.style.borderColor = rgbToHex(col);
+            } else {
+                img.addEventListener('load', function () {
+                    let col = colorThief.getColor(img, 200);
+                    img.style.borderColor = rgbToHex(col);
+                });
+            }
+        });
+        
+        // Apply effects to color-thief-images-for-bg
+        const imageBackground = document.querySelectorAll(".color-thief-images-for-bg");
+        imageBackground.forEach(img => {
+            if (img.complete) {
+                let col = colorThief.getColor(img, 200);
+                const columnOne = img.parentNode.parentNode;
+                const columnTwo = columnOne.nextElementSibling;
+                columnTwo.style.backgroundColor = rgbToHex(col);
+                columnOne.style.backgroundColor = rgbToHex(col);
+                
+                // Apply contrast logic
+                var red = col[0];
+                var green = col[1];
+                var blue = col[2];
+                let contrastFlag = (red * 0.299) + (green * 0.587) + (blue * 0.114) > 186 ? true : false;
+                if(contrastFlag){
+                    columnOne.classList.add("black-contrast");
+                    columnTwo.classList.add("black-contrast");
+                } else {
+                    columnOne.classList.remove("black-contrast");
+                    columnTwo.classList.remove("black-contrast");
+                }
+            } else {
+                img.addEventListener('load', function () {
+                    let col = colorThief.getColor(img, 200);
+                    const columnOne = img.parentNode.parentNode;
+                    const columnTwo = columnOne.nextElementSibling;
+                    columnTwo.style.backgroundColor = rgbToHex(col);
+                    columnOne.style.backgroundColor = rgbToHex(col);
+                    
+                    var red = col[0];
+                    var green = col[1];
+                    var blue = col[2];
+                    let contrastFlag = (red * 0.299) + (green * 0.587) + (blue * 0.114) > 186 ? true : false;
+                    if(contrastFlag){
+                        columnOne.classList.add("black-contrast");
+                        columnTwo.classList.add("black-contrast");
+                    } else {
+                        columnOne.classList.remove("black-contrast");
+                        columnTwo.classList.remove("black-contrast");
+                    }
+                });
+            }
+        });
+    });
+}
+
+// Helper function for RGB to hex conversion
+function rgbToHex([r,g,b]) {
+    return '#' + [r, g, b].map(x => {
+        const hex = x.toString(16)
+        return hex.length === 1 ? '0' + hex : hex
+    }).join('');
+}
+
+
+// Function to re-initialize the carousel after adding new content
+function reinitializeCarousel() {
+    const carousel = document.querySelector(".glide");
+    const carouselList = document.querySelector("#gadget-carousel");
+    
+    
+    if (carousel && carouselList) {
+        // Keep carousel hidden during initialization
+        carousel.style.visibility = "hidden";
+        
+        // Import Glide and re-initialize
+        import('@glidejs/glide').then(Glide => {
+            // Destroy existing carousel if it exists
+            if (window.glideInstance) {
+                window.glideInstance.destroy();
+            }
+            
+            // Create new carousel instance
+            const config = {
+                type: 'slider',
+                rewind: true,
+                startAt: 0,
+                perView: 3,
+                autoplay: false,
+                gap: 20,
+                breakpoints: {
+                    1024: {
+                        perView: 2,
+                        gap: 10
+                    },
+                    600: {
+                        perView: 1
+                    }
+                }
+            };
+            
+            window.glideInstance = new Glide.default('.glide', config);
+            window.glideInstance.mount();
+            
+            // Only make visible after carousel is fully initialized
+            setTimeout(() => {
+                carousel.style.visibility = "visible";
+            }, 100);
+            
+        }).catch(error => {
+            console.error('Error re-initializing carousel:', error);
+            // Make visible even if there's an error
+            carousel.style.visibility = "visible";
+        });
+    }
+}
+
+// Wait for DOM to be loaded, then initialize
+document.addEventListener('DOMContentLoaded', function() {
+    
+    // Get the bundled image URLs
+    getImageUrls();
+    
+    // Initialize default data
+    initializeDefaultData();
+    
+    // Update the UI after initialization
+    updateCoffeeSection();
+    updateGadgetSection();
+    updateBrewSection();
+    updateStatistics();
+    
+    // Also update brew form selects in case dialog is already open
+    updateBrewFormSelect();
+    
+    // Apply color thief effects and re-initialize carousel after UI updates
+    setTimeout(() => {
+        applyColorThiefEffects();
+        // Only initialize carousel if there's content
+        const carouselList = document.querySelector("#gadget-carousel");
+        if (carouselList && carouselList.children.length > 0) {
+            reinitializeCarousel();
+        } else {
+            // Hide carousel when empty
+            const carousel = document.querySelector(".glide");
+            if (carousel) {
+                carousel.style.visibility = "hidden";
+            }
+        }
+    }, 200);
+});
+
+// Also try immediate execution as fallback
+if (document.readyState === 'loading') {
+    // DOM is still loading, wait for DOMContentLoaded
+} else {
+    // DOM is already loaded
+    getImageUrls();
+    initializeDefaultData();
+    updateCoffeeSection();
+    updateGadgetSection();
+    updateBrewSection();
+    updateStatistics();
+    
+    // Also update brew form selects in case dialog is already open
+    updateBrewFormSelect();
+    
+    // Apply color thief effects and re-initialize carousel
+    setTimeout(() => {
+        applyColorThiefEffects();
+        // Only initialize carousel if there's content
+        const carouselList = document.querySelector("#gadget-carousel");
+        if (carouselList && carouselList.children.length > 0) {
+            reinitializeCarousel();
+        } else {
+            // Hide carousel when empty
+            const carousel = document.querySelector(".glide");
+            if (carousel) {
+                carousel.style.visibility = "hidden";
+            }
+        }
+    }, 100);
+}
+
+// Debug function to clear localStorage and refresh (for testing)
+window.clearAndRefresh = function() {
+    localStorage.clear();
+    location.reload();
+}
+
+// Function to reset sample data initialization (for testing)
+window.resetSampleData = function() {
+    localStorage.removeItem('sampleDataInitialized');
+    location.reload();
+};
+
+// Function to test brew form dropdowns
+window.testBrewDropdowns = function() {
+    console.log('Testing brew dropdowns...');
+    console.log('Current arrays:', {
+        coffeeArray: coffeeArray,
+        dripperArray: dripperArray,
+        grinderArray: grinderArray
+    });
+    updateBrewFormSelect();
+};
 
 
 //----------------------------------------- UPDATE LOCAL STORAGE VALUES ----------------------------------------
@@ -246,6 +694,31 @@ brewForm.addEventListener("submit", event => {
 });
 
 
+//----------------------------------------- DIALOG EVENT LISTENERS ----------------------------------------
+// Add event listener for when brew form dialog is opened
+document.addEventListener('DOMContentLoaded', function() {
+    // Listen for when the brew dialog is shown
+    const brewDialog = document.getElementById('add-brew-dialog');
+    if (brewDialog) {
+        // Use MutationObserver to detect when dialog becomes visible
+        const observer = new MutationObserver(function(mutations) {
+            mutations.forEach(function(mutation) {
+                if (mutation.type === 'attributes' && mutation.attributeName === 'aria-hidden') {
+                    if (brewDialog.getAttribute('aria-hidden') === 'false') {
+                        console.log('Brew dialog opened - updating dropdowns');
+                        updateBrewFormSelect();
+                    }
+                }
+            });
+        });
+        
+        observer.observe(brewDialog, {
+            attributes: true,
+            attributeFilter: ['aria-hidden']
+        });
+    }
+});
+
 //----------------------------------------- RENDER CONTENT ON WEBPAGE ----------------------------------------
 
 //this two event listener will keep webpage at the same potion after refreshing
@@ -262,17 +735,15 @@ window.addEventListener("beforeunload", function (e) {
     sessionStorage.setItem('scrollpos', window.scrollY);
 });
 
-//---------------------- UPDATE CONTENT ----------------------
-updateCoffeeSection();
-updateGadgetSection();
-updateBrewSection();
-updateStatistics();
+//---------------------- INITIALIZE AND UPDATE CONTENT ----------------------
+// Sections are now updated after images are loaded in the loadImages().then() block above
 
 //---------------------- DELETE FUNCTION ----------------------
-const deleteBtns = document.querySelectorAll("input[name='delete']");
-
-deleteBtns.forEach(btn => {
-    btn.addEventListener("click", e => {
+// Use event delegation to handle dynamically added delete buttons
+document.addEventListener("click", e => {
+    // Check if the clicked element is a delete button
+    if (e.target && e.target.name === 'delete') {
+        const btn = e.target;
         //traverse all the item array
         //try to find the item with the same id with the delete button
         if(dripperArray !== null) {
@@ -286,7 +757,9 @@ deleteBtns.forEach(btn => {
                     localStorage.setItem('drippers', JSON.stringify(dripperArray));
                     localStorage.setItem('dripperImages', JSON.stringify(dripperImageArray));
 
-                    window.location.reload(true);
+                    // Update UI without reload
+                    updateGadgetSection();
+                    updateStatistics();
                     //once it finds the item, no need to iterate, just return
                     return;
                 }
@@ -305,7 +778,9 @@ deleteBtns.forEach(btn => {
                     localStorage.setItem('grinders', JSON.stringify(grinderArray));
                     localStorage.setItem('grinderImages', JSON.stringify(grinderImageArray));
 
-                    window.location.reload();
+                    // Update UI without reload
+                    updateGadgetSection();
+                    updateStatistics();
                     return
 
                 }
@@ -324,7 +799,9 @@ deleteBtns.forEach(btn => {
                     localStorage.setItem('coffees', JSON.stringify(coffeeArray));
                     localStorage.setItem('coffeeImages', JSON.stringify(coffeeImageArray));
 
-                    window.location.reload();
+                    // Update UI without reload
+                    updateCoffeeSection();
+                    updateStatistics();
                     return
 
                 }
@@ -337,12 +814,14 @@ deleteBtns.forEach(btn => {
 
                     localStorage.setItem('brews', JSON.stringify(brewArray));
 
-                    window.location.reload();
+                    // Update UI without reload
+                    updateBrewSection();
+                    updateStatistics();
                     return
                 }
             });
         }
-    })
+    }
 });
 
 
@@ -402,6 +881,11 @@ function updateCoffeeSection() {
     toggleDisplay();
 
 
+    // Apply color thief effects to newly added images
+    setTimeout(() => {
+        applyColorThiefEffects();
+    }, 50);
+
 };
 
 // when user click on each coffee item, a full description will be shown on the left
@@ -456,6 +940,8 @@ function updateGadgetSection(){
     // Retrieve the coffee array from localStorage
     let drippers = JSON.parse(localStorage.getItem('drippers'));
     let grinders = JSON.parse(localStorage.getItem('grinders'));
+    
+    
     //iterate through the local storage and add gadget into the carousel
     if (drippers !== null) {
         drippers.forEach((dripper,index) => {
@@ -469,6 +955,27 @@ function updateGadgetSection(){
             coffeeGadget.appendChild(li);
         });
     }
+    
+    
+    
+    // Apply color thief effects to newly added images
+    setTimeout(() => {
+        applyColorThiefEffects();
+    }, 50);
+    
+    // Re-initialize the carousel only if there's content
+    setTimeout(() => {
+        const carouselList = document.querySelector("#gadget-carousel");
+        if (carouselList && carouselList.children.length > 0) {
+            reinitializeCarousel();
+        } else {
+            // Hide carousel when empty
+            const carousel = document.querySelector(".glide");
+            if (carousel) {
+                carousel.style.visibility = "hidden";
+            }
+        }
+    }, 100);
 }
 
 //update the brew section(including rendering item, generating custom-select values)
@@ -486,6 +993,11 @@ function updateBrewSection(){
             let accordionItem = createBrewItem(brews[i]);
             brewAccordion.appendChild(accordionItem);
         }
+    }
+    
+    // Reinitialize accordion to make arrows work for new entries
+    if (typeof window.initializeAccordion === 'function') {
+        window.initializeAccordion();
     }
 }
 //----------------------------------------- WRITING HTML CONTENT ----------------------------------------
@@ -558,6 +1070,7 @@ function createCoffeeDescription(coffee,index) {
     titileSpan.className = "info-item-label";
     titileSpan.innerHTML = "Flavours:"
     flavourDiv.appendChild(titileSpan);
+    console.log('Coffee flavour data:', coffee.flavour, 'Type:', typeof coffee.flavour);
     for (let i = 0; i < coffee.flavour.length; i++) {
         let tag = document.createElement("span");
         tag.className = "chips info-item-value";
@@ -648,15 +1161,74 @@ function updateBrewFormSelect(){
     const dripperSelect = document.getElementById("brewDripper");
     const grinderSelect = document.getElementById("brewGrinder");
 
+
+    // Clear existing options first (except the first placeholder option)
+    if (coffeeSelect) {
+        coffeeSelect.innerHTML = '<option value="" label="Select a coffee" selected="selected">Select a coffee</option>';
+    }
+    if (dripperSelect) {
+        dripperSelect.innerHTML = '<option value="" label="Select a dripper" selected="selected">Select a dripper</option>';
+    }
+    if (grinderSelect) {
+        grinderSelect.innerHTML = '<option value="" label="Select a grinder" selected="selected">Select a grinder</option>';
+    }
+
     createSelectOption(coffeeArray,coffeeSelect);
     createSelectOption(grinderArray,grinderSelect);
     createSelectOption(dripperArray,dripperSelect);
 
+
+    // Manually update the custom select components for brew form
+    const brewCustomSelects = document.querySelectorAll('#add-brew-dialog .custom-select');
+    brewCustomSelects.forEach(customSelect => {
+        const originalSelect = customSelect.getElementsByTagName("select")[0];
+        const selectSelected = customSelect.querySelector('.select-selected');
+        const selectItems = customSelect.querySelector('.select-items');
+        
+        if (originalSelect && selectSelected && selectItems) {
+            // Update the selected display
+            selectSelected.innerHTML = originalSelect.options[originalSelect.selectedIndex].innerHTML;
+            
+            // Clear existing items
+            selectItems.innerHTML = '';
+            
+            // Add new items (skip index 0 which is the placeholder)
+            for (let j = 1; j < originalSelect.options.length; j++) {
+                const option = originalSelect.options[j];
+                const itemDiv = document.createElement("DIV");
+                itemDiv.innerHTML = option.innerHTML;
+                
+                // Add click event listener
+                itemDiv.addEventListener("click", function (e) {
+                    // Update the original select
+                    originalSelect.selectedIndex = j;
+                    originalSelect.dispatchEvent(new Event('change'));
+                    
+                    // Update the selected display
+                    selectSelected.innerHTML = this.innerHTML;
+                    
+                    // Update visual selection
+                    const sameAsSelected = selectItems.getElementsByClassName("same-as-selected");
+                    for (let k = 0; k < sameAsSelected.length; k++) {
+                        sameAsSelected[k].removeAttribute("class");
+                    }
+                    this.setAttribute("class", "same-as-selected");
+                    
+                    // Close the dropdown
+                    selectItems.classList.add("select-hide");
+                    selectSelected.classList.remove("select-arrow-active");
+                    selectSelected.classList.remove("select-selected-bottom-square");
+                });
+                
+                selectItems.appendChild(itemDiv);
+            }
+        }
+    });
 }
 //this function will generate an array of options based on its source
 //and append all the options into the selectContainer
 function createSelectOption(arr,selectContainer) { 
-    if(arr !== null){
+    if(arr !== null && arr.length > 0){
         for(let i = 0; i< arr.length; i++){
             let option = document.createElement("option");
             option.innerHTML = arr[i].name;

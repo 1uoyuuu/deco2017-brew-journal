@@ -8,13 +8,17 @@
     <title>Coffee Brew Journal</title>
     <link rel="stylesheet" href="scss/main.scss">
     <link rel="stylesheet" href="style.css">
+    <!-- External library styles from CDN -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@glidejs/glide@3.6.0/dist/css/glide.core.min.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@glidejs/glide@3.6.0/dist/css/glide.theme.min.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@yaireo/tagify@4.17.8/dist/tagify.css">
 </head>
 
 <body>
     <!-- the reason i omit header here is to make the navigation bar work as I expected -->
     <!-- it need enough height to be sticky through the whole page, so instead of nesting it inside the header, it is better to directly nest it into body element -->
     <nav id="top-nav">
-        <a href="#landing-page"><img src="/public/src/images/logo.png" alt="logo of brew journal" height="35px"></a>
+        <a href="#landing-page"><img src="src/images/logo.png" alt="logo of brew journal" height="35px"></a>
         <a id="menu">MENU</a>
     </nav>
     <div class="overlay">
@@ -29,7 +33,7 @@
     </div>
     <section id="landing-page">
         <h1>It’s time to elevate your<br>brewing experience.</h1>
-        <figure><img src="/public/src/images/hero-image.png" alt=" An image of a cup of black coffee
+        <figure><img src="src/images/hero-image.png" alt=" An image of a cup of black coffee
                 with its shadow cast by the sun"></figure>
     </section>
     <section id="overview">
@@ -978,8 +982,19 @@
     <script src="scripts/custom-cursor.js"></script>
     <script src="scripts/msf-control.js"></script>
     <script src="scripts/navigation.js"></script>
-    <script src="script.js"></script>
+    <script type="module" src="script.js"></script>
     <script src="scripts/custom-select.js"></script>
+    
+    <!-- Include testing images so Parcel bundles them -->
+    <img src="src/testing_images/coffee-1.jpg" style="display: none;" alt="">
+    <img src="src/testing_images/coffee-2.jpg" style="display: none;" alt="">
+    <img src="src/testing_images/coffee-3.jpg" style="display: none;" alt="">
+    <img src="src/testing_images/dripper-origami.jpg" style="display: none;" alt="">
+    <img src="src/testing_images/dripper-v60.jpg" style="display: none;" alt="">
+    <img src="src/testing_images/dripper-orea.jpg" style="display: none;" alt="">
+    <img src="src/testing_images/grinder-c40.jpg" style="display: none;" alt="">
+    <img src="src/testing_images/grinder-ek43.jpg" style="display: none;" alt="">
+    <img src="src/testing_images/grinder-kinu.jpg" style="display: none;" alt="">
 </body>
 
 </html>

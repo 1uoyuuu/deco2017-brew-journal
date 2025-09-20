@@ -2,11 +2,11 @@
   "name": "deco2017-brew-journal",
   "version": "1.0.0",
   "description": "Coffee brewing tracking web application",
-  "main": "server.js",
   "scripts": {
+    "build": "parcel build ./public/index.html --dist-dir dist --public-url ./",
     "start": "node server.js",
-    "prestart": "parcel build ./public/index.html",
-    "dev": "parcel serve ./public/index.html"
+    "dev": "parcel serve ./public/index.html",
+    "vercel-build": "parcel build ./public/index.html --dist-dir dist --public-url ./"
   },
   "author": "YU LUO",
   "devDependencies": {

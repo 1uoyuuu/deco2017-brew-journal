@@ -1,8 +1,4 @@
-// Required Core Stylesheet
-@import "node_modules/@glidejs/glide/src/assets/sass/glide.core";
-
-// Optional Theme Stylesheet
-@import "node_modules/@glidejs/glide/src/assets/sass/glide.theme";
+// Glide.js styles are imported directly in HTML
 
 #gadget .content {
     // this is to make sure that the glider takes up the whole content space
@@ -16,13 +12,16 @@
     li.glide__slide {
         //make sure it has the same height as the parent container
         height: inherit;
+        min-height: 400px; // Increased for larger square images
     }
 
     .carousel-item {
         height: 100%;
+        min-height: 400px; // Increased for larger square images
         display: flex;
         flex-direction: column;
         align-items: center;
+        justify-content: center; // Center the content vertically
         border: 1px solid white;
         padding: 5%;
         position: relative;
@@ -39,9 +38,11 @@
         img {
             flex: 1;
             border: 2vh solid white;
-            object-fit: contain;
-            width: 100%;
+            object-fit: cover; // Changed from contain to cover for better square cropping
+            width: 100%; // Fill the available width
+            aspect-ratio: 1 / 1; // Creates perfect square aspect ratio
             margin: auto;
+            border-radius: 0; // Ensure square corners
         }
         .gadget-delete {
             display: none;

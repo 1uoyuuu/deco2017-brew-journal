@@ -10,8 +10,20 @@ const config = {
 }
 
 const accordion = document.querySelector(".accordion-container");
+let accordionInstance = null;
 
-new Accordion('.accordion-container', config);
+function initializeAccordion() {
+    // Destroy existing instance if it exists
+    if (accordionInstance) {
+        accordionInstance.destroy();
+    }
+    
+    // Create new instance
+    accordionInstance = new Accordion('.accordion-container', config);
+}
+
+// Initialize on page load
+initializeAccordion();
 
 document.addEventListener("DOMContentLoaded", function () {
     //after content fully loaded, then turn on the carousel visibility
@@ -19,6 +31,8 @@ document.addEventListener("DOMContentLoaded", function () {
     accordion.style.visibility = "visible";
 });
 
+// Export functions for external use
+window.initializeAccordion = initializeAccordion;
 
 function changeArrow(element){
     let button = element.children[0].children[0].children[0].children;
