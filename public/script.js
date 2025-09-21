@@ -95,25 +95,10 @@ let brewArray = [];
 // Data management functions
 async function loadData() {
     try {
-        console.log('Loading data from Supabase...');
         coffeeArray = await DatabaseService.getCoffees();
         dripperArray = await DatabaseService.getDrippers();
         grinderArray = await DatabaseService.getGrinders();
         brewArray = await DatabaseService.getBrews();
-        
-        console.log('Data loaded from Supabase:', {
-            coffees: coffeeArray.length,
-            drippers: dripperArray.length,
-            grinders: grinderArray.length,
-            brews: brewArray.length
-        });
-        
-        // Debug: Log first coffee to see data structure
-        if (coffeeArray.length > 0) {
-            console.log('First coffee data structure:', coffeeArray[0]);
-            console.log('Roaster data:', coffeeArray[0].roasters);
-            console.log('Origin data:', coffeeArray[0].origins);
-        }
     } catch (error) {
         console.error('Error loading from database:', error);
         // Initialize empty arrays if database fails
@@ -452,11 +437,9 @@ function updateGadgetSection(){
 }
 
 function updateBrewSection() {
-    console.log('Updating brew section with', brewArray.length, 'brews');
     
     const brewAccordion = document.querySelector(".accordion-container");
     if (!brewAccordion) {
-        console.log('Brew accordion not found');
         return;
     }
 
@@ -637,7 +620,6 @@ function createBrewItem(brew) {
 }
 
 function updateStatistics() {
-    console.log('Updating statistics');
     
     // Calculate statistics from the data
     const coffeeCount = coffeeArray.length;
@@ -671,20 +653,9 @@ function updateStatistics() {
     if (statBrews) statBrews.textContent = brewCount;
     if (statMoney) statMoney.textContent = `$${totalMoney}`;
     
-    console.log('Statistics updated:', {
-        coffees: coffeeCount,
-        roasters: roasterCount,
-        origins: originCount,
-        brews: brewCount,
-        money: totalMoney
-    });
 }
 
 function updateBrewFormSelect() {
-    console.log('Updating brew form selects');
-    console.log('Coffee array:', coffeeArray);
-    console.log('Dripper array:', dripperArray);
-    console.log('Grinder array:', grinderArray);
     
     // Update coffee dropdown
     const coffeeSelect = document.getElementById('brewCoffee');
@@ -699,7 +670,6 @@ function updateBrewFormSelect() {
             option.textContent = coffee.name;
             coffeeSelect.appendChild(option);
         });
-        console.log('Coffee options added:', coffeeSelect.options.length);
     }
     
     // Update dripper dropdown
@@ -715,7 +685,6 @@ function updateBrewFormSelect() {
             option.textContent = dripper.name;
             dripperSelect.appendChild(option);
         });
-        console.log('Dripper options added:', dripperSelect.options.length);
     }
     
     // Update grinder dropdown
@@ -731,7 +700,6 @@ function updateBrewFormSelect() {
             option.textContent = grinder.name;
             grinderSelect.appendChild(option);
         });
-        console.log('Grinder options added:', grinderSelect.options.length);
     }
     
     // Reinitialize custom select components for brew form
@@ -753,10 +721,8 @@ function updateBrewFormSelect() {
             }
         });
         
-        // Reinitialize custom selects
-        if (typeof createCustomSelect === 'function') {
-            createCustomSelect();
-        }
+        // The custom select script will automatically handle the reinitialization
+        // No need to manually call createCustomSelect() as it affects all selects
         
         // Hide vanilla selects after custom selects are created
         setTimeout(() => {
@@ -804,7 +770,6 @@ function createCoffeeDescription(coffee,index) {
     titileSpan.className = "info-item-label";
     titileSpan.innerHTML = "Flavours:"
     flavourDiv.appendChild(titileSpan);
-    console.log('Coffee flavour data:', coffee.flavour, 'Type:', typeof coffee.flavour);
     
     // Handle both array and string flavours
     const flavours = Array.isArray(coffee.flavour) ? coffee.flavour : (coffee.flavour || []);
@@ -1041,9 +1006,24 @@ async function handleCoffeeFormSubmission() {
             imageData = await convertImageToBase64(imageFile);
         }
 
-        // Get flavour tags
+        // Get flavour tags from Tagify
         const flavourInput = document.getElementById('coffeeFlavour');
-        const flavours = flavourInput.value ? flavourInput.value.split(',').map(f => f.trim()) : [];
+        let flavours = [];
+        if (flavourInput.value) {
+            try {
+                // Parse Tagify JSON data
+                const parsed = JSON.parse(flavourInput.value);
+                if (Array.isArray(parsed)) {
+                    flavours = parsed.map(item => item.value || item).filter(Boolean);
+                } else {
+                    // Fallback to comma-separated string
+                    flavours = flavourInput.value.split(',').map(f => f.trim()).filter(Boolean);
+                }
+            } catch (e) {
+                // If not JSON, treat as comma-separated string
+                flavours = flavourInput.value.split(',').map(f => f.trim()).filter(Boolean);
+            }
+        }
 
         // Create coffee data object
         const coffeeData = {
@@ -1086,7 +1066,8 @@ async function handleCoffeeFormSubmission() {
             // Reset form
             document.getElementById('coffee-form').reset();
             
-            console.log('Coffee added successfully:', newCoffee);
+        } else {
+            console.error('Failed to add coffee - no result returned');
         }
     } catch (error) {
         console.error('Error submitting coffee form:', error);
@@ -1125,7 +1106,6 @@ async function handleGadgetFormSubmission() {
                 }
                 
                 document.getElementById('gadget-form').reset();
-                console.log('Dripper added successfully:', newDripper);
             }
             
         } else if (gadgetType === 'Grinder') {
@@ -1154,7 +1134,6 @@ async function handleGadgetFormSubmission() {
                 }
                 
                 document.getElementById('gadget-form').reset();
-                console.log('Grinder added successfully:', newGrinder);
             }
         }
     } catch (error) {
@@ -1167,9 +1146,24 @@ async function handleBrewFormSubmission() {
     try {
         const formData = new FormData(document.getElementById('brew-form'));
         
-        // Get tasting notes as array
+        // Get tasting notes as array from Tagify
         const tastingNote = formData.get('tastingNote');
-        const tastingNotes = tastingNote ? tastingNote.split(',').map(note => note.trim()) : [];
+        let tastingNotes = [];
+        if (tastingNote) {
+            try {
+                // Parse Tagify JSON data
+                const parsed = JSON.parse(tastingNote);
+                if (Array.isArray(parsed)) {
+                    tastingNotes = parsed.map(item => item.value || item).filter(Boolean);
+                } else {
+                    // Fallback to comma-separated string
+                    tastingNotes = tastingNote.split(',').map(note => note.trim()).filter(Boolean);
+                }
+            } catch (e) {
+                // If not JSON, treat as comma-separated string
+                tastingNotes = tastingNote.split(',').map(note => note.trim()).filter(Boolean);
+            }
+        }
         
         // Get rating from radio buttons
         const rating = formData.get('rating') ? parseInt(formData.get('rating')) : null;
@@ -1209,7 +1203,6 @@ async function handleBrewFormSubmission() {
             // Reset form
             document.getElementById('brew-form').reset();
             
-            console.log('Brew added successfully:', newBrew);
         }
     } catch (error) {
         console.error('Error submitting brew form:', error);
@@ -1241,7 +1234,14 @@ async function deleteGadget(type, id) {
 
 // Gadget delete function
 async function deleteGadgetUI(type, id) {
-    const success = await deleteGadget(type, id);
+    let success = false;
+    
+    if (type === 'Dripper') {
+        success = await deleteDripper(id);
+    } else if (type === 'Grinder') {
+        success = await deleteGrinder(id);
+    }
+    
     if (success) {
         updateGadgetSection();
         updateStatistics();

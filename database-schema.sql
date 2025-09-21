@@ -1,10 +1,24 @@
--- Brew Journal Database Schema for Supabase - UPDATED TO MATCH ORIGINAL FORM
--- Run this in your Supabase SQL Editor
+-- Drop existing tables in correct order (due to foreign key constraints)
+DROP TABLE IF EXISTS brews CASCADE;
+DROP TABLE IF EXISTS coffees CASCADE;
+DROP TABLE IF EXISTS drippers CASCADE;
+DROP TABLE IF EXISTS grinders CASCADE;
+DROP TABLE IF EXISTS roasters CASCADE;
+DROP TABLE IF EXISTS origins CASCADE;
 
--- Enable UUID extension
-CREATE EXTENSION IF NOT EXISTS "uuid-ossp";
+-- Drop the function if it exists
+DROP FUNCTION IF EXISTS update_updated_at_column() CASCADE;
 
--- Create roasters table (matches form: roasterName, roasterCountry)
+-- Create function for updated_at trigger
+CREATE OR REPLACE FUNCTION update_updated_at_column()
+RETURNS TRIGGER AS $$
+BEGIN
+    NEW.updated_at = NOW();
+    RETURN NEW;
+END;
+$$ language 'plpgsql';
+
+-- Create roasters table
 CREATE TABLE roasters (
     id SERIAL PRIMARY KEY,
     name TEXT NOT NULL,
@@ -13,7 +27,7 @@ CREATE TABLE roasters (
     updated_at TIMESTAMP WITH TIME ZONE DEFAULT NOW()
 );
 
--- Create origins table (matches form: originCountry, originRegion, originFarm, producerName, elevation, varietal)
+-- Create origins table
 CREATE TABLE origins (
     id SERIAL PRIMARY KEY,
     country TEXT NOT NULL,
@@ -26,7 +40,7 @@ CREATE TABLE origins (
     updated_at TIMESTAMP WITH TIME ZONE DEFAULT NOW()
 );
 
--- Create coffees table (matches form: coffeeName, coffeeType, roastLevel, roastDate, processingMethod, coffeeWeight, coffeePrice, coffeeFlavour, coffeeImage)
+-- Create coffees table with all form fields
 CREATE TABLE coffees (
     id SERIAL PRIMARY KEY,
     name TEXT NOT NULL,
@@ -44,7 +58,7 @@ CREATE TABLE coffees (
     updated_at TIMESTAMP WITH TIME ZONE DEFAULT NOW()
 );
 
--- Create drippers table (matches form: dripperName, dripperBrand, dripperMaterial, dripperImage)
+-- Create drippers table
 CREATE TABLE drippers (
     id SERIAL PRIMARY KEY,
     name TEXT NOT NULL,
@@ -55,7 +69,7 @@ CREATE TABLE drippers (
     updated_at TIMESTAMP WITH TIME ZONE DEFAULT NOW()
 );
 
--- Create grinders table (matches form: grinderName, grinderBrand, burrType, grinderImage)
+-- Create grinders table
 CREATE TABLE grinders (
     id SERIAL PRIMARY KEY,
     name TEXT NOT NULL,
@@ -66,24 +80,29 @@ CREATE TABLE grinders (
     updated_at TIMESTAMP WITH TIME ZONE DEFAULT NOW()
 );
 
--- Create brews table (matches form: brewCoffee, brewDripper, brewGrinder, brewNotes, brewRating)
+-- Create brews table with ALL brew form fields
 CREATE TABLE brews (
     id SERIAL PRIMARY KEY,
     coffee_id INTEGER REFERENCES coffees(id) ON DELETE CASCADE,
     dripper_id INTEGER REFERENCES drippers(id) ON DELETE CASCADE,
     grinder_id INTEGER REFERENCES grinders(id) ON DELETE CASCADE,
+    
+    -- Brewing parameters
     grinder_setting TEXT,
     recipe_link TEXT,
-    temperature INTEGER,
-    water_amount INTEGER,
-    coffee_amount INTEGER,
-    bloom_time INTEGER,
+    temperature INTEGER, -- water temperature in celsius
+    water_amount INTEGER, -- in grams
+    coffee_amount INTEGER, -- in grams
+    bloom_time INTEGER, -- in seconds
     brew_time_minutes INTEGER,
     brew_time_seconds INTEGER,
-    beverage_amount INTEGER,
-    tasting_notes TEXT[] DEFAULT '{}',
+    beverage_amount INTEGER, -- total beverage weight in grams
+    
+    -- Tasting and notes
+    tasting_notes TEXT[] DEFAULT '{}', -- array of flavour tags
     rating INTEGER CHECK (rating >= 1 AND rating <= 5),
     general_notes TEXT,
+    
     created_at TIMESTAMP WITH TIME ZONE DEFAULT NOW(),
     updated_at TIMESTAMP WITH TIME ZONE DEFAULT NOW()
 );
@@ -99,15 +118,7 @@ CREATE INDEX idx_grinders_name ON grinders(name);
 CREATE INDEX idx_brews_coffee_id ON brews(coffee_id);
 CREATE INDEX idx_brews_dripper_id ON brews(dripper_id);
 CREATE INDEX idx_brews_grinder_id ON brews(grinder_id);
-
--- Create updated_at trigger function
-CREATE OR REPLACE FUNCTION update_updated_at_column()
-RETURNS TRIGGER AS $$
-BEGIN
-    NEW.updated_at = NOW();
-    RETURN NEW;
-END;
-$$ language 'plpgsql';
+CREATE INDEX idx_brews_created_at ON brews(created_at);
 
 -- Create triggers for updated_at
 CREATE TRIGGER update_roasters_updated_at BEFORE UPDATE ON roasters
@@ -158,3 +169,14 @@ INSERT INTO grinders (name, brand, burr_type, image_data) VALUES
 ('C40', 'Comandante', 'Conical', NULL),
 ('EK43', 'Mahlkönig', 'Flat', NULL),
 ('Kinu M47', 'Kinu', 'Conical', NULL);
+
+-- Insert sample brews with all the detailed fields
+INSERT INTO brews (
+    coffee_id, dripper_id, grinder_id,
+    grinder_setting, recipe_link, temperature, water_amount, coffee_amount,
+    bloom_time, brew_time_minutes, brew_time_seconds, beverage_amount,
+    tasting_notes, rating, general_notes
+) VALUES
+(1, 1, 1, '20 clicks', 'https://example.com/recipe1', 92, 300, 18, 30, 2, 30, 280, ARRAY['Bright', 'Fruity', 'Clean'], 4, 'Great morning cup!'),
+(2, 2, 2, 'Medium-fine', 'https://example.com/recipe2', 88, 250, 15, 45, 3, 15, 240, ARRAY['Chocolate', 'Nutty', 'Smooth'], 5, 'Perfect afternoon brew'),
+(3, 3, 3, '22 clicks', 'https://example.com/recipe3', 90, 200, 12, 40, 2, 45, 190, ARRAY['Floral', 'Tea-like', 'Delicate'], 3, 'Interesting but not my favorite');

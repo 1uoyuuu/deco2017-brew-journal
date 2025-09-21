@@ -264,7 +264,6 @@ export class DatabaseService {
 
   // Load all data with proper joins
   static async loadData() {
-    console.log('Loading data from database...');
     
     try {
       const [coffees, drippers, grinders, brews] = await Promise.all([
@@ -274,12 +273,6 @@ export class DatabaseService {
         this.getBrews()
       ]);
       
-      console.log('Data loaded successfully:', {
-        coffees: coffees?.length || 0,
-        drippers: drippers?.length || 0,
-        grinders: grinders?.length || 0,
-        brews: brews?.length || 0
-      });
       
       return { coffees, drippers, grinders, brews };
       
