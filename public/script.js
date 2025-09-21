@@ -742,7 +742,7 @@ function updateBrewFormSelect() {
             const selectElement = select.querySelector('select');
             if (selectElement) {
                 // Remove custom select classes and restore original select
-                selectElement.style.display = 'block';
+                selectElement.style.display = '';
                 selectElement.classList.remove('select-hide');
                 
                 // Remove custom select elements
@@ -757,6 +757,15 @@ function updateBrewFormSelect() {
         if (typeof createCustomSelect === 'function') {
             createCustomSelect();
         }
+        
+        // Hide vanilla selects after custom selects are created
+        setTimeout(() => {
+            const brewFormSelects = document.querySelectorAll('#brew-form .custom-select select');
+            brewFormSelects.forEach(select => {
+                select.classList.add('select-hide');
+                select.style.display = 'none'; // Force hide with inline style
+            });
+        }, 50);
     }, 200);
 }
 
@@ -1270,6 +1279,15 @@ document.addEventListener('DOMContentLoaded', async function() {
     // Setup delete button event listeners
     setupDeleteListeners();
     
+    // Ensure all vanilla selects are hidden (custom selects should be visible)
+    setTimeout(() => {
+        const allSelects = document.querySelectorAll('.custom-select select');
+        allSelects.forEach(select => {
+            select.classList.add('select-hide');
+            select.style.display = 'none'; // Force hide with inline style
+        });
+    }, 100);
+    
     setTimeout(() => {
         applyColorThiefEffects();
         const carouselList = document.querySelector("#gadget-carousel");
@@ -1298,6 +1316,15 @@ if (document.readyState === 'loading') {
         updateStatistics();
         updateBrewFormSelect();
         
+        // Ensure all vanilla selects are hidden (custom selects should be visible)
+        setTimeout(() => {
+            const allSelects = document.querySelectorAll('.custom-select select');
+            allSelects.forEach(select => {
+                select.classList.add('select-hide');
+                select.style.display = 'none'; // Force hide with inline style
+            });
+        }, 100);
+        
         setTimeout(() => {
             applyColorThiefEffects();
             const carouselList = document.querySelector("#gadget-carousel");
@@ -1309,6 +1336,6 @@ if (document.readyState === 'loading') {
                     carousel.style.visibility = "hidden";
                 }
             }
-        }, 100);
+        }, 200);
     })();
 }
