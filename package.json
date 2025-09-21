@@ -3,7 +3,7 @@
   "version": "1.0.0",
   "description": "Coffee brewing tracking web application",
   "scripts": {
-    "build": "parcel build ./public/index.html --dist-dir dist --public-url ./",
+    "build": "parcel build ./public/index.html --dist-dir dist --public-url ./ --no-scope-hoist",
     "start": "node server.js",
     "dev": "parcel serve ./public/index.html",
     "vercel-build": "parcel build ./public/index.html --dist-dir dist --public-url ./",
