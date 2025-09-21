@@ -628,7 +628,7 @@ function createBrewItem(brew) {
                                 </div>
                             </div>
                             <div class="grid-item">
-                                <input id="${brew.id}" name="delete" value="Delete" type="button" class="black-fill white-border fill-in"/>
+                                <input id="${brew.id}" name="delete" value="Delete" type="button" class="brew-delete black-fill white-border fill-in"/>
                             </div>
                         </div>`;
     article.appendChild(panel);
@@ -682,6 +682,9 @@ function updateStatistics() {
 
 function updateBrewFormSelect() {
     console.log('Updating brew form selects');
+    console.log('Coffee array:', coffeeArray);
+    console.log('Dripper array:', dripperArray);
+    console.log('Grinder array:', grinderArray);
     
     // Update coffee dropdown
     const coffeeSelect = document.getElementById('brewCoffee');
@@ -696,6 +699,7 @@ function updateBrewFormSelect() {
             option.textContent = coffee.name;
             coffeeSelect.appendChild(option);
         });
+        console.log('Coffee options added:', coffeeSelect.options.length);
     }
     
     // Update dripper dropdown
@@ -711,6 +715,7 @@ function updateBrewFormSelect() {
             option.textContent = dripper.name;
             dripperSelect.appendChild(option);
         });
+        console.log('Dripper options added:', dripperSelect.options.length);
     }
     
     // Update grinder dropdown
@@ -726,12 +731,33 @@ function updateBrewFormSelect() {
             option.textContent = grinder.name;
             grinderSelect.appendChild(option);
         });
+        console.log('Grinder options added:', grinderSelect.options.length);
     }
     
-    // Reinitialize custom selects
-    if (typeof createCustomSelect === 'function') {
-        createCustomSelect();
-    }
+    // Reinitialize custom select components for brew form
+    setTimeout(() => {
+        // Destroy existing custom selects for brew form
+        const brewFormSelects = document.querySelectorAll('#brew-form .custom-select');
+        brewFormSelects.forEach(select => {
+            const selectElement = select.querySelector('select');
+            if (selectElement) {
+                // Remove custom select classes and restore original select
+                selectElement.style.display = 'block';
+                selectElement.classList.remove('select-hide');
+                
+                // Remove custom select elements
+                const customSelected = select.querySelector('.select-selected');
+                const customItems = select.querySelector('.select-items');
+                if (customSelected) customSelected.remove();
+                if (customItems) customItems.remove();
+            }
+        });
+        
+        // Reinitialize custom selects
+        if (typeof createCustomSelect === 'function') {
+            createCustomSelect();
+        }
+    }, 200);
 }
 
 // Helper functions from original design
@@ -952,9 +978,9 @@ function setupDeleteListeners() {
                 if (gadgetElement) {
                     const gadgetType = gadgetElement.querySelector('.flex-row p:last-child')?.textContent;
                     if (gadgetType === 'Dripper') {
-                        await deleteGadget('Dripper', id);
+                        await deleteGadgetUI('Dripper', id);
                     } else if (gadgetType === 'Grinder') {
-                        await deleteGadget('Grinder', id);
+                        await deleteGadgetUI('Grinder', id);
                     }
                 }
             } else if (className.includes('brew-delete')) {
@@ -1198,6 +1224,15 @@ async function deleteGadget(type, id) {
         success = await deleteGrinder(id);
     }
     
+    if (success) {
+        updateGadgetSection();
+        updateStatistics();
+    }
+}
+
+// Gadget delete function
+async function deleteGadgetUI(type, id) {
+    const success = await deleteGadget(type, id);
     if (success) {
         updateGadgetSection();
         updateStatistics();
