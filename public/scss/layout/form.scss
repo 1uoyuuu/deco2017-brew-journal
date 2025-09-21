@@ -265,6 +265,12 @@ textarea {
     width: 100% !important;
     font-family: inherit !important;
     outline: none !important;
+    appearance: none !important;
+    -webkit-appearance: none !important;
+    -moz-appearance: none !important;
+    box-shadow: none !important;
+    -webkit-box-shadow: none !important;
+    -moz-box-shadow: none !important;
 
     &::placeholder {
         text-transform: uppercase !important;
@@ -277,6 +283,53 @@ textarea {
         border-bottom: 1px solid $accent !important;
         outline: none !important;
         transition: all 0.2s ease-in-out !important;
+        box-shadow: none !important;
+        -webkit-box-shadow: none !important;
+        -moz-box-shadow: none !important;
+    }
+}
+
+// Ultra-specific selectors to override user agent styles
+#coffee-form .form-page .form-input-container .form-item input[type=text],
+#gadget-form .form-page .form-input-container .form-item input[type=text],
+#brew-form .form-page .form-input-container .form-item input[type=text],
+#coffee-form .form-page .form-input-container .form-item textarea,
+#gadget-form .form-page .form-input-container .form-item textarea,
+#brew-form .form-page .form-input-container .form-item textarea {
+    background-color: transparent !important;
+    border: none !important;
+    border-bottom: 1px solid $gray !important;
+    margin: 4px 0 !important;
+    padding: 4px 0 !important;
+    color: white !important;
+    font-size: 1rem !important;
+    width: 100% !important;
+    font-family: inherit !important;
+    outline: none !important;
+    appearance: none !important;
+    -webkit-appearance: none !important;
+    -moz-appearance: none !important;
+    box-shadow: none !important;
+    -webkit-box-shadow: none !important;
+    -moz-box-shadow: none !important;
+    border-width: 0 !important;
+    border-style: none !important;
+    border-image: none !important;
+
+    &::placeholder {
+        text-transform: uppercase !important;
+        letter-spacing: 0.01rem !important;
+        color: $gray !important;
+        font-size: 1rem !important;
+    }
+
+    &:focus {
+        border-bottom: 1px solid $accent !important;
+        outline: none !important;
+        transition: all 0.2s ease-in-out !important;
+        box-shadow: none !important;
+        -webkit-box-shadow: none !important;
+        -moz-box-shadow: none !important;
     }
 }
 
