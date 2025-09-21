@@ -289,13 +289,13 @@ textarea {
     }
 }
 
-// Ultra-specific selectors to override user agent styles
-#coffee-form .form-page .form-input-container .form-item input[type=text],
-#gadget-form .form-page .form-input-container .form-item input[type=text],
-#brew-form .form-page .form-input-container .form-item input[type=text],
-#coffee-form .form-page .form-input-container .form-item textarea,
-#gadget-form .form-page .form-input-container .form-item textarea,
-#brew-form .form-page .form-input-container .form-item textarea {
+// Correct nesting selectors to match actual HTML structure
+#coffee-form .form-item input[type=text],
+#gadget-form .form-item input[type=text],
+#brew-form .form-item input[type=text],
+#coffee-form .form-item textarea,
+#gadget-form .form-item textarea,
+#brew-form .form-item textarea {
     background-color: transparent !important;
     border: none !important;
     border-bottom: 1px solid $gray !important;
