@@ -2,6 +2,10 @@
   "version": 2,
   "buildCommand": "npm run vercel-build",
   "outputDirectory": "dist",
+  "env": {
+    "VITE_SUPABASE_URL": "https://pcvsoorcldhtykxmejkn.supabase.co",
+    "VITE_SUPABASE_ANON_KEY": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InBjdnNvb3JjbGRodHlreG1lamtuIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NTgzNzA4NDEsImV4cCI6MjA3Mzk0Njg0MX0.OmSWtXNS3Y5L_K9WW8zPVKFgT8FQv0GUC5WbI5i0M9U"
+  },
   "routes": [
     {
       "src": "/(.*\\.(js|css|png|jpg|jpeg|gif|svg|ico|woff|woff2|ttf|eot))",

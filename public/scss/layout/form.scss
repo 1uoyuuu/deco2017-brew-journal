@@ -164,6 +164,8 @@ form {
 //styling the text input field - more specific selectors
 input[type=text],
 input[type="text"],
+input[type="email"],
+input[type="password"],
 textarea {
     background-color: transparent !important;
     border: none !important;
@@ -173,6 +175,7 @@ textarea {
     color: white !important;
     font-size: 1rem !important;
     width: 100% !important;
+    outline: none !important;
 
     //make the placeholder text all uppercase without affecting user input
     text-transform: none;
@@ -195,6 +198,8 @@ textarea {
 // Additional specific selectors for form inputs
 .form-item input[type=text],
 .form-item input[type="text"],
+.form-item input[type="email"],
+.form-item input[type="password"],
 .form-item textarea {
     background-color: transparent !important;
     border: none !important;
@@ -204,6 +209,7 @@ textarea {
     color: white !important;
     font-size: 1rem !important;
     width: 100% !important;
+    outline: none !important;
 
     &::placeholder {
         text-transform: uppercase !important;

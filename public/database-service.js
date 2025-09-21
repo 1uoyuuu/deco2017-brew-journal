@@ -4,20 +4,27 @@ import { supabase } from './supabase-config.js';
 export class DatabaseService {
   // Coffee operations with roaster and origin joins
   static async getCoffees() {
-    const { data, error } = await supabase
-      .from('coffees')
-      .select(`
-        *,
-        roasters:roaster_id(name, country),
-        origins:origin_id(country, region, farm, producer, elevation, varietal)
-      `)
-      .order('created_at', { ascending: false });
-    
-    if (error) {
-      console.error('Error fetching coffees:', error);
+    try {
+      console.log('Fetching coffees from database...');
+      const { data, error } = await supabase
+        .from('coffees')
+        .select(`
+          *,
+          roasters:roaster_id(name, country),
+          origins:origin_id(country, region, farm, producer, elevation, varietal)
+        `)
+        .order('created_at', { ascending: false });
+      
+      if (error) {
+        console.error('Error fetching coffees:', error);
+        return [];
+      }
+      console.log('Coffees fetched successfully:', data?.length || 0);
+      return data || [];
+    } catch (error) {
+      console.error('Database connection error:', error);
       return [];
     }
-    return data || [];
   }
 
   static async addCoffee(coffeeData) {

@@ -95,12 +95,23 @@ let brewArray = [];
 // Data management functions
 async function loadData() {
     try {
+        console.log('Loading data from Supabase...');
+        console.log('Supabase URL:', import.meta.env?.VITE_SUPABASE_URL || 'Using fallback');
+        
         coffeeArray = await DatabaseService.getCoffees();
         dripperArray = await DatabaseService.getDrippers();
         grinderArray = await DatabaseService.getGrinders();
         brewArray = await DatabaseService.getBrews();
+        
+        console.log('Data loaded successfully:', {
+            coffees: coffeeArray.length,
+            drippers: dripperArray.length,
+            grinders: grinderArray.length,
+            brews: brewArray.length
+        });
     } catch (error) {
         console.error('Error loading from database:', error);
+        console.error('This might be due to missing environment variables in production');
         // Initialize empty arrays if database fails
         coffeeArray = [];
         dripperArray = [];
