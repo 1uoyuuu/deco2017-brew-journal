@@ -721,8 +721,10 @@ function updateBrewFormSelect() {
             }
         });
         
-        // The custom select script will automatically handle the reinitialization
-        // No need to manually call createCustomSelect() as it affects all selects
+        // Recreate custom selects for brew form only
+        if (typeof createCustomSelect === 'function') {
+            createCustomSelect();
+        }
         
         // Hide vanilla selects after custom selects are created
         setTimeout(() => {
