@@ -312,9 +312,8 @@ textarea {
     box-shadow: none !important;
     -webkit-box-shadow: none !important;
     -moz-box-shadow: none !important;
-    border-width: 0 !important;
-    border-style: none !important;
-    border-image: none !important;
+    border: none !important;
+    border-bottom: 1px solid $gray !important;
 
     &::placeholder {
         text-transform: uppercase !important;
