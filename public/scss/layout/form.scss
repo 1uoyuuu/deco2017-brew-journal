@@ -250,8 +250,11 @@ textarea {
 
 // Most specific selectors for each form - Production Fix
 #coffee-form input[type=text],
+#coffee-form input:not([type]),
 #gadget-form input[type=text],
+#gadget-form input:not([type]),
 #brew-form input[type=text],
+#brew-form input:not([type]),
 #coffee-form textarea,
 #gadget-form textarea,
 #brew-form textarea {
@@ -291,8 +294,11 @@ textarea {
 
 // Correct nesting selectors to match actual HTML structure
 #coffee-form .form-item input[type=text],
+#coffee-form .form-item input:not([type]),
 #gadget-form .form-item input[type=text],
+#gadget-form .form-item input:not([type]),
 #brew-form .form-item input[type=text],
+#brew-form .form-item input:not([type]),
 #coffee-form .form-item textarea,
 #gadget-form .form-item textarea,
 #brew-form .form-item textarea {
