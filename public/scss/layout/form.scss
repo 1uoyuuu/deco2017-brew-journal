@@ -492,3 +492,62 @@ input:-webkit-autofill:focus {
     -webkit-box-shadow: 0 0 0px 1000px $black inset; //change the background color
     transition: background-color 5000s ease-in-out 0s;
 }
+
+// Even more specific selectors for form inputs
+.form-page .form-item input[type=text],
+.form-page .form-item input[type="text"],
+.form-page .form-item textarea {
+    background-color: transparent !important;
+    border: none !important;
+    border-bottom: 1px solid $gray !important;
+    margin: 4px 0 !important;
+    padding: 4px 0 !important;
+    color: white !important;
+    font-size: 1rem !important;
+    width: 100% !important;
+    font-family: inherit !important;
+
+    &::placeholder {
+        text-transform: uppercase !important;
+        letter-spacing: 0.01rem !important;
+        color: $gray !important;
+        font-size: 1rem !important;
+    }
+
+    &:focus {
+        border-bottom: 1px solid $accent !important;
+        outline: none !important;
+        transition: 200ms all ease-in-out !important;
+    }
+}
+
+// Most specific selectors for all form inputs
+#coffee-form input[type=text],
+#gadget-form input[type=text],
+#brew-form input[type=text],
+#coffee-form textarea,
+#gadget-form textarea,
+#brew-form textarea {
+    background-color: transparent !important;
+    border: none !important;
+    border-bottom: 1px solid $gray !important;
+    margin: 4px 0 !important;
+    padding: 4px 0 !important;
+    color: white !important;
+    font-size: 1rem !important;
+    width: 100% !important;
+    font-family: inherit !important;
+
+    &::placeholder {
+        text-transform: uppercase !important;
+        letter-spacing: 0.01rem !important;
+        color: $gray !important;
+        font-size: 1rem !important;
+    }
+
+    &:focus {
+        border-bottom: 1px solid $accent !important;
+        outline: none !important;
+        transition: 200ms all ease-in-out !important;
+    }
+}
